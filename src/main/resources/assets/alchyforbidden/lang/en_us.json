@@ -94,7 +94,6 @@
   "resonator.alchyforbidden.warden": "The dead warden blasts the shriekers. %s Corruption waiting.",
   "resonator.alchyforbidden.wants_warden": "a warden killed beside it",
   "resonator.alchyforbidden.warden_slain": "The warden falls. Its body goes into the resonator's rift.",
-  "item.alchyforbidden.warden_heart": "Warden's Heart",
   "resonator.alchyforbidden.heart": "The heart flies round. %s Corruption waiting.",
   "gui.alchyforbidden.resonator_needs_warden": "Its last tier wants a warden killed beside it",
   "block.alchyforbidden.sacrificial_slab": "Sacrificial Slab"
