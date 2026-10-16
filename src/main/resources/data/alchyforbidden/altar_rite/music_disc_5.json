@@ -1,0 +1,19 @@
+{
+  "ingredients": [
+    "minecraft:echo_shard",
+    "minecraft:echo_shard",
+    "minecraft:amethyst_block",
+    "minecraft:amethyst_block",
+    "minecraft:crying_obsidian",
+    "minecraft:crying_obsidian",
+    "minecraft:sculk_catalyst",
+    "minecraft:ender_eye"
+  ],
+  "result": {
+    "id": "minecraft:music_disc_5"
+  },
+  "tier": 3,
+  "ticks": 300,
+  "sorrow": 400,
+  "corruption": 200
+}

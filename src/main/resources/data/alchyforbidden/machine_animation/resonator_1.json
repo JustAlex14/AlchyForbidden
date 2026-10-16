@@ -1,0 +1,27 @@
+{
+  "effects": [
+    {
+      "type": "figure",
+      "figure": "alchyforbidden:echo_pearl",
+      "at": "core",
+      "display": "pearl"
+    },
+    {
+      "type": "particle",
+      "when": "always",
+      "interval": 40,
+      "chance": 0.4,
+      "particle": "minecraft:sculk_soul",
+      "at": {
+        "block": "minecraft:sculk_shrieker",
+        "offset": [
+          0,
+          0.6,
+          0
+        ]
+      },
+      "count": 1,
+      "speed": 0.01
+    }
+  ]
+}

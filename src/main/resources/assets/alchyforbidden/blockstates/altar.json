@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "rising=false": {
+      "model": "alchyforbidden:block/altar"
+    },
+    "rising=true": {
+      "model": "alchyforbidden:block/altar_rising"
+    }
+  }
+}

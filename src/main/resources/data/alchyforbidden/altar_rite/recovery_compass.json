@@ -1,0 +1,14 @@
+{
+  "ingredients": [
+    "minecraft:compass",
+    "minecraft:echo_shard",
+    "minecraft:echo_shard",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "minecraft:recovery_compass"
+  },
+  "tier": 2,
+  "ticks": 160,
+  "sorrow": 120
+}

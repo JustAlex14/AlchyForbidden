@@ -1,0 +1,26 @@
+{
+  "values": [
+    "#minecraft:sculk_replaceable",
+    "#minecraft:dirt",
+    "#minecraft:base_stone_overworld",
+    "#minecraft:sand",
+    "minecraft:sculk",
+    "minecraft:sculk_vein",
+    "minecraft:cobbled_deepslate",
+    "minecraft:gravel",
+    "alchyforbidden:offering_stand",
+    "alchyforbidden:altar_flagstone",
+    "alchyforbidden:veined_deepslate",
+    "alchyforbidden:warden_pillar",
+    "alchyforbidden:pillar_base",
+    "alchyforbidden:pillar_capital",
+    "alchyforbidden:altar_pedestal",
+    "alchyforbidden:altar_stairs",
+    "alchyforbidden:mage_rune",
+    "alchyforbidden:rift_lantern",
+    "alchyforbidden:circle_center",
+    "alchyforbidden:circle_side",
+    "alchyforbidden:circle_corner",
+    "alchyforbidden:sacrificial_slab"
+  ]
+}

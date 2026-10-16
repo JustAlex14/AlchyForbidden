@@ -1,0 +1,13 @@
+{
+  "ingredients": [
+    "minecraft:glass_bottle",
+    "minecraft:amethyst_shard",
+    "minecraft:amethyst_shard",
+    "minecraft:sculk"
+  ],
+  "result": {
+    "id": "alchyforbidden:cracked_vessel"
+  },
+  "tier": 1,
+  "ticks": 60
+}

@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:sculk",
+    "minecraft:sculk",
+    "minecraft:bone_block",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "minecraft:sculk_catalyst"
+  },
+  "tier": 2,
+  "ticks": 160,
+  "wrath": 60,
+  "corruption": 40
+}

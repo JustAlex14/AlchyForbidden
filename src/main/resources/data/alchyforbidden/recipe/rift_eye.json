@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:ender_eye",
+    "minecraft:echo_shard",
+    "minecraft:echo_shard",
+    "minecraft:amethyst_shard"
+  ],
+  "result": {
+    "id": "alchyforbidden:rift_eye"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "ingredients": [
+    "minecraft:sculk",
+    "minecraft:sculk",
+    "minecraft:amethyst_shard",
+    "minecraft:ender_pearl"
+  ],
+  "result": {
+    "id": "minecraft:echo_shard"
+  },
+  "tier": 1,
+  "ticks": 100,
+  "sorrow": 30
+}

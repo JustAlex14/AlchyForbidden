@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "alchyforbidden:block/circle_side"
+    },
+    "facing=east": {
+      "model": "alchyforbidden:block/circle_side",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "alchyforbidden:block/circle_side",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "alchyforbidden:block/circle_side",
+      "y": 270
+    }
+  }
+}

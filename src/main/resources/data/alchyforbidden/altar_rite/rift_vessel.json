@@ -1,0 +1,19 @@
+{
+  "ingredients": [
+    "alchyforbidden:bound_vessel",
+    "minecraft:crying_obsidian",
+    "minecraft:crying_obsidian",
+    "minecraft:echo_shard",
+    "minecraft:echo_shard",
+    "minecraft:amethyst_block",
+    "minecraft:ender_eye",
+    "minecraft:sculk_catalyst"
+  ],
+  "result": {
+    "id": "alchyforbidden:rift_vessel"
+  },
+  "tier": 3,
+  "ticks": 260,
+  "sorrow": 200,
+  "corruption": 300
+}

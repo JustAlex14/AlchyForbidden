@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "alchyforbidden:block/rift_lantern_top",
+    "side": "alchyforbidden:block/rift_lantern"
+  }
+}

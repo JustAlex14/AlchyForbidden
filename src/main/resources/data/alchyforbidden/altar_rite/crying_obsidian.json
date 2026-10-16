@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:obsidian",
+    "minecraft:obsidian",
+    "minecraft:amethyst_shard",
+    "minecraft:ghast_tear"
+  ],
+  "result": {
+    "id": "minecraft:crying_obsidian",
+    "count": 2
+  },
+  "tier": 2,
+  "ticks": 120,
+  "sorrow": 80
+}

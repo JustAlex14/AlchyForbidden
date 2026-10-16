@@ -1,0 +1,419 @@
+{
+  "core": "alchyforbidden:resonator",
+  "layers": [
+    [
+      "FFFFFFFFF",
+      "FVVVVVVVF",
+      "FVVVVVVVF",
+      "FVV152VVF",
+      "FVV896VVF",
+      "FVV473VVF",
+      "FVVVVVVVF",
+      "FVVVVVVVF",
+      "FFFFFFFFF"
+    ],
+    [
+      "b...v...b",
+      "._....._.",
+      ".._.R._..",
+      "...___...",
+      "v.RTXTR.v",
+      "...___...",
+      ".._.R._..",
+      "._....._.",
+      "b...v...b"
+    ],
+    [
+      "P.......P",
+      "._....._.",
+      "....a....",
+      "..._._...",
+      "..a...a..",
+      "..._._...",
+      "....a....",
+      "._....._.",
+      "P.......P"
+    ],
+    [
+      "P...h...P",
+      ".........",
+      ".........",
+      "..._._...",
+      "h.......h",
+      "..._._...",
+      ".........",
+      ".........",
+      "P...h...P"
+    ],
+    [
+      "QWFFRFFZQ",
+      "N.......N",
+      "F.......F",
+      "F.._._..F",
+      "R.......R",
+      "F.._._..F",
+      "F.......F",
+      "U.......U",
+      "QWFFRFFZQ"
+    ],
+    [
+      "E.......E",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "E.......E"
+    ]
+  ],
+  "key": {
+    ".": {
+      "any": true
+    },
+    "1": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "2": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "3": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "4": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "west"
+      }
+    },
+    "5": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "6": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "7": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "8": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "west"
+      }
+    },
+    "9": {
+      "block": "alchyforbidden:circle_center"
+    },
+    "E": {
+      "block": "minecraft:sculk_shrieker"
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "N": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "north",
+        "half": "top"
+      }
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "T": {
+      "block": "alchyforbidden:sacrificial_slab"
+    },
+    "U": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "south",
+        "half": "top"
+      }
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "W": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "west",
+        "half": "top"
+      }
+    },
+    "X": {
+      "core": true
+    },
+    "Z": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "east",
+        "half": "top"
+      }
+    },
+    "_": {
+      "air": true
+    },
+    "a": {
+      "block": "minecraft:amethyst_cluster",
+      "state": {
+        "facing": "up"
+      }
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "h": {
+      "block": "minecraft:soul_lantern",
+      "state": {
+        "hanging": "true"
+      }
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": "true"
+      }
+    }
+  },
+  "result": [
+    [
+      "FFFFFFFFF",
+      "FVVVVVVVF",
+      "FVVVVVVVF",
+      "FVV152VVF",
+      "FVV896VVF",
+      "FVV473VVF",
+      "FVVVVVVVF",
+      "FVVVVVVVF",
+      "FFFFFFFFF"
+    ],
+    [
+      "b...v...b",
+      ".........",
+      "....R....",
+      ".........",
+      "v.RT.TR.v",
+      ".........",
+      "....R....",
+      ".........",
+      "b...v...b"
+    ],
+    [
+      "P.......P",
+      ".........",
+      "....a....",
+      ".........",
+      "..a...a..",
+      ".........",
+      "....a....",
+      ".........",
+      "P.......P"
+    ],
+    [
+      "P...h...P",
+      ".........",
+      ".........",
+      ".........",
+      "h.......h",
+      ".........",
+      ".........",
+      ".........",
+      "P...h...P"
+    ],
+    [
+      "QWFFRFFZQ",
+      "N.......N",
+      "F.......F",
+      "F.......F",
+      "R.......R",
+      "F.......F",
+      "F.......F",
+      "U.......U",
+      "QWFFRFFZQ"
+    ],
+    [
+      "E.......E",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "E.......E"
+    ]
+  ],
+  "result_key": {
+    ".": {
+      "keep": true
+    },
+    "1": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "2": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "3": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "4": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "west"
+      }
+    },
+    "5": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "6": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "7": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "8": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "west"
+      }
+    },
+    "9": {
+      "block": "alchyforbidden:circle_center"
+    },
+    "E": {
+      "block": "minecraft:sculk_shrieker"
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "N": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "north",
+        "half": "top"
+      }
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "T": {
+      "block": "alchyforbidden:sacrificial_slab"
+    },
+    "U": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "south",
+        "half": "top"
+      }
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "W": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "west",
+        "half": "top"
+      }
+    },
+    "Z": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "east",
+        "half": "top"
+      }
+    },
+    "a": {
+      "block": "minecraft:amethyst_cluster",
+      "state": {
+        "facing": "up"
+      }
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "h": {
+      "block": "minecraft:soul_lantern",
+      "state": {
+        "hanging": true
+      }
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": true
+      }
+    }
+  },
+  "anchors": {
+    "emitter_0": [
+      -4,
+      4,
+      -4
+    ],
+    "emitter_1": [
+      4,
+      4,
+      -4
+    ],
+    "emitter_2": [
+      4,
+      4,
+      4
+    ],
+    "emitter_3": [
+      -4,
+      4,
+      4
+    ]
+  }
+}

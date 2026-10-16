@@ -1,0 +1,245 @@
+{
+  "effects": [
+    {
+      "type": "figure",
+      "figure": "alchyforbidden:eye",
+      "at": "eye",
+      "display": "eye"
+    },
+    {
+      "type": "particle",
+      "when": "always",
+      "interval": 14,
+      "chance": 0.7,
+      "particle": "alchyforbidden:rift_mote",
+      "at": "eye",
+      "spread": [
+        0.3,
+        0.25,
+        0.3
+      ],
+      "count": 1,
+      "speed": 0.01
+    },
+    {
+      "type": "item",
+      "display": "slot_0",
+      "at": {
+        "anchor": "stand_0",
+        "offset": [
+          0,
+          0.85,
+          0
+        ]
+      },
+      "motion": "spin",
+      "speed": 2.0,
+      "working_speed": 5.0,
+      "scale": 0.42,
+      "bob": 0.04,
+      "phase": 0
+    },
+    {
+      "type": "particle",
+      "when": "working",
+      "interval": 3,
+      "item": "slot_0",
+      "at": {
+        "anchor": "stand_0",
+        "offset": [
+          0,
+          0.85,
+          0
+        ]
+      },
+      "style": "toward",
+      "to": "eye",
+      "count": 1
+    },
+    {
+      "type": "item",
+      "display": "slot_1",
+      "at": {
+        "anchor": "stand_1",
+        "offset": [
+          0,
+          0.85,
+          0
+        ]
+      },
+      "motion": "spin",
+      "speed": 2.0,
+      "working_speed": 5.0,
+      "scale": 0.42,
+      "bob": 0.04,
+      "phase": 45
+    },
+    {
+      "type": "particle",
+      "when": "working",
+      "interval": 3,
+      "item": "slot_1",
+      "at": {
+        "anchor": "stand_1",
+        "offset": [
+          0,
+          0.85,
+          0
+        ]
+      },
+      "style": "toward",
+      "to": "eye",
+      "count": 1
+    },
+    {
+      "type": "item",
+      "display": "slot_2",
+      "at": {
+        "anchor": "stand_2",
+        "offset": [
+          0,
+          0.85,
+          0
+        ]
+      },
+      "motion": "spin",
+      "speed": 2.0,
+      "working_speed": 5.0,
+      "scale": 0.42,
+      "bob": 0.04,
+      "phase": 90
+    },
+    {
+      "type": "particle",
+      "when": "working",
+      "interval": 3,
+      "item": "slot_2",
+      "at": {
+        "anchor": "stand_2",
+        "offset": [
+          0,
+          0.85,
+          0
+        ]
+      },
+      "style": "toward",
+      "to": "eye",
+      "count": 1
+    },
+    {
+      "type": "item",
+      "display": "slot_3",
+      "at": {
+        "anchor": "stand_3",
+        "offset": [
+          0,
+          0.85,
+          0
+        ]
+      },
+      "motion": "spin",
+      "speed": 2.0,
+      "working_speed": 5.0,
+      "scale": 0.42,
+      "bob": 0.04,
+      "phase": 135
+    },
+    {
+      "type": "particle",
+      "when": "working",
+      "interval": 3,
+      "item": "slot_3",
+      "at": {
+        "anchor": "stand_3",
+        "offset": [
+          0,
+          0.85,
+          0
+        ]
+      },
+      "style": "toward",
+      "to": "eye",
+      "count": 1
+    },
+    {
+      "type": "particle",
+      "when": "always",
+      "interval": 9,
+      "chance": 0.7,
+      "particle": "minecraft:small_flame",
+      "at": {
+        "block": "alchyforbidden:offering_stand",
+        "offset": [
+          0.19,
+          0.55,
+          0.19
+        ]
+      },
+      "count": 1
+    },
+    {
+      "type": "particle",
+      "when": "working",
+      "interval": 3,
+      "particle": "minecraft:enchant",
+      "style": "attract",
+      "at": {
+        "block": "alchyforbidden:offering_stand",
+        "offset": [
+          0,
+          0.8,
+          0
+        ]
+      },
+      "to": "eye",
+      "count": 2
+    },
+    {
+      "type": "item",
+      "display": "result",
+      "when": "working",
+      "at": "eye",
+      "motion": "converge",
+      "radius": 0.8,
+      "speed": 4.0,
+      "scale": 0.45
+    },
+    {
+      "type": "particle",
+      "when": "working",
+      "interval": 10,
+      "particle": "minecraft:sculk_soul",
+      "at": [
+        0,
+        0.6,
+        0
+      ],
+      "spread": [
+        0.4,
+        0.1,
+        0.4
+      ],
+      "count": 1,
+      "speed": 0.02
+    },
+    {
+      "type": "particle",
+      "when": "idle",
+      "interval": 30,
+      "chance": 0.6,
+      "particle": "alchyforbidden:rift_mote",
+      "at": [
+        0,
+        0.7,
+        0
+      ],
+      "spread": [
+        0.2,
+        0.1,
+        0.2
+      ],
+      "count": 1,
+      "speed": 0.01
+    }
+  ]
+}

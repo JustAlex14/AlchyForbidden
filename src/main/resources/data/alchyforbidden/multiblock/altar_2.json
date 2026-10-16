@@ -1,0 +1,438 @@
+{
+  "core": "alchyforbidden:altar",
+  "layers": [
+    [
+      "...........",
+      "...........",
+      "..VVVVVVV..",
+      "..VVVVVVV..",
+      "..VVFFFVV..",
+      "..VVFFFVV..",
+      "..VVFFFVV..",
+      "..VVVVVVV..",
+      "..VVVVVVV..",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "..b..v..b..",
+      "...__n__...",
+      "..._152_...",
+      "..vw896ev..",
+      "..._473_...",
+      "...__s__...",
+      "..b..v..b..",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "..P.....P..",
+      "...........",
+      "....S_S....",
+      "...._X_....",
+      "....S_S....",
+      "...........",
+      "..P.....P..",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "..Q.....Q..",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..Q.....Q..",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..........."
+    ]
+  ],
+  "key": {
+    ".": {
+      "any": true
+    },
+    "1": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "2": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "3": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "4": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "west"
+      }
+    },
+    "5": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "6": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "7": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "8": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "west"
+      }
+    },
+    "9": {
+      "block": "alchyforbidden:circle_center"
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "S": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "X": {
+      "core": true
+    },
+    "_": {
+      "air": true
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "e": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "west",
+        "half": "bottom"
+      }
+    },
+    "n": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "south",
+        "half": "bottom"
+      }
+    },
+    "s": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "north",
+        "half": "bottom"
+      }
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": "true"
+      }
+    },
+    "w": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "east",
+        "half": "bottom"
+      }
+    }
+  },
+  "result": [
+    [
+      "...........",
+      "...........",
+      "..VVVVVVV..",
+      "..VVVVVVV..",
+      "..VVFFFVV..",
+      "..VVFFFVV..",
+      "..VVFFFVV..",
+      "..VVVVVVV..",
+      "..VVVVVVV..",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "..b..v..b..",
+      ".....n.....",
+      "....152....",
+      "..vw896ev..",
+      "....473....",
+      ".....s.....",
+      "..b..v..b..",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "..P.....P..",
+      "...........",
+      "....S.S....",
+      "...........",
+      "....S.S....",
+      "...........",
+      "..P.....P..",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "..Q.....Q..",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..Q.....Q..",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..........."
+    ]
+  ],
+  "result_key": {
+    ".": {
+      "keep": true
+    },
+    "1": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "2": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "3": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "4": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "west"
+      }
+    },
+    "5": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "6": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "7": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "8": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "west"
+      }
+    },
+    "9": {
+      "block": "alchyforbidden:circle_center"
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "S": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "e": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "west",
+        "half": "bottom"
+      }
+    },
+    "n": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "south",
+        "half": "bottom"
+      }
+    },
+    "s": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "north",
+        "half": "bottom"
+      }
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": true
+      }
+    },
+    "w": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "east",
+        "half": "bottom"
+      }
+    }
+  },
+  "anchors": {
+    "eye": [
+      0,
+      1,
+      0
+    ],
+    "stand_0": [
+      -1,
+      0,
+      -1
+    ],
+    "stand_1": [
+      1,
+      0,
+      -1
+    ],
+    "stand_2": [
+      1,
+      0,
+      1
+    ],
+    "stand_3": [
+      -1,
+      0,
+      1
+    ]
+  }
+}

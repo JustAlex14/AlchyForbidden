@@ -1,0 +1,180 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "alchyforbidden:block/altar_side",
+    "top": "alchyforbidden:block/altar_top",
+    "side": "alchyforbidden:block/altar_side",
+    "base": "alchyforbidden:block/altar_base",
+    "bottom": "alchyforbidden:block/altar_bottom"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        4,
+        16
+      ],
+      "faces": {
+        "down": {
+          "texture": "#bottom"
+        },
+        "up": {
+          "texture": "#bottom"
+        },
+        "north": {
+          "uv": [
+            0,
+            12,
+            16,
+            16
+          ],
+          "texture": "#base"
+        },
+        "south": {
+          "uv": [
+            0,
+            12,
+            16,
+            16
+          ],
+          "texture": "#base"
+        },
+        "west": {
+          "uv": [
+            0,
+            12,
+            16,
+            16
+          ],
+          "texture": "#base"
+        },
+        "east": {
+          "uv": [
+            0,
+            12,
+            16,
+            16
+          ],
+          "texture": "#base"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        4,
+        2
+      ],
+      "to": [
+        14,
+        12,
+        14
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            2,
+            4,
+            14,
+            12
+          ],
+          "texture": "#side"
+        },
+        "south": {
+          "uv": [
+            2,
+            4,
+            14,
+            12
+          ],
+          "texture": "#side"
+        },
+        "west": {
+          "uv": [
+            2,
+            4,
+            14,
+            12
+          ],
+          "texture": "#side"
+        },
+        "east": {
+          "uv": [
+            2,
+            4,
+            14,
+            12
+          ],
+          "texture": "#side"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        12,
+        1
+      ],
+      "to": [
+        15,
+        16,
+        15
+      ],
+      "faces": {
+        "down": {
+          "texture": "#bottom"
+        },
+        "up": {
+          "uv": [
+            1,
+            1,
+            15,
+            15
+          ],
+          "texture": "#top"
+        },
+        "north": {
+          "uv": [
+            1,
+            0,
+            15,
+            4
+          ],
+          "texture": "#base"
+        },
+        "south": {
+          "uv": [
+            1,
+            0,
+            15,
+            4
+          ],
+          "texture": "#base"
+        },
+        "west": {
+          "uv": [
+            1,
+            0,
+            15,
+            4
+          ],
+          "texture": "#base"
+        },
+        "east": {
+          "uv": [
+            1,
+            0,
+            15,
+            4
+          ],
+          "texture": "#base"
+        }
+      }
+    }
+  ]
+}

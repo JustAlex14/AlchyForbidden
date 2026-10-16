@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "alchyforbidden:block/altar_flagstone",
+    "top": "alchyforbidden:block/altar_flagstone",
+    "side": "alchyforbidden:block/altar_flagstone"
+  }
+}

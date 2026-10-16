@@ -1,0 +1,14 @@
+{
+  "ingredients": [
+    "alchyforbidden:cracked_vessel",
+    "minecraft:crying_obsidian",
+    "minecraft:echo_shard",
+    "minecraft:amethyst_shard"
+  ],
+  "result": {
+    "id": "alchyforbidden:bound_vessel"
+  },
+  "tier": 2,
+  "ticks": 140,
+  "corruption": 60
+}

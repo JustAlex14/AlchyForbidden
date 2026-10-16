@@ -1,0 +1,152 @@
+{
+  "altar.offer": {
+    "subtitle": "subtitles.alchyforbidden.altar.offer",
+    "sounds": [
+      {
+        "name": "block/amethyst/resonate1",
+        "pitch": 0.6,
+        "volume": 0.7
+      },
+      {
+        "name": "block/amethyst/resonate2",
+        "pitch": 0.6,
+        "volume": 0.7
+      },
+      {
+        "name": "block/amethyst/resonate3",
+        "pitch": 0.6,
+        "volume": 0.7
+      },
+      {
+        "name": "block/amethyst/resonate4",
+        "pitch": 0.6,
+        "volume": 0.7
+      }
+    ]
+  },
+  "altar.gather": {
+    "subtitle": "subtitles.alchyforbidden.altar.gather",
+    "sounds": [
+      {
+        "name": "mob/warden/heartbeat_1",
+        "pitch": 0.75,
+        "volume": 1.0
+      },
+      {
+        "name": "mob/warden/heartbeat_2",
+        "pitch": 0.75,
+        "volume": 1.0
+      },
+      {
+        "name": "mob/warden/heartbeat_3",
+        "pitch": 0.75,
+        "volume": 1.0
+      },
+      {
+        "name": "mob/warden/heartbeat_4",
+        "pitch": 0.75,
+        "volume": 1.0
+      }
+    ]
+  },
+  "altar.grow": {
+    "subtitle": "subtitles.alchyforbidden.altar.grow",
+    "sounds": [
+      {
+        "name": "block/sculk/spread1",
+        "pitch": 0.7,
+        "volume": 1.0
+      },
+      {
+        "name": "block/sculk/spread2",
+        "pitch": 0.7,
+        "volume": 1.0
+      },
+      {
+        "name": "block/sculk/spread3",
+        "pitch": 0.7,
+        "volume": 1.0
+      },
+      {
+        "name": "block/sculk/spread4",
+        "pitch": 0.7,
+        "volume": 1.0
+      },
+      {
+        "name": "block/sculk/spread5",
+        "pitch": 0.7,
+        "volume": 1.0
+      },
+      {
+        "name": "block/sculk_sensor/sculk_clicking1",
+        "pitch": 0.8,
+        "volume": 0.6
+      },
+      {
+        "name": "block/sculk_sensor/sculk_clicking2",
+        "pitch": 0.8,
+        "volume": 0.6
+      },
+      {
+        "name": "block/sculk_sensor/sculk_clicking3",
+        "pitch": 0.8,
+        "volume": 0.6
+      }
+    ]
+  },
+  "altar.awaken": {
+    "subtitle": "subtitles.alchyforbidden.altar.awaken",
+    "sounds": [
+      {
+        "name": "block/trial_spawner/ominous_activate",
+        "pitch": 0.6,
+        "volume": 1.0
+      },
+      {
+        "name": "block/respawn_anchor/charge1",
+        "pitch": 0.5,
+        "volume": 1.0
+      },
+      {
+        "name": "block/respawn_anchor/charge2",
+        "pitch": 0.5,
+        "volume": 1.0
+      },
+      {
+        "name": "block/respawn_anchor/charge3",
+        "pitch": 0.5,
+        "volume": 1.0
+      }
+    ]
+  },
+  "eye.whisper": {
+    "subtitle": "subtitles.alchyforbidden.eye.whisper",
+    "sounds": [
+      {
+        "name": "enchant/soulspeed/soulspeed1",
+        "pitch": 0.55,
+        "volume": 0.8
+      },
+      {
+        "name": "enchant/soulspeed/soulspeed2",
+        "pitch": 0.55,
+        "volume": 0.8
+      },
+      {
+        "name": "enchant/soulspeed/soulspeed3",
+        "pitch": 0.55,
+        "volume": 0.8
+      },
+      {
+        "name": "enchant/soulspeed/soulspeed4",
+        "pitch": 0.55,
+        "volume": 0.8
+      },
+      {
+        "name": "enchant/soulspeed/soulspeed5",
+        "pitch": 0.55,
+        "volume": 0.8
+      }
+    ]
+  }
+}

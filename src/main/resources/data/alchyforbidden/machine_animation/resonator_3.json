@@ -1,0 +1,77 @@
+{
+  "effects": [
+    {
+      "type": "figure",
+      "figure": "alchyforbidden:echo_pearl",
+      "at": "core",
+      "display": "pearl"
+    },
+    {
+      "type": "particle",
+      "when": "always",
+      "interval": 40,
+      "chance": 0.4,
+      "particle": "minecraft:sculk_soul",
+      "at": {
+        "block": "minecraft:sculk_shrieker",
+        "offset": [
+          0,
+          0.6,
+          0
+        ]
+      },
+      "count": 1,
+      "speed": 0.01
+    },
+    {
+      "type": "figure",
+      "figure": "alchyforbidden:dead_warden",
+      "at": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "type": "particle",
+      "when": "always",
+      "interval": 25,
+      "chance": 0.6,
+      "particle": "minecraft:sculk_soul",
+      "at": [
+        0,
+        2.5,
+        0
+      ],
+      "spread": [
+        0.4,
+        0.9,
+        0.4
+      ],
+      "count": 1,
+      "speed": 0.01
+    },
+    {
+      "type": "particle",
+      "when": "always",
+      "interval": 20,
+      "chance": 0.5,
+      "particle": "alchyforbidden:rift_mote",
+      "at": {
+        "block": "alchyforbidden:rift_lantern",
+        "offset": [
+          0,
+          0.6,
+          0
+        ]
+      },
+      "spread": [
+        0.15,
+        0.1,
+        0.15
+      ],
+      "count": 1,
+      "speed": 0.01
+    }
+  ]
+}

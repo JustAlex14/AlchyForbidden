@@ -1,0 +1,13 @@
+{
+  "ingredients": [
+    "minecraft:ender_eye",
+    "minecraft:amethyst_shard",
+    "minecraft:sculk"
+  ],
+  "result": {
+    "id": "alchyforbidden:rift_eye"
+  },
+  "tier": 1,
+  "ticks": 80,
+  "sorrow": 20
+}

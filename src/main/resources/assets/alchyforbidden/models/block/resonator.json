@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "alchyforbidden:block/resonator_top",
+    "bottom": "alchyforbidden:block/altar_bottom",
+    "side": "alchyforbidden:block/resonator_side"
+  }
+}
