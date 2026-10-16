@@ -21,6 +21,8 @@
     "alchyforbidden:circle_center",
     "alchyforbidden:circle_side",
     "alchyforbidden:circle_corner",
-    "alchyforbidden:sacrificial_slab"
+    "alchyforbidden:sacrificial_slab",
+    "alchyforbidden:spiked_floor",
+    "alchyforbidden:rift_glass"
   ]
 }

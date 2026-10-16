@@ -80,6 +80,15 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
         }
     };
     private int riteTicks = 0;   // how long the rite under way lasts
+    /** Stands filled by a hopper or a pipe: once they make a rite, it begins by itself (tickWorking). */
+    private boolean autoFilled = false;
+    // What hoppers and pipes reach through any part of the altar: the stands (in, one item each, only free ones that
+    // have grown, never during a rite), then the result (out). See getItemHandler.
+    private final net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource> standsIn =
+            net.neoforged.neoforge.transfer.item.VanillaContainerWrapper.of(new StandsView());
+    private final net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource> resultOut =
+            net.neoforged.neoforge.transfer.item.VanillaContainerWrapper.of(output);
+    private final net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource> automation = new Automation();
     // The altar's reserve of each essence (Essence order), and what the rite under way spent (its look, its refund)
     private final int[] reserve = new int[3];
     private final int[] riteCost = new int[3];
@@ -95,7 +104,7 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
     @Override
     public void onLoad() {
         super.onLoad();
-        if (level != null && !level.isClientSide()) {
+        if (level != null) { // (both sides: the server's essence events, the client's rite circles; per level)
             LOADED.computeIfAbsent(level, key -> java.util.Collections.newSetFromMap(new java.util.WeakHashMap<>())).add(this);
         }
     }
@@ -115,6 +124,15 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
     /** How much of each essence the altar holds at the tier it stands at. */
     public int reserveCap() {
         return Config.reserve(standing);
+    }
+
+    /** Takes from the reserve if it holds that much: true if it did (the Killing Pit's rift paying for a mob). */
+    public boolean spendEssence(com.lealex.alchyforbidden.essence.Essence essence, int amount) {
+        if (reserve[essence.ordinal()] < amount) return false;
+        reserve[essence.ordinal()] -= amount;
+        setChanged();
+        syncToClients();
+        return true;
     }
 
     /** Adds to the reserve (up to the cap); returns what it took. */
@@ -258,7 +276,12 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
 
     /** Begins the rite the stands make (the screen's button). Says why not when it cannot. */
     public void beginRite(Player player) {
-        if (level == null || !(player instanceof ServerPlayer serverPlayer)) return;
+        if (player instanceof ServerPlayer) tryBeginRite(player);
+    }
+
+    /** Begins the rite the stands make, if it can (the player, if any, is told why not). True if it began. */
+    private boolean tryBeginRite(@Nullable Player player) {
+        if (level == null) return false;
         com.lealex.alchyforbidden.rite.AltarRite rite = com.lealex.alchyforbidden.rite.AltarRites.match(standItems());
         Component problem = null;
         if (!isFormed()) problem = Component.translatable("altar.alchyforbidden.unformed", String.valueOf(getStructureProblem()));
@@ -280,8 +303,8 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
             problem = Component.translatable("altar.alchyforbidden.output_full");
         }
         if (problem != null) {
-            serverPlayer.sendSystemMessage(problem, true);
-            return;
+            if (player instanceof ServerPlayer serverPlayer) serverPlayer.sendSystemMessage(problem, true);
+            return false;
         }
         riteTicks = rite.ticks();
         int[] cost = rite.costs();
@@ -298,6 +321,127 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
         startAnimationOperation(riteTicks);
         setAnimationWorking(true);
         playSound(worldPosition, ModRegistries.ALTAR_GATHER.get(), 1.0f, 1.1f);
+        return true;
+    }
+
+    /** Stands a hopper filled: the rite they make begins by itself once they make one (looked at twice a second). */
+    @Override
+    protected void tickWorking() {
+        if (!autoFilled || level == null || level.getGameTime() % 10 != 0) return;
+        if (com.lealex.alchyforbidden.rite.AltarRites.match(standItems()) != null && tryBeginRite(null)) autoFilled = false;
+    }
+
+    /**
+     * Clicked in the screen's list (rite: its place in the list): the stands give back what lies on them, then take
+     * the rite's ingredients from the player's inventory, one each, if all of them are there.
+     */
+    public void fillStands(Player player, com.lealex.alchyforbidden.rite.AltarRite rite) {
+        if (level == null || !(player instanceof ServerPlayer serverPlayer)) return;
+        if (phase != IDLE) {
+            serverPlayer.sendSystemMessage(Component.translatable("altar.alchyforbidden.busy"), true);
+            return;
+        }
+        List<net.minecraft.world.item.crafting.Ingredient> wanted = rite.ingredients();
+        if (wanted.size() > standCount()) {
+            serverPlayer.sendSystemMessage(Component.translatable("altar.alchyforbidden.rite_tier", rite.tier()), true);
+            return;
+        }
+        // first what lies on the stands goes back (it may be what the rite needs)
+        for (int i = 0; i < MAX_STANDS; i++) {
+            ItemStack lying = stands.getItem(i);
+            if (lying.isEmpty()) continue;
+            stands.setItem(i, ItemStack.EMPTY);
+            if (!player.getInventory().add(lying)) player.drop(lying, false);
+        }
+        // then one of each ingredient, from the inventory (never the armour or the off hand)
+        net.minecraft.world.entity.player.Inventory inventory = player.getInventory();
+        int[] taken = new int[36];
+        int[] from = new int[wanted.size()];
+        List<Component> missing = new ArrayList<>();
+        for (int k = 0; k < wanted.size(); k++) {
+            from[k] = -1;
+            for (int slot = 0; slot < 36; slot++) {
+                ItemStack stack = inventory.getItem(slot);
+                if (stack.getCount() - taken[slot] > 0 && wanted.get(k).test(stack)) {
+                    from[k] = slot;
+                    taken[slot]++;
+                    break;
+                }
+            }
+            if (from[k] < 0) {
+                var items = wanted.get(k).items().toList();
+                missing.add(items.isEmpty() ? Component.literal("?") : new ItemStack(items.getFirst()).getHoverName());
+            }
+        }
+        if (!missing.isEmpty()) {
+            MutableComponent list = Component.empty();
+            for (int i = 0; i < missing.size(); i++) {
+                if (i > 0) list.append(", ");
+                list.append(missing.get(i));
+            }
+            serverPlayer.sendSystemMessage(Component.translatable("altar.alchyforbidden.rite_missing", list), true);
+            return;
+        }
+        for (int k = 0; k < wanted.size(); k++) {
+            ItemStack one = player.getAbilities().instabuild ? inventory.getItem(from[k]).copyWithCount(1) : inventory.removeItem(from[k], 1);
+            stands.setItem(k, one);
+        }
+        playSound(worldPosition, net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_PLACE, 0.8f, 0.8f);
+    }
+
+    @Override
+    public net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource> getItemHandler() {
+        return automation;
+    }
+
+    /** The stands as hoppers see them: one item on each free stand that has grown, nothing during a rite. */
+    private class StandsView implements net.minecraft.world.Container {
+        @Override public int getContainerSize() { return MAX_STANDS; }
+        @Override public boolean isEmpty() { return stands.isEmpty(); }
+        @Override public ItemStack getItem(int slot) { return stands.getItem(slot); }
+        @Override public ItemStack removeItem(int slot, int amount) { return stands.removeItem(slot, amount); }
+        @Override public ItemStack removeItemNoUpdate(int slot) { return stands.removeItemNoUpdate(slot); }
+        @Override public void setItem(int slot, ItemStack stack) { stands.setItem(slot, stack); }
+        @Override public void setItem(int slot, ItemStack stack, boolean insideTransaction) { stands.setItem(slot, stack, insideTransaction); }
+        @Override public int getMaxStackSize() { return 1; }
+        @Override public boolean stillValid(Player player) { return true; }
+        @Override public void clearContent() { stands.clearContent(); }
+
+        @Override
+        public boolean canPlaceItem(int slot, ItemStack stack) {
+            return isFormed() && phase == IDLE && slot < standCount() && stands.getItem(slot).isEmpty();
+        }
+
+        @Override
+        public void setChanged() { // (only when an insert is kept)
+            stands.setChanged();
+            autoFilled = true;
+        }
+    }
+
+    /** Stands 0-7 (in), the result as 8 (out). */
+    private class Automation implements net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource> {
+        @Override public int size() { return MAX_STANDS + 1; }
+        @Override public net.neoforged.neoforge.transfer.item.ItemResource getResource(int index) {
+            return index < MAX_STANDS ? standsIn.getResource(index) : resultOut.getResource(0);
+        }
+        @Override public long getAmountAsLong(int index) {
+            return index < MAX_STANDS ? standsIn.getAmountAsLong(index) : resultOut.getAmountAsLong(0);
+        }
+        @Override public long getCapacityAsLong(int index, net.neoforged.neoforge.transfer.item.ItemResource resource) {
+            return index < MAX_STANDS ? standsIn.getCapacityAsLong(index, resource) : resultOut.getCapacityAsLong(0, resource);
+        }
+        @Override public boolean isValid(int index, net.neoforged.neoforge.transfer.item.ItemResource resource) {
+            return index < MAX_STANDS && standsIn.isValid(index, resource);
+        }
+        @Override public int insert(int index, net.neoforged.neoforge.transfer.item.ItemResource resource, int amount,
+                                    net.neoforged.neoforge.transfer.transaction.TransactionContext transaction) {
+            return index < MAX_STANDS ? standsIn.insert(index, resource, amount, transaction) : 0;
+        }
+        @Override public int extract(int index, net.neoforged.neoforge.transfer.item.ItemResource resource, int amount,
+                                     net.neoforged.neoforge.transfer.transaction.TransactionContext transaction) {
+            return index == MAX_STANDS ? resultOut.extract(0, resource, amount, transaction) : 0;
+        }
     }
 
     /** The rite is done: the stands are emptied, the result waits in the output. */
@@ -513,7 +657,6 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
         }
         serverPlayer.openMenu(this, buffer -> buffer.writeBlockPos(worldPosition));
         tryGrowing(); // it was in the way before: try again
-        serverPlayer.sendSystemMessage(statusLine(), true);
     }
 
     /** One line about the altar's state: what is missing, what it wants, or that it grows. */

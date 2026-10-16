@@ -1,0 +1,14 @@
+{
+  "ingredients": [
+    "minecraft:soul_sand",
+    "minecraft:ghast_tear",
+    "minecraft:soul_lantern",
+    "minecraft:chiseled_deepslate"
+  ],
+  "result": {
+    "id": "alchyforbidden:lament_well"
+  },
+  "tier": 1,
+  "ticks": 140,
+  "sorrow": 40
+}

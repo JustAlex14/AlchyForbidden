@@ -192,6 +192,39 @@ public class ResonatorBlockEntity extends GrowingCoreBlockEntity implements net.
         return flyingEye ? Items.ENDER_EYE : Items.ENDER_PEARL;
     }
 
+    /**
+     * What hoppers and pipes reach through any part of the resonator: one slot that takes ender pearls and eyes of
+     * ender (up to the room left). A kept insert lands in a buffer and goes into the stock on commit (setChanged).
+     */
+    private final net.minecraft.world.SimpleContainer intake = new net.minecraft.world.SimpleContainer(1) {
+        @Override
+        public boolean canPlaceItem(int slot, ItemStack stack) {
+            return stack.is(Items.ENDER_PEARL) || stack.is(Items.ENDER_EYE);
+        }
+
+        @Override
+        public int getMaxStackSize() {
+            return Math.max(0, Math.min(64, room()));
+        }
+
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            ItemStack in = getItem(0);
+            if (!in.isEmpty()) {
+                in.shrink(add(in));
+                if (in.isEmpty()) setItem(0, ItemStack.EMPTY);
+            }
+        }
+    };
+    private final net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource> automation =
+            net.neoforged.neoforge.transfer.item.VanillaContainerWrapper.of(intake);
+
+    @Override
+    public net.neoforged.neoforge.transfer.ResourceHandler<net.neoforged.neoforge.transfer.item.ItemResource> getItemHandler() {
+        return automation;
+    }
+
     /** Room left for pearls and eyes together. */
     private int room() {
         return Math.max(0, Config.resonatorMaxPearls() - pearls - eyes);
@@ -273,6 +306,31 @@ public class ResonatorBlockEntity extends GrowingCoreBlockEntity implements net.
         linkedAltar = now;
         setChanged();
         syncToClients();
+    }
+
+    /** Puts ender pearls or eyes of ender in, up to the room left (server). Returns how many went in. */
+    public int add(ItemStack stack) {
+        boolean eye = stack.is(Items.ENDER_EYE);
+        if (!eye && !stack.is(Items.ENDER_PEARL)) return 0;
+        int take = Math.min(stack.getCount(), room());
+        if (take <= 0) return 0;
+        if (eye) eyes += take;
+        else pearls += take;
+        setChanged();
+        syncToClients();
+        return take;
+    }
+
+    /** Takes out up to max of what the stock shows: its eyes while it has some, then its pearls (server). */
+    public ItemStack takeShown(int max) {
+        boolean eye = eyes > 0;
+        int take = Math.min(max, eye ? eyes : pearls);
+        if (take <= 0) return ItemStack.EMPTY;
+        if (eye) eyes -= take;
+        else pearls -= take;
+        setChanged();
+        syncToClients();
+        return new ItemStack(eye ? Items.ENDER_EYE : Items.ENDER_PEARL, take);
     }
 
     /** The menu's pearl slot sets the count (server). */

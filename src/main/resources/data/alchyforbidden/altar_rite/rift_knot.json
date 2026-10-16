@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:string",
+    "minecraft:echo_shard",
+    "minecraft:ender_eye",
+    "minecraft:amethyst_shard"
+  ],
+  "result": {
+    "id": "alchyforbidden:rift_knot"
+  },
+  "tier": 2,
+  "ticks": 160,
+  "wrath": 40,
+  "corruption": 60
+}

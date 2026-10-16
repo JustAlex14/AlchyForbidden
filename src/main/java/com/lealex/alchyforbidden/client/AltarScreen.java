@@ -239,11 +239,10 @@ public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
         // the state, in its own column right of the slots, down to above the hint
         int ly = y + 24;
         for (String line : lines) {
-            if (ly > y + 96) break;
+            if (ly > y + 110) break; // (down to the inventory label: the hint under it is gone)
             graphics.text(font, line, x + 104, ly, ly == y + 24 ? THEME.accent() : THEME.faint(), false);
             ly += 10;
         }
-        if (altar.nextTier() > 0) graphics.text(font, Lines.clip(font, "Hold the eye near the altar to see it grow", 164), x + 8, y + 112, 0xFF7A7090, false);
     }
 
     // ---- The rites it knows ----
@@ -286,6 +285,7 @@ public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
         }
         costLines(lines, rite, null);
         lines.add(Component.translatable("gui.alchyforbidden.rite_time", Math.round(rite.ticks() / 20f)).withStyle(ChatFormatting.DARK_GRAY));
+        if (!locked) lines.add(Component.translatable("gui.alchyforbidden.rite_fill").withStyle(ChatFormatting.DARK_PURPLE));
         return lines;
     }
 
@@ -301,6 +301,18 @@ public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
             if (over(event.x(), event.y(), leftPos + TABS_X + t * (TAB_W + 2), topPos + 5, TAB_W, HEADER - 5)) {
                 menu.setTab(t);
                 press(AltarMenu.TAB + t);
+                return true;
+            }
+        }
+        // a rite in the list: its ingredients go on the stands
+        List<AltarRite> rites = AltarRites.clientList();
+        int first = scroll * LIST_COLS;
+        for (int i = first; i < rites.size() && i < first + LIST_COLS * LIST_ROWS; i++) {
+            int ix = leftPos + LIST_X + ((i - first) % LIST_COLS) * 18, iy = topPos + LIST_Y + ((i - first) / LIST_COLS) * 18;
+            if (over(event.x(), event.y(), ix, iy, 16, 16)) {
+                menu.setTab(AltarMenu.RITES);
+                press(AltarMenu.TAB + AltarMenu.RITES);
+                press(AltarMenu.FILL + i);
                 return true;
             }
         }

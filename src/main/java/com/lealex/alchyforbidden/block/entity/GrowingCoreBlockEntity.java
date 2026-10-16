@@ -147,6 +147,43 @@ public abstract class GrowingCoreBlockEntity extends MultiblockCoreBlockEntity {
     /** Called as a growth begins (the resonator calls its pearl back: its path is about to change). */
     protected void onGrowthStart() {}
 
+    /**
+     * Sends some of an essence to the nearest awake altar with room within reach (a stream from {@code from} into its
+     * eye, in the essence's colour). Returns what no altar took (the caller keeps it).
+     */
+    protected int sendEssence(com.lealex.alchyforbidden.essence.Essence essence, int amount, BlockPos from, int reach) {
+        if (amount <= 0 || !(level instanceof ServerLevel server)) return amount;
+        AltarBlockEntity altar = nearestAltar(essence, reach);
+        if (altar == null) return amount;
+        int taken = altar.addEssence(essence, amount);
+        if (taken > 0) {
+            AltarRiftPayload.part(server, AltarRiftPayload.ABSORB, from, altar.getBlockPos(), Blocks.AIR.defaultBlockState(), essence.ordinal() + 1);
+        }
+        return amount - taken;
+    }
+
+    /** Where the altar it would feed with that essence stands (null for none): its screen. */
+    public @Nullable BlockPos feedsAltar(com.lealex.alchyforbidden.essence.Essence essence, int reach) {
+        AltarBlockEntity altar = nearestAltar(essence, reach);
+        return altar == null ? null : altar.getBlockPos();
+    }
+
+    /** The nearest awake altar within reach with room for that essence (null for none). */
+    protected @Nullable AltarBlockEntity nearestAltar(com.lealex.alchyforbidden.essence.Essence essence, int reach) {
+        if (level == null) return null;
+        AltarBlockEntity best = null;
+        double bestDistance = (double) reach * reach;
+        for (AltarBlockEntity altar : AltarBlockEntity.loaded(level)) {
+            if (!altar.isFormed() || !altar.hasEye() || altar.essence(essence) >= altar.reserveCap()) continue;
+            double distance = altar.getBlockPos().distSqr(worldPosition);
+            if (distance <= bestDistance) {
+                bestDistance = distance;
+                best = altar;
+            }
+        }
+        return best;
+    }
+
     /** Called just before the core sinks back when its structure breaks (drop what lived on the grown parts...). */
     protected void onStructureBroken() {}
 

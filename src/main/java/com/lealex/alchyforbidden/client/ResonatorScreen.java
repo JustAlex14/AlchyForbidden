@@ -18,14 +18,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 /**
- * The Echo Resonator's screen (menu/ResonatorMenu), on the altar's sheets. Left: its pearls and eyes of ender (the
- * warden once it has it). Middle: the round seen from above, the four shriekers at the corners and the rift in the middle, the
- * pearl flying it as it really does, each shrieker flashing when it is passed. Right: the Corruption waiting. Under
- * the round: the next tier's cost (an offering slot and given / needed), and the altar it feeds.
+ * The Echo Resonator's screen (menu/ResonatorMenu), on the altar's sheets, two tabs like the altar's. ROUND: its stock
+ * (one slot for its ender pearls and eyes of ender, the warden once it has it, the counts under it), the round seen
+ * from above (the four shriekers at the corners, the rift in the middle, the pearl flying it as it really does, each
+ * shrieker flashing when it is passed), the Corruption waiting and the altar it feeds, and how it does. GROWTH: the
+ * next tier's cost (given / needed, an offering slot) and what it still wants, written out in full.
  */
 public class ResonatorScreen extends AbstractContainerScreen<ResonatorMenu> {
     private static final WindowTheme THEME = new WindowTheme(0xFF0B0A10, 0xFF26232E, 0xFF18161E, 0xFFE6DDF2, 0xFF9C93AE,
@@ -33,9 +35,11 @@ public class ResonatorScreen extends AbstractContainerScreen<ResonatorMenu> {
             Identifier.fromNamespaceAndPath(AlchyForbidden.MODID, "textures/gui/panel_altar.png"),
             Identifier.fromNamespaceAndPath(AlchyForbidden.MODID, "textures/gui/band_altar.png"));
     private static final int HEADER = 18;
+    private static final int TABS_X = 96, TAB_W = 36; // (the title is the short name, so they fit beside it)
     private static final int MAP_X = 52, MAP_Y = 22, MAP = 60;          // the round's square
     private static final int BAR_X = 150, BAR_TOP = 22, BAR_BOTTOM = 80; // the Corruption waiting
-    private static final int COSTS_X = 30, COSTS_Y = 86, STATUS_Y = 106;
+    private static final int STATUS_Y = 88, STATUS_END = 116;           // the lines under the round, above the inventory
+    private static final int COLUMN_X = 64, COLUMN_W = 104;             // Growth: what it wants, right of the costs
 
     public ResonatorScreen(ResonatorMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title, ResonatorMenu.WIDTH, ResonatorMenu.HEIGHT);
@@ -47,45 +51,124 @@ public class ResonatorScreen extends AbstractContainerScreen<ResonatorMenu> {
         return mouseX >= x && mouseX < x + wide && mouseY >= y && mouseY < y + high;
     }
 
+    private void press(int button) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.gameMode != null) minecraft.gameMode.handleInventoryButtonClick(menu.containerId, button);
+    }
+
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
         int x = leftPos, y = topPos;
         ResonatorBlockEntity resonator = menu.resonator();
         THEME.back(graphics, x, y, imageWidth, imageHeight, HEADER, new ItemStack(ModRegistries.RESONATOR_ITEM.get()));
+        String[] names = {"Round", "Growth"};
+        for (int t = 0; t < 2; t++) { // the two tabs, in the header
+            int tx = x + TABS_X + t * (TAB_W + 2);
+            boolean on = menu.tab() == t;
+            graphics.fill(tx, y + 6, tx + TAB_W, y + HEADER - 1, on ? 0xFF2A3A40 : 0xFF15131B);
+            graphics.fill(tx, y + HEADER - 2, tx + TAB_W, y + HEADER - 1, on ? THEME.accent() : 0xFF2A2436);
+            graphics.centeredText(font, names[t], tx + TAB_W / 2, y + 8, on ? THEME.accent() : THEME.faint());
+        }
         for (int i = ResonatorMenu.FIRST_INVENTORY; i < menu.slots.size(); i++) {
             var slot = menu.slots.get(i);
             THEME.well(graphics, x + slot.x - 1, y + slot.y - 1, x + slot.x + 17, y + slot.y + 17);
         }
-        // pearls and eyes of ender (or the warden: no pearls any more, it blasts the shriekers itself)
-        int px = x + ResonatorMenu.PEARL_X, py = y + ResonatorMenu.PEARL_Y;
-        int ex = x + ResonatorMenu.EYE_X, ey = y + ResonatorMenu.EYE_Y;
-        THEME.well(graphics, px - 3, py - 3, px + 19, py + 19);
-        THEME.well(graphics, ex - 3, ey - 3, ex + 19, ey + 19);
-        if (resonator != null && resonator.wardenWorks() && !menu.slots.get(ResonatorMenu.PEARLS).hasItem()) {
-            graphics.fakeItem(new ItemStack(Items.WARDEN_SPAWN_EGG), px, py);
+        if (resonator == null) return;
+        if (menu.tab() == ResonatorMenu.ROUND) {
+            stock(graphics, x, y, resonator, mouseX, mouseY);
+            round(graphics, x, y, resonator);
+            waiting(graphics, x, y, resonator, mouseX, mouseY);
+            status(graphics, x, y, resonator);
         } else {
-            stock(graphics, px, py, ResonatorMenu.PEARLS, Items.ENDER_PEARL, "gui.alchyforbidden.pearl_slot", mouseX, mouseY);
+            growth(graphics, x, y, resonator, mouseX, mouseY);
         }
-        stock(graphics, ex, ey, ResonatorMenu.EYES, Items.ENDER_EYE, "gui.alchyforbidden.eye_of_ender_slot", mouseX, mouseY);
+    }
+
+    /** The stock: one slot for pearls and eyes (it shows what it throws next), the counts of both under it. */
+    private void stock(GuiGraphicsExtractor graphics, int x, int y, ResonatorBlockEntity resonator, int mouseX, int mouseY) {
+        int px = x + ResonatorMenu.STOCK_X, py = y + ResonatorMenu.STOCK_Y;
+        THEME.well(graphics, px - 3, py - 3, px + 19, py + 19);
+        if (resonator.wardenWorks()) { // no pearls any more: the warden is drained instead
+            if (!menu.slots.get(ResonatorMenu.STOCK).hasItem()) graphics.fakeItem(new ItemStack(Items.WARDEN_SPAWN_EGG), px, py);
+            return;
+        }
+        if (!menu.slots.get(ResonatorMenu.STOCK).hasItem()) {
+            graphics.fakeItem(new ItemStack(Items.ENDER_PEARL), px, py);
+            graphics.fill(px, py, px + 16, py + 16, 0xB026232E);
+            if (over(mouseX, mouseY, px, py, 16, 16)) {
+                graphics.setTooltipForNextFrame(font, List.of(Component.translatable("gui.alchyforbidden.stock_slot")), Optional.empty(), mouseX, mouseY);
+            }
+        }
+        // how many of each it holds: the two items under the slot, their counts on them as in an inventory
+        int[] counts = {resonator.eyes(), resonator.pearls()};
+        Item[] kinds = {Items.ENDER_EYE, Items.ENDER_PEARL};
+        for (int k = 0; k < 2; k++) {
+            int ix = x + 8 + k * 18, iy = py + 24;
+            graphics.fakeItem(new ItemStack(kinds[k]), ix, iy);
+            if (counts[k] == 0) graphics.fill(ix, iy, ix + 16, iy + 16, 0xB026232E);
+            String count = String.valueOf(counts[k]);
+            graphics.text(font, count, ix + 17 - font.width(count), iy + 9, 0xFFFFFFFF, true);
+            if (over(mouseX, mouseY, ix, iy, 16, 16)) {
+                graphics.setTooltipForNextFrame(font, List.of(new ItemStack(kinds[k]).getHoverName(),
+                        Component.translatable("gui.alchyforbidden.stock_held", counts[k])), Optional.empty(), mouseX, mouseY);
+            }
+        }
+    }
+
+    /** How it does, under the round: the altar it feeds (or why it keeps its Corruption), wrapped, never cut. */
+    private void status(GuiGraphicsExtractor graphics, int x, int y, ResonatorBlockEntity resonator) {
+        BlockPos altar = resonator.linkedAltar();
+        String line = altar == null ? Component.translatable("gui.alchyforbidden.resonator_no_altar", Config.resonatorReach()).getString()
+                : Component.translatable("gui.alchyforbidden.resonator_feeds", altar.getX(), altar.getY(), altar.getZ()).getString();
+        int ly = y + STATUS_Y;
+        for (String part : Lines.wrap(font, line, imageWidth - 16)) {
+            if (ly > y + STATUS_END - 8) break;
+            graphics.text(font, part, x + 8, ly, altar == null ? THEME.warn() : THEME.faint(), false);
+            ly += 10;
+        }
+    }
+
+    /** The next tier: what it costs (given / needed) with the offering slot under, what it still wants at the right. */
+    private void growth(GuiGraphicsExtractor graphics, int x, int y, ResonatorBlockEntity resonator, int mouseX, int mouseY) {
+        var costs = resonator.nextCosts();
+        for (int i = 0; i < costs.size() && i < 3; i++) {
+            Config.Cost cost = costs.get(i);
+            int ix = x + 10, iy = y + 24 + i * 19;
+            ItemStack shown = new ItemStack(cost.item());
+            graphics.item(shown, ix, iy);
+            int given = resonator.givenOf(cost.item());
+            graphics.text(font, given + "/" + cost.count(), ix + 18, iy + 4, given >= cost.count() ? 0xFF3FC6D0 : THEME.text(), false);
+            if (over(mouseX, mouseY, ix, iy, 16, 16)) graphics.setTooltipForNextFrame(font, shown, mouseX, mouseY);
+        }
         int ox = x + ResonatorMenu.OFFER_X, oy = y + ResonatorMenu.OFFER_Y;
         THEME.well(graphics, ox - 1, oy - 1, ox + 17, oy + 17);
         if (over(mouseX, mouseY, ox, oy, 16, 16) && !menu.slots.get(ResonatorMenu.OFFER).hasItem()) {
             graphics.setTooltipForNextFrame(font, List.of(Component.translatable("gui.alchyforbidden.offer_slot")), Optional.empty(), mouseX, mouseY);
         }
-        if (resonator == null) return;
-        round(graphics, x, y, resonator);
-        waiting(graphics, x, y, resonator, mouseX, mouseY);
-        costs(graphics, x, y, resonator, mouseX, mouseY);
-    }
-
-    /** An empty stock slot: its item faint, a tooltip saying what goes there. */
-    private void stock(GuiGraphicsExtractor graphics, int px, int py, int slot, net.minecraft.world.item.Item item, String tip, int mouseX, int mouseY) {
-        if (menu.slots.get(slot).hasItem()) return;
-        graphics.fakeItem(new ItemStack(item), px, py);
-        graphics.fill(px, py, px + 16, py + 16, 0xB026232E);
-        if (over(mouseX, mouseY, px, py, 16, 16)) {
-            graphics.setTooltipForNextFrame(font, List.of(Component.translatable(tip)), Optional.empty(), mouseX, mouseY);
+        // the state, in its own column right of the costs, wrapped
+        int cx = x + COLUMN_X, ly = y + 24;
+        int max = resonator.maxTier();
+        graphics.text(font, "Tier " + resonator.tier() + (resonator.tier() < max ? " of " + max : " (whole)"), cx, ly, THEME.accent(), false);
+        ly += 12;
+        List<String> lines = new java.util.ArrayList<>();
+        if (resonator.tier() >= max) {
+            lines.addAll(Lines.wrap(font, Component.translatable("gui.alchyforbidden.resonator_whole").getString(), COLUMN_W));
+        } else {
+            lines.addAll(Lines.wrap(font, resonator.wantsLine().getString(), COLUMN_W));
+        }
+        for (String line : lines) {
+            if (ly > y + STATUS_END - 8) break;
+            graphics.text(font, line, cx, ly, THEME.faint(), false);
+            ly += 10;
+        }
+        if (resonator.tier() == max - 1 && !resonator.wardenSlain()) { // the warden it asks for besides
+            ly += 4;
+            for (String line : Lines.wrap(font, Component.translatable("gui.alchyforbidden.resonator_needs_warden").getString(), COLUMN_W)) {
+                if (ly > y + STATUS_END - 8) break;
+                graphics.text(font, line, cx, ly, THEME.warn(), false);
+                ly += 10;
+            }
         }
     }
 
@@ -163,35 +246,21 @@ public class ResonatorScreen extends AbstractContainerScreen<ResonatorMenu> {
         }
     }
 
-    /** The next tier's cost (given / needed), and a line on how it works. */
-    private void costs(GuiGraphicsExtractor graphics, int x, int y, ResonatorBlockEntity resonator, int mouseX, int mouseY) {
-        int cx = x + COSTS_X, cy = y + COSTS_Y;
-        var costs = resonator.nextCosts();
-        for (int i = 0; i < costs.size() && i < 3; i++) {
-            Config.Cost cost = costs.get(i);
-            int ix = cx + i * 38;
-            ItemStack shown = new ItemStack(cost.item());
-            graphics.item(shown, ix, cy);
-            int given = resonator.givenOf(cost.item());
-            graphics.text(font, given + "/" + cost.count(), ix + 17, cy + 5, given >= cost.count() ? 0xFF3FC6D0 : THEME.text(), false);
-            if (over(mouseX, mouseY, ix, cy, 16, 16)) graphics.setTooltipForNextFrame(font, shown, mouseX, mouseY);
-        }
-        if (costs.isEmpty()) graphics.text(font, Component.translatable("gui.alchyforbidden.resonator_whole"), cx, cy + 5, THEME.faint(), false);
-        BlockPos altar = resonator.linkedAltar();
-        boolean needsWarden = resonator.tier() == 2 && !resonator.wardenSlain();
-        String line = needsWarden ? Component.translatable("gui.alchyforbidden.resonator_needs_warden").getString() : altar == null ? Component.translatable("gui.alchyforbidden.resonator_no_altar", Config.resonatorReach()).getString()
-                : Component.translatable("gui.alchyforbidden.resonator_feeds", altar.getX(), altar.getY(), altar.getZ()).getString();
-        graphics.text(font, Lines.clip(font, line, imageWidth - 16), x + 8, y + STATUS_Y, altar == null || needsWarden ? THEME.warn() : THEME.faint(), false);
+    @Override
+    protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        graphics.text(font, Component.translatable("gui.alchyforbidden.resonator_short"), titleLabelX, 7, THEME.accent(), false);
+        graphics.text(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, THEME.faint(), false);
     }
 
     @Override
-    protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-        graphics.text(font, title, titleLabelX, 7, THEME.accent(), false);
-        ResonatorBlockEntity resonator = menu.resonator();
-        if (resonator != null) {
-            String tier = "Tier " + resonator.tier();
-            graphics.text(font, tier, imageWidth - 10 - font.width(tier), 7, THEME.faint(), false);
+    public boolean mouseClicked(net.minecraft.client.input.MouseButtonEvent event, boolean doubleClick) {
+        for (int t = 0; t < 2; t++) {
+            if (over(event.x(), event.y(), leftPos + TABS_X + t * (TAB_W + 2), topPos + 5, TAB_W, HEADER - 5)) {
+                menu.setTab(t);
+                press(ResonatorMenu.TAB + t);
+                return true;
+            }
         }
-        graphics.text(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, THEME.faint(), false);
+        return super.mouseClicked(event, doubleClick);
     }
 }

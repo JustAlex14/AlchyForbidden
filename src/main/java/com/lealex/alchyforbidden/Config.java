@@ -177,6 +177,88 @@ public final class Config {
 
     static {
         BUILDER.pop();
+        BUILDER.comment("The Killing Pit: hostile mobs that die in it give Wrath (and their drops).").push("killing_pit");
+    }
+
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> PIT_TIER_2 = BUILDER
+            .comment("What the pit asks for before it grows its second tier. One entry: \"item id*count\".")
+            .defineListAllowEmpty("tier2Cost", List.of("minecraft:bone_block*4", "minecraft:iron_bars*8", "minecraft:echo_shard*2"), () -> "", value -> value instanceof String);
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> PIT_TIER_3 = BUILDER
+            .comment("And its third.")
+            .defineListAllowEmpty("tier3Cost", List.of("minecraft:blaze_rod*8", "minecraft:crying_obsidian*4", "minecraft:echo_shard*4"), () -> "", value -> value instanceof String);
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> PIT_DAMAGE = BUILDER
+            .comment("Damage its spikes deal each second to a hostile mob inside, at tiers 1, 2 and 3.")
+            .defineList("damage", List.of("3", "5", "8"), () -> "", value -> value instanceof String);
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> PIT_WRATH = BUILDER
+            .comment("Wrath of a death in the pit, in percent of what the same kill gives a vessel, at tiers 1, 2 and 3.")
+            .defineList("wrathPercent", List.of("100", "150", "200"), () -> "", value -> value instanceof String);
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> PIT_RATE = BUILDER
+            .comment("Wrath a hostile mob of 20 health in the pit gives each second it suffers, at tiers 1, 2 and 3 (bigger mobs give more, in step with their max health; it grows the longer it suffers).")
+            .defineList("wrathPerSecond", List.of("1", "2", "3"), () -> "", value -> value instanceof String);
+    public static final ModConfigSpec.IntValue PIT_TORTURE = BUILDER
+            .comment("Every this many seconds a mob has suffered in the pit, its Wrath each second grows by the base again (one that heals and lives on gives more and more).")
+            .defineInRange("tortureSeconds", 10, 1, 3600);
+    public static final ModConfigSpec.DoubleValue PIT_CAP = BUILDER
+            .comment("The most Wrath one mob can give each second, per point of its max health (a zombie, 20 health, tops out at 20 times this).")
+            .defineInRange("wrathCapPerHealth", 1.0, 0.01, 1000.0);
+    public static final ModConfigSpec.IntValue PIT_LURE_RANGE = BUILDER
+            .comment("Tier 2: how far the rift calls hostile mobs from, at night.").defineInRange("lureRange", 24, 4, 64);
+    public static final ModConfigSpec.IntValue PIT_LURE_COUNT = BUILDER
+            .comment("Tier 2: how many it calls each time.").defineInRange("lureCount", 2, 0, 16);
+    public static final ModConfigSpec.IntValue PIT_LURE_TICKS = BUILDER
+            .comment("Tier 2: ticks between two calls.").defineInRange("lureTicks", 100, 20, 12000);
+    public static final ModConfigSpec.IntValue PIT_MAX_MOBS = BUILDER
+            .comment("It calls or makes no more once this many hostile mobs are in it.").defineInRange("maxMobs", 8, 1, 64);
+    public static final ModConfigSpec.IntValue PIT_HEAL_BELOW = BUILDER
+            .comment("Tier 3: the rift heals a mob in the pit back to full once its health falls under this percent (so it suffers on).")
+            .defineInRange("healBelow", 30, 1, 99);
+    public static final ModConfigSpec.IntValue PIT_HEAL_COST = BUILDER
+            .comment("Tier 3: Sculk Corruption each healing costs, from the nearest altar (none there: no healing).")
+            .defineInRange("healCost", 5, 0, 10000);
+    public static final ModConfigSpec.IntValue PIT_BUFFER = BUILDER
+            .comment("How much Wrath it keeps when no altar has room.").defineInRange("buffer", 2000, 0, 1000000);
+    public static final ModConfigSpec.IntValue PIT_XP = BUILDER
+            .comment("The most experience the pit stores from what dies in it (its screen gives it to you).").defineInRange("maxExperience", 10000, 0, 10000000);
+    public static final ModConfigSpec.IntValue PIT_REACH = BUILDER
+            .comment("How far it reaches an awake altar, in blocks.").defineInRange("altarReach", 24, 1, 64);
+
+    static {
+        BUILDER.pop();
+        BUILDER.comment("The Lament Well: the ghosts of what dies near it weep round it, and their grief is Sorrow.").push("lament_well");
+    }
+
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> WELL_TIER_2 = BUILDER
+            .comment("What the well asks for before it grows its second tier. One entry: \"item id*count\".")
+            .defineListAllowEmpty("tier2Cost", List.of("minecraft:soul_sand*16", "minecraft:ghast_tear*2", "minecraft:echo_shard*2"), () -> "", value -> value instanceof String);
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> WELL_TIER_3 = BUILDER
+            .comment("And its third.")
+            .defineListAllowEmpty("tier3Cost", List.of("minecraft:sculk_catalyst*1", "minecraft:ghast_tear*4", "minecraft:echo_shard*4"), () -> "", value -> value instanceof String);
+    public static final ModConfigSpec.IntValue WELL_NAMED = BUILDER
+            .comment("Tier 2: Sorrow for a named item thrown in.").defineInRange("offeringNamed", 20, 0, 10000);
+    public static final ModConfigSpec.IntValue WELL_BROKEN = BUILDER
+            .comment("Tier 2: for a tool or armour nearly broken.").defineInRange("offeringBroken", 15, 0, 10000);
+    public static final ModConfigSpec.IntValue WELL_DISC = BUILDER
+            .comment("Tier 2: for a music disc.").defineInRange("offeringDisc", 40, 0, 10000);
+    public static final ModConfigSpec.IntValue WELL_TOTEM = BUILDER
+            .comment("Tier 2: for a totem of undying.").defineInRange("offeringTotem", 200, 0, 10000);
+    public static final ModConfigSpec.IntValue WELL_GHOST_TICKS = BUILDER
+            .comment("How long the ghost of a mob that died near the well weeps round it, in ticks.").defineInRange("ghostTicks", 600, 20, 72000);
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> WELL_GHOSTS = BUILDER
+            .comment("Most ghosts weeping round it at once, at tiers 1, 2 and 3.")
+            .defineList("maxGhosts", List.of("4", "8", "16"), () -> "", value -> value instanceof String);
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> WELL_GHOST_RANGE = BUILDER
+            .comment("How near a death must be to leave a ghost, at tiers 1, 2 and 3.")
+            .defineList("ghostRange", List.of("8", "12", "16"), () -> "", value -> value instanceof String);
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> WELL_GHOST_SORROW = BUILDER
+            .comment("Sorrow each ghost adds each second, at tiers 1, 2 and 3.")
+            .defineList("ghostSorrow", List.of("1", "2", "3"), () -> "", value -> value instanceof String);
+    public static final ModConfigSpec.IntValue WELL_BUFFER = BUILDER
+            .comment("How much Sorrow it keeps when no altar has room.").defineInRange("buffer", 400, 0, 100000);
+    public static final ModConfigSpec.IntValue WELL_REACH = BUILDER
+            .comment("How far it reaches an awake altar, in blocks.").defineInRange("altarReach", 24, 1, 64);
+
+    static {
+        BUILDER.pop();
     }
 
     static final ModConfigSpec SPEC = BUILDER.build();
@@ -198,6 +280,54 @@ public final class Config {
     public static int resonatorMaxPearls() { return read(RESONATOR_PEARLS, 64); }
     public static int resonatorBuffer() { return read(RESONATOR_BUFFER, 400); }
     public static int resonatorReach() { return read(RESONATOR_REACH, 24); }
+
+    public static List<Cost> pitCostFor(int tier) {
+        return parseCosts(switch (tier) {
+            case 2 -> readList(PIT_TIER_2, List.of("minecraft:bone_block*4", "minecraft:iron_bars*8", "minecraft:echo_shard*2"));
+            case 3 -> readList(PIT_TIER_3, List.of("minecraft:blaze_rod*8", "minecraft:crying_obsidian*4", "minecraft:echo_shard*4"));
+            default -> List.of();
+        });
+    }
+
+    public static int pitDamage(int tier) { return perTier(PIT_DAMAGE, tier, new int[] {3, 5, 8}); }
+    public static int pitWrathPercent(int tier) { return perTier(PIT_WRATH, tier, new int[] {100, 150, 200}); }
+    public static int pitWrathPerSecond(int tier) { return perTier(PIT_RATE, tier, new int[] {1, 2, 3}); }
+    public static int pitTortureSeconds() { return read(PIT_TORTURE, 10); }
+    public static double pitCapPerHealth() {
+        try {
+            return PIT_CAP.get();
+        } catch (RuntimeException notLoaded) {
+            return 1.0;
+        }
+    }
+    public static int pitLureRange() { return read(PIT_LURE_RANGE, 24); }
+    public static int pitLureCount() { return read(PIT_LURE_COUNT, 2); }
+    public static int pitLureTicks() { return read(PIT_LURE_TICKS, 100); }
+    public static int pitMaxMobs() { return read(PIT_MAX_MOBS, 8); }
+    public static int pitHealBelow() { return read(PIT_HEAL_BELOW, 30); }
+    public static int pitHealCost() { return read(PIT_HEAL_COST, 5); }
+    public static int pitBuffer() { return read(PIT_BUFFER, 2000); }
+    public static int pitReach() { return read(PIT_REACH, 24); }
+    public static int pitMaxXp() { return read(PIT_XP, 10000); }
+
+    public static List<Cost> wellCostFor(int tier) {
+        return parseCosts(switch (tier) {
+            case 2 -> readList(WELL_TIER_2, List.of("minecraft:soul_sand*16", "minecraft:ghast_tear*2", "minecraft:echo_shard*2"));
+            case 3 -> readList(WELL_TIER_3, List.of("minecraft:sculk_catalyst*1", "minecraft:ghast_tear*4", "minecraft:echo_shard*4"));
+            default -> List.of();
+        });
+    }
+
+    public static int wellNamed() { return read(WELL_NAMED, 20); }
+    public static int wellBroken() { return read(WELL_BROKEN, 15); }
+    public static int wellDisc() { return read(WELL_DISC, 40); }
+    public static int wellTotem() { return read(WELL_TOTEM, 200); }
+    public static int wellGhostTicks() { return read(WELL_GHOST_TICKS, 600); }
+    public static int wellMaxGhosts(int tier) { return perTier(WELL_GHOSTS, tier, new int[] {4, 8, 16}); }
+    public static int wellGhostRange(int tier) { return perTier(WELL_GHOST_RANGE, tier, new int[] {8, 12, 16}); }
+    public static int wellGhostSorrow(int tier) { return perTier(WELL_GHOST_SORROW, tier, new int[] {1, 2, 3}); }
+    public static int wellBuffer() { return read(WELL_BUFFER, 400); }
+    public static int wellReach() { return read(WELL_REACH, 24); }
 
     private static int perTier(ModConfigSpec.ConfigValue<List<? extends String>> value, int tier, int[] fallback) {
         int index = Math.max(0, Math.min(tier, fallback.length) - 1);

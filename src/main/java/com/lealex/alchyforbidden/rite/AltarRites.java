@@ -86,15 +86,28 @@ public final class AltarRites extends SimpleJsonResourceReloadListener<AltarRite
         return sorted(rites);
     }
 
-    /** Client: the rites the server sent, by tier then name (for the screen's list). */
+    /** The mod's own rites read from its files, once (see builtIn). */
+    private static @Nullable List<AltarRite> builtInCache;
+
+    /**
+     * Client: the rites the server sent, by tier then name (for the screen's list). Until that list has come (or if it
+     * never does): the integrated server's in single player, else the rites that ship with the mod.
+     */
     public static List<AltarRite> clientList() {
-        return sorted(client);
+        if (!client.isEmpty()) return sorted(client);
+        if (!rites.isEmpty()) return sorted(rites);
+        if (builtInCache == null) {
+            var level = net.minecraft.client.Minecraft.getInstance().level;
+            if (level == null) return List.of();
+            builtInCache = builtIn(level.registryAccess());
+        }
+        return builtInCache;
     }
 
-    /** Client: the rite these items make, from the server's list. */
+    /** Client: the rite these items make, from the list above. */
     public static @Nullable AltarRite clientMatch(List<ItemStack> items) {
         if (items.isEmpty()) return null;
-        for (AltarRite rite : sorted(client)) {
+        for (AltarRite rite : clientList()) {
             if (rite.matches(items)) return rite;
         }
         return null;
@@ -125,6 +138,7 @@ public final class AltarRites extends SimpleJsonResourceReloadListener<AltarRite
     public static void onRegisterPayloads(RegisterPayloadHandlersEvent event) {
         event.registrar("1").playToClient(Payload.TYPE, Payload.STREAM_CODEC, (payload, context) -> {
             client = Map.copyOf(payload.rites());
+            AlchyForbidden.LOGGER.info("AlchyForbidden: received {} altar rite(s) from the server", client.size());
             clientListener.run(); // (JEI refreshes its pages: compat/jei)
         });
     }

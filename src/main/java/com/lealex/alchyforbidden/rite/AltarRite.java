@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 
 /**
@@ -21,16 +22,24 @@ import net.minecraft.world.item.crafting.Ingredient;
  * The altar has four stands at its first two tiers and eight at the third, so a rite takes one to eight
  * ingredients. Higher tiers are how the altar learns more rites: a rite above the altar's tier shows locked.
  */
-public record AltarRite(List<Ingredient> ingredients, ItemStack result, int tier, int ticks, int wrath, int sorrow, int corruption) {
+public record AltarRite(List<Ingredient> ingredients, ItemStackTemplate output, int tier, int ticks, int wrath, int sorrow, int corruption) {
     public static final Codec<AltarRite> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Ingredient.CODEC.listOf(1, 8).fieldOf("ingredients").forGetter(AltarRite::ingredients),
-            ItemStack.CODEC.fieldOf("result").forGetter(AltarRite::result),
+            ItemStackTemplate.CODEC.fieldOf("result").forGetter(AltarRite::output),
             Codec.intRange(1, 3).optionalFieldOf("tier", 1).forGetter(AltarRite::tier),
             ExtraCodecs.POSITIVE_INT.optionalFieldOf("ticks", 100).forGetter(AltarRite::ticks),
             ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("wrath", 0).forGetter(AltarRite::wrath),
             ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("sorrow", 0).forGetter(AltarRite::sorrow),
             ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("corruption", 0).forGetter(AltarRite::corruption)
     ).apply(instance, AltarRite::new));
+
+    /**
+     * What it makes, a fresh stack each time. (Read as a template: a whole stack cannot be decoded while the data
+     * loads, the items' components are not bound yet, and every rite failed to load.)
+     */
+    public ItemStack result() {
+        return output.create();
+    }
 
     /** What it costs of each essence, in Essence order (wrath, sorrow, corruption). */
     public int[] costs() {

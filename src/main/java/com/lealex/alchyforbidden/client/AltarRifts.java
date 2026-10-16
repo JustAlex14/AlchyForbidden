@@ -92,11 +92,29 @@ public final class AltarRifts {
     /** Sculk Corruption drawn into an altar: a stream of sculk from where the mob died, arcing into the eye. */
     private static final class Stream {
         final Vec3 from, to;
+        final int essence; // 1 Wrath, 2 Sorrow, else Sculk Corruption
         int age = 0;
 
-        Stream(Vec3 from, Vec3 to) {
+        Stream(Vec3 from, Vec3 to, int essence) {
             this.from = from;
             this.to = to;
+            this.essence = essence;
+        }
+
+        net.minecraft.core.particles.ParticleOptions trail() {
+            return switch (essence) {
+                case 1 -> new net.minecraft.core.particles.DustParticleOptions(0xD0304A, 1.1F);
+                case 2 -> net.minecraft.core.particles.ParticleTypes.SOUL;
+                default -> ModRegistries.SCULK_FLECK.get();
+            };
+        }
+
+        net.minecraft.core.particles.ParticleOptions puff() {
+            return switch (essence) {
+                case 1 -> net.minecraft.core.particles.ParticleTypes.FLAME;
+                case 2 -> net.minecraft.core.particles.ParticleTypes.SOUL_FIRE_FLAME;
+                default -> net.minecraft.core.particles.ParticleTypes.SCULK_SOUL;
+            };
         }
 
         Vec3 at(float t) {
@@ -113,7 +131,7 @@ public final class AltarRifts {
     public static void receive(AltarRiftPayload payload) {
         switch (payload.kind()) {
             case AltarRiftPayload.OPEN -> RIFTS.put(payload.rift(), new Rift(payload.rift(), payload.size()));
-            case AltarRiftPayload.ABSORB -> STREAMS.add(new Stream(Vec3.atCenterOf(payload.rift()), Vec3.atCenterOf(payload.pos()).add(0, 1.0, 0)));
+            case AltarRiftPayload.ABSORB -> STREAMS.add(new Stream(Vec3.atCenterOf(payload.rift()), Vec3.atCenterOf(payload.pos()).add(0, 1.0, 0), payload.size()));
             case AltarRiftPayload.TAKEN -> {
                 RIFTS.put(payload.rift(), new Rift(payload.rift(), 3));
                 WardenTaken.start(payload.pos(), payload.rift(), payload.size());
@@ -160,16 +178,16 @@ public final class AltarRifts {
             float t = Mth.clamp(stream.age / (float) STREAM_TICKS, 0, 1);
             for (int i = 0; i < 3; i++) { // the head of the stream, and a tail a little behind it
                 Vec3 p = stream.at(Math.max(0, t - i * 0.04F));
-                level.addParticle(ModRegistries.SCULK_FLECK.get(), p.x + (random.nextDouble() - 0.5) * 0.15, p.y,
+                level.addParticle(stream.trail(), p.x + (random.nextDouble() - 0.5) * 0.15, p.y,
                         p.z + (random.nextDouble() - 0.5) * 0.15, 0, 0, 0);
             }
             if (stream.age % 3 == 0) {
                 Vec3 p = stream.at(t);
-                level.addParticle(net.minecraft.core.particles.ParticleTypes.SCULK_SOUL, p.x, p.y, p.z, 0, 0.01, 0);
+                level.addParticle(stream.puff(), p.x, p.y, p.z, 0, 0.01, 0);
             }
             if (stream.age >= STREAM_TICKS) { // swallowed by the altar
                 for (int i = 0; i < 8; i++) {
-                    level.addParticle(ModRegistries.SCULK_FLECK.get(), stream.to.x, stream.to.y, stream.to.z,
+                    level.addParticle(stream.trail(), stream.to.x, stream.to.y, stream.to.z,
                             (random.nextDouble() - 0.5) * 0.15, (random.nextDouble() - 0.5) * 0.15, (random.nextDouble() - 0.5) * 0.15);
                 }
                 level.playLocalSound(stream.to.x, stream.to.y, stream.to.z, net.minecraft.sounds.SoundEvents.SCULK_CATALYST_BLOOM,

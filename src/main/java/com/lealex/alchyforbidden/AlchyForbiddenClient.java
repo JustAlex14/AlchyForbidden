@@ -27,6 +27,7 @@ public class AlchyForbiddenClient {
                 {
                     event.register(com.lealex.alchyforbidden.registry.ModRegistries.ALTAR_MENU.get(), com.lealex.alchyforbidden.client.AltarScreen::new);
                     event.register(com.lealex.alchyforbidden.registry.ModRegistries.RESONATOR_MENU.get(), com.lealex.alchyforbidden.client.ResonatorScreen::new);
+                    event.register(com.lealex.alchyforbidden.registry.ModRegistries.SOURCE_MENU.get(), com.lealex.alchyforbidden.client.SourceScreen::new);
                 });
         // The held eye looks where it wants the player to go
         NeoForge.EVENT_BUS.addListener(EyeGaze::onClientTick);
@@ -38,6 +39,13 @@ public class AlchyForbiddenClient {
         NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.client.AltarRifts::onClientTick);
         NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.client.AltarRifts::onExtract);
         NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.client.AltarRifts::onSubmit);
+        // The rift in the deepest block of each Lament Well
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.client.WellRifts::onExtract);
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.client.WellRifts::onSubmit);
+        // The circle a rite draws on the altar's floor
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.client.RiteCircles::onClientTick);
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.client.RiteCircles::onExtract);
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.client.RiteCircles::onSubmit);
         // A warden killed beside a resonator, taken up into the rift
         NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.client.WardenTaken::onClientTick);
         NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.client.WardenTaken::onExtract);

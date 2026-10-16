@@ -1,0 +1,134 @@
+{
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "alchyforbidden:block/spiked_floor",
+    "floor": "alchyforbidden:block/spiked_floor",
+    "spike": "alchyforbidden:block/spike"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#floor",
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#floor",
+          "cullface": "south"
+        },
+        "east": {
+          "texture": "#floor",
+          "cullface": "east"
+        },
+        "west": {
+          "texture": "#floor",
+          "cullface": "west"
+        },
+        "up": {
+          "texture": "#floor",
+          "cullface": "up"
+        },
+        "down": {
+          "texture": "#floor",
+          "cullface": "down"
+        }
+      }
+    },
+    {
+      "from": [
+        0.8,
+        16,
+        8
+      ],
+      "to": [
+        15.2,
+        26,
+        8
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "y",
+        "angle": 45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#spike"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#spike"
+        }
+      }
+    },
+    {
+      "from": [
+        8,
+        16,
+        0.8
+      ],
+      "to": [
+        8,
+        26,
+        15.2
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "y",
+        "angle": 45,
+        "rescale": true
+      },
+      "faces": {
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#spike"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#spike"
+        }
+      }
+    }
+  ]
+}

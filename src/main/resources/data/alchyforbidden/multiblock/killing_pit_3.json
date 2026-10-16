@@ -1,0 +1,325 @@
+{
+  "core": "alchyforbidden:killing_pit",
+  "layers": [
+    [
+      ".............",
+      ".............",
+      "..FFFFFFFFF..",
+      "..FFFFFFFFF..",
+      "..FFFFFFFFF..",
+      "..FFFKKKFFF..",
+      "..FFFKXKFFF..",
+      "..FFFKKKFFF..",
+      "..FFFFFFFFF..",
+      "..FFFFFFFFF..",
+      "..FFFFFFFFF..",
+      ".............",
+      "............."
+    ],
+    [
+      "......n......",
+      "......F......",
+      ".....vFv.....",
+      "...b..R..b...",
+      "....VGGGV....",
+      "..v.G___G.v..",
+      "wFFRG___GRFFe",
+      "..v.G___G.v..",
+      "....VGGGV....",
+      "...b..R..b...",
+      ".....vFv.....",
+      "......F......",
+      "......s......"
+    ],
+    [
+      ".............",
+      "......n......",
+      "......F......",
+      "...P.....P...",
+      "....VGGGV....",
+      "....G___G....",
+      ".wF.G___G.Fe.",
+      "....G___G....",
+      "....VGGGV....",
+      "...P.....P...",
+      "......F......",
+      "......s......",
+      "............."
+    ],
+    [
+      ".............",
+      ".............",
+      "......n......",
+      "...PFFFFFP...",
+      "...FVGGGVF...",
+      "...FG___GF...",
+      "..wFG___GFe..",
+      "...FG___GF...",
+      "...FVGGGVF...",
+      "...PFFFFFP...",
+      "......s......",
+      ".............",
+      "............."
+    ],
+    [
+      ".............",
+      ".............",
+      ".............",
+      "...Q.....Q...",
+      ".............",
+      ".............",
+      ".............",
+      ".............",
+      ".............",
+      "...Q.....Q...",
+      ".............",
+      ".............",
+      "............."
+    ],
+    [
+      ".............",
+      ".............",
+      ".............",
+      "...L.....L...",
+      ".............",
+      ".............",
+      ".............",
+      ".............",
+      ".............",
+      "...L.....L...",
+      ".............",
+      ".............",
+      "............."
+    ]
+  ],
+  "key": {
+    ".": {
+      "any": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "G": {
+      "block": "alchyforbidden:rift_glass"
+    },
+    "K": {
+      "block": "alchyforbidden:spiked_floor"
+    },
+    "L": {
+      "block": "alchyforbidden:rift_lantern"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "X": {
+      "core": true
+    },
+    "_": {
+      "air": true
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "e": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "west",
+        "half": "bottom"
+      }
+    },
+    "n": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "south",
+        "half": "bottom"
+      }
+    },
+    "s": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "north",
+        "half": "bottom"
+      }
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": "true"
+      }
+    },
+    "w": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "east",
+        "half": "bottom"
+      }
+    }
+  },
+  "result": [
+    [
+      ".............",
+      ".............",
+      "..FFFFFFFFF..",
+      "..FFFFFFFFF..",
+      "..FFFFFFFFF..",
+      "..FFFKKKFFF..",
+      "..FFFK.KFFF..",
+      "..FFFKKKFFF..",
+      "..FFFFFFFFF..",
+      "..FFFFFFFFF..",
+      "..FFFFFFFFF..",
+      ".............",
+      "............."
+    ],
+    [
+      "......n......",
+      "......F......",
+      ".....vFv.....",
+      "...b..R..b...",
+      "....VGGGV....",
+      "..v.G...G.v..",
+      "wFFRG...GRFFe",
+      "..v.G...G.v..",
+      "....VGGGV....",
+      "...b..R..b...",
+      ".....vFv.....",
+      "......F......",
+      "......s......"
+    ],
+    [
+      ".............",
+      "......n......",
+      "......F......",
+      "...P.....P...",
+      "....VGGGV....",
+      "....G...G....",
+      ".wF.G...G.Fe.",
+      "....G...G....",
+      "....VGGGV....",
+      "...P.....P...",
+      "......F......",
+      "......s......",
+      "............."
+    ],
+    [
+      ".............",
+      ".............",
+      "......n......",
+      "...PFFFFFP...",
+      "...FVGGGVF...",
+      "...FG...GF...",
+      "..wFG...GFe..",
+      "...FG...GF...",
+      "...FVGGGVF...",
+      "...PFFFFFP...",
+      "......s......",
+      ".............",
+      "............."
+    ],
+    [
+      ".............",
+      ".............",
+      ".............",
+      "...Q.....Q...",
+      ".............",
+      ".............",
+      ".............",
+      ".............",
+      ".............",
+      "...Q.....Q...",
+      ".............",
+      ".............",
+      "............."
+    ],
+    [
+      ".............",
+      ".............",
+      ".............",
+      "...L.....L...",
+      ".............",
+      ".............",
+      ".............",
+      ".............",
+      ".............",
+      "...L.....L...",
+      ".............",
+      ".............",
+      "............."
+    ]
+  ],
+  "result_key": {
+    ".": {
+      "keep": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "G": {
+      "block": "alchyforbidden:rift_glass"
+    },
+    "K": {
+      "block": "alchyforbidden:spiked_floor"
+    },
+    "L": {
+      "block": "alchyforbidden:rift_lantern"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "e": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "west",
+        "half": "bottom"
+      }
+    },
+    "n": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "south",
+        "half": "bottom"
+      }
+    },
+    "s": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "north",
+        "half": "bottom"
+      }
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": true
+      }
+    },
+    "w": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "east",
+        "half": "bottom"
+      }
+    }
+  }
+}

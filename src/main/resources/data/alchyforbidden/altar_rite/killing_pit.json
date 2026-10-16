@@ -1,0 +1,14 @@
+{
+  "ingredients": [
+    "minecraft:pointed_dripstone",
+    "minecraft:iron_sword",
+    "minecraft:bone_block",
+    "minecraft:chiseled_deepslate"
+  ],
+  "result": {
+    "id": "alchyforbidden:killing_pit"
+  },
+  "tier": 1,
+  "ticks": 140,
+  "wrath": 40
+}

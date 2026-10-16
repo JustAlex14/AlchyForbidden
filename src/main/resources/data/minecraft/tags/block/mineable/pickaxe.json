@@ -15,6 +15,9 @@
     "alchyforbidden:circle_side",
     "alchyforbidden:circle_corner",
     "alchyforbidden:resonator",
-    "alchyforbidden:sacrificial_slab"
+    "alchyforbidden:sacrificial_slab",
+    "alchyforbidden:killing_pit",
+    "alchyforbidden:lament_well",
+    "alchyforbidden:spiked_floor"
   ]
 }

@@ -36,6 +36,15 @@ public final class ModRegistries {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(AlchyForbidden.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, AlchyForbidden.MODID);
+    public static final DeferredRegister<net.neoforged.neoforge.attachment.AttachmentType<?>> ATTACHMENT_TYPES =
+            DeferredRegister.create(net.neoforged.neoforge.registries.NeoForgeRegistries.Keys.ATTACHMENT_TYPES, AlchyForbidden.MODID);
+    /** A spawner bound with a Rift Knot (on its block entity, any mod's: essence/MobStacks). */
+    public static final java.util.function.Supplier<net.neoforged.neoforge.attachment.AttachmentType<Boolean>> KNOTTED = ATTACHMENT_TYPES.register("knotted",
+            () -> net.neoforged.neoforge.attachment.AttachmentType.builder(() -> false).serialize(com.mojang.serialization.Codec.BOOL.fieldOf("knotted")).build());
+    /** How many mobs a condensed mob is (essence/MobStacks). */
+    public static final java.util.function.Supplier<net.neoforged.neoforge.attachment.AttachmentType<Integer>> MOB_STACK = ATTACHMENT_TYPES.register("mob_stack",
+            () -> net.neoforged.neoforge.attachment.AttachmentType.builder(() -> 1).serialize(com.mojang.serialization.Codec.INT.fieldOf("count")).build());
+
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, AlchyForbidden.MODID);
     public static final DeferredRegister.DataComponents DATA_COMPONENTS =
@@ -84,6 +93,22 @@ public final class ModRegistries {
                     .sound(SoundType.DEEPSLATE_TILES).lightLevel(state -> 5));
     public static final DeferredItem<BlockItem> RESONATOR_ITEM = ITEMS.registerSimpleBlockItem("resonator", RESONATOR);
 
+    /** The Killing Pit's core: under the middle of its spiked floor (made by an altar rite). */
+    public static final DeferredBlock<com.lealex.alchyforbidden.block.KillingPitBlock> KILLING_PIT = BLOCKS.registerBlock("killing_pit",
+            com.lealex.alchyforbidden.block.KillingPitBlock::new,
+            p -> p.mapColor(MapColor.DEEPSLATE).strength(4.0f, 9.0f).requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE_TILES).lightLevel(state -> 3));
+    /** Binds a spawner: its mobs fold into one condensed mob (essence/MobStacks). */
+    public static final DeferredItem<com.lealex.alchyforbidden.item.RiftKnotItem> RIFT_KNOT = ITEMS.registerItem("rift_knot",
+            com.lealex.alchyforbidden.item.RiftKnotItem::new, p -> p.stacksTo(1).rarity(net.minecraft.world.item.Rarity.RARE));
+    public static final DeferredItem<BlockItem> KILLING_PIT_ITEM = ITEMS.registerSimpleBlockItem("killing_pit", KILLING_PIT);
+    /** The Lament Well's core: at the bottom of its shaft (made by an altar rite). */
+    public static final DeferredBlock<com.lealex.alchyforbidden.block.LamentWellBlock> LAMENT_WELL = BLOCKS.registerBlock("lament_well",
+            com.lealex.alchyforbidden.block.LamentWellBlock::new,
+            p -> p.mapColor(MapColor.DEEPSLATE).strength(4.0f, 9.0f).requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE_TILES));
+    public static final DeferredItem<BlockItem> LAMENT_WELL_ITEM = ITEMS.registerSimpleBlockItem("lament_well", LAMENT_WELL);
+
     // The looks the altar's parts take (disguises of AlchyX shells). No items: the player never places these, the
     // first tier wears the flagstone and the rift grows the rest.
 
@@ -95,6 +120,14 @@ public final class ModRegistries {
     public static final DeferredBlock<Block> WARDEN_PILLAR = look("warden_pillar", 0);
     /** The altar's middle as it rises, one block higher at each grown tier: a carved column with the socket on top. */
     public static final DeferredBlock<Block> ALTAR_PEDESTAL = look("altar_pedestal", 3);
+    /** The Killing Pit's floor: deepslate with rift-black spikes standing out of it. */
+    public static final DeferredBlock<Block> SPIKED_FLOOR = look("spiked_floor", 0);
+    /** The Killing Pit's windows: glass gone dark violet in the rift, cracked, see-through. */
+    public static final DeferredBlock<net.minecraft.world.level.block.TransparentBlock> RIFT_GLASS = BLOCKS.registerBlock("rift_glass",
+            net.minecraft.world.level.block.TransparentBlock::new,
+            p -> p.mapColor(MapColor.COLOR_PURPLE).strength(1.0f, 6.0f).sound(SoundType.GLASS).noOcclusion()
+                    .isValidSpawn((state, level, pos, type) -> false).isRedstoneConductor((state, level, pos) -> false)
+                    .isSuffocating((state, level, pos) -> false).isViewBlocking((state, level, pos) -> false));
     /** The steps that lead up to the risen middle (the flagstone's carved stone, as stairs). */
     public static final DeferredBlock<StairBlock> ALTAR_STAIRS = BLOCKS.registerBlock("altar_stairs",
             p -> new StairBlock(ALTAR_FLAGSTONE.get().defaultBlockState(), p),
@@ -151,9 +184,16 @@ public final class ModRegistries {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.lealex.alchyforbidden.block.entity.ResonatorBlockEntity>> RESONATOR_BE =
             BLOCK_ENTITY_TYPES.register("resonator", () -> new BlockEntityType<>(com.lealex.alchyforbidden.block.entity.ResonatorBlockEntity::new, false, RESONATOR.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.lealex.alchyforbidden.block.entity.KillingPitBlockEntity>> KILLING_PIT_BE =
+            BLOCK_ENTITY_TYPES.register("killing_pit", () -> new BlockEntityType<>(com.lealex.alchyforbidden.block.entity.KillingPitBlockEntity::new, false, KILLING_PIT.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.lealex.alchyforbidden.block.entity.LamentWellBlockEntity>> LAMENT_WELL_BE =
+            BLOCK_ENTITY_TYPES.register("lament_well", () -> new BlockEntityType<>(com.lealex.alchyforbidden.block.entity.LamentWellBlockEntity::new, false, LAMENT_WELL.get()));
 
     public static final DeferredHolder<net.minecraft.world.inventory.MenuType<?>, net.minecraft.world.inventory.MenuType<com.lealex.alchyforbidden.menu.ResonatorMenu>> RESONATOR_MENU =
             MENU_TYPES.register("resonator", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.lealex.alchyforbidden.menu.ResonatorMenu::new));
+    /** The Killing Pit's and the Lament Well's screen. */
+    public static final DeferredHolder<net.minecraft.world.inventory.MenuType<?>, net.minecraft.world.inventory.MenuType<com.lealex.alchyforbidden.menu.SourceMenu>> SOURCE_MENU =
+            MENU_TYPES.register("source", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.lealex.alchyforbidden.menu.SourceMenu::new));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AltarBlockEntity>> ALTAR_BE =
             BLOCK_ENTITY_TYPES.register("altar", () -> new BlockEntityType<>(AltarBlockEntity::new, false, ALTAR.get()));
@@ -193,6 +233,7 @@ public final class ModRegistries {
         ITEMS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
+        ATTACHMENT_TYPES.register(modEventBus);
         DATA_COMPONENTS.register(modEventBus);
         PARTICLE_TYPES.register(modEventBus);
         SOUND_EVENTS.register(modEventBus);

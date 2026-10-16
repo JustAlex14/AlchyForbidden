@@ -1,0 +1,277 @@
+{
+  "core": "alchyforbidden:lament_well",
+  "layers": [
+    [
+      "FFFFFFFFF",
+      "FFFFFFFFF",
+      "FFFFRFFFF",
+      "FFFVVVFFF",
+      "FFRVXVRFF",
+      "FFFVVVFFF",
+      "FFFFRFFFF",
+      "FFFFFFFFF",
+      "FFFFFFFFF"
+    ],
+    [
+      "..v.R.v..",
+      ".b.....b.",
+      "v.O...O.v",
+      "...RVR...",
+      "R..V_V..R",
+      "...RVR...",
+      "v.O...O.v",
+      ".b.....b.",
+      "..v.R.v.."
+    ],
+    [
+      ".........",
+      ".P.....P.",
+      ".........",
+      "....s....",
+      "...P_P...",
+      "....n....",
+      ".........",
+      ".P.....P.",
+      "........."
+    ],
+    [
+      ".........",
+      ".L.....L.",
+      ".........",
+      ".........",
+      "...PhP...",
+      ".........",
+      ".........",
+      ".L.....L.",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "...QFQ...",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      "...nnn...",
+      "...FFF...",
+      "...sss...",
+      ".........",
+      ".........",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ]
+  ],
+  "key": {
+    ".": {
+      "any": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "L": {
+      "block": "alchyforbidden:rift_lantern"
+    },
+    "O": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "X": {
+      "core": true
+    },
+    "_": {
+      "air": true
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "h": {
+      "block": "minecraft:soul_lantern",
+      "state": {
+        "hanging": "true"
+      }
+    },
+    "n": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "south",
+        "half": "bottom"
+      }
+    },
+    "s": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "north",
+        "half": "bottom"
+      }
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": "true"
+      }
+    }
+  },
+  "result": [
+    [
+      "FFFFFFFFF",
+      "FFFFFFFFF",
+      "FFFFRFFFF",
+      "FFFVVVFFF",
+      "FFRV.VRFF",
+      "FFFVVVFFF",
+      "FFFFRFFFF",
+      "FFFFFFFFF",
+      "FFFFFFFFF"
+    ],
+    [
+      "..v.R.v..",
+      ".b.....b.",
+      "v.O...O.v",
+      "...RVR...",
+      "R..V.V..R",
+      "...RVR...",
+      "v.O...O.v",
+      ".b.....b.",
+      "..v.R.v.."
+    ],
+    [
+      ".........",
+      ".P.....P.",
+      ".........",
+      "....s....",
+      "...P.P...",
+      "....n....",
+      ".........",
+      ".P.....P.",
+      "........."
+    ],
+    [
+      ".........",
+      ".L.....L.",
+      ".........",
+      ".........",
+      "...PhP...",
+      ".........",
+      ".........",
+      ".L.....L.",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "...QFQ...",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      "...nnn...",
+      "...FFF...",
+      "...sss...",
+      ".........",
+      ".........",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ]
+  ],
+  "result_key": {
+    ".": {
+      "keep": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "L": {
+      "block": "alchyforbidden:rift_lantern"
+    },
+    "O": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "h": {
+      "block": "minecraft:soul_lantern",
+      "state": {
+        "hanging": true
+      }
+    },
+    "n": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "south",
+        "half": "bottom"
+      }
+    },
+    "s": {
+      "block": "alchyforbidden:altar_stairs",
+      "state": {
+        "facing": "north",
+        "half": "bottom"
+      }
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": true
+      }
+    }
+  }
+}

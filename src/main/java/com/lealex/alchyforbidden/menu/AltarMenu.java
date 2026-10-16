@@ -24,6 +24,8 @@ import org.jspecify.annotations.Nullable;
  */
 public class AltarMenu extends AbstractContainerMenu implements CoreMenu {
     public static final int TAB = 0, BEGIN = 10;
+    /** FILL + a rite's place in the list: lay that rite's ingredients on the stands from the player's inventory. */
+    public static final int FILL = 100;
     public static final int RITES = 0, GROWTH = 1;
     public static final int WIDTH = 236, HEIGHT = 216, INVENTORY_Y = 134;
     public static final int RESULT = 8, OFFER = 9, EYE = 10, POUR = 11, FIRST_INVENTORY = 12;
@@ -162,6 +164,12 @@ public class AltarMenu extends AbstractContainerMenu implements CoreMenu {
         }
         if (buttonId == BEGIN && server && altar != null) {
             altar.beginRite(player);
+            return true;
+        }
+        if (buttonId >= FILL && server && altar != null) {
+            java.util.List<com.lealex.alchyforbidden.rite.AltarRite> rites = com.lealex.alchyforbidden.rite.AltarRites.all();
+            int index = buttonId - FILL;
+            if (index < rites.size()) altar.fillStands(player, rites.get(index));
             return true;
         }
         return false;
