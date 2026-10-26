@@ -36,51 +36,49 @@ public class AlchyForbidden {
                     (resonator, side) -> resonator.getItemHandler());
             event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.Item.BLOCK, ModRegistries.KILLING_PIT_BE.get(),
                     (pit, side) -> pit.getItemHandler());
+            event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.Item.BLOCK, ModRegistries.WEEPING_FOUNTAIN_BE.get(),
+                    (fountain, side) -> fountain.getItemHandler());
+            event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.Item.BLOCK, ModRegistries.ESSENCE_INFUSER_BE.get(),
+                    (infuser, side) -> infuser.getItemHandler());
         });
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        com.lealex.alchyx.config.CommonConfigSync.share(modContainer); // players on a server see its costs, tiers and cooldowns
         // Before AlchyX's own handler (which opens the machine, or lets a block be placed): a click on a stand lays
         // the held item on it or takes it back, whatever the item is
         NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, AlchyForbidden::useStand);
+        NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, AlchyForbidden::kindle);
         // Where Wrath, Sorrow and Sculk Corruption come from
         NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.essence.EssenceEvents::onDeath);
         NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.essence.EssenceEvents::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.essence.Inscriptions::onPlayerTick);
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.essence.Inscriptions::onFall);
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.essence.Inscriptions::onGameEvent);
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.essence.Inscriptions::onIncomingDamage);
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.essence.Inscriptions::onEffectApplicable);
+        NeoForge.EVENT_BUS.addListener(net.neoforged.bus.api.EventPriority.LOW, com.lealex.alchyforbidden.essence.Inscriptions::onDeath);
         // Condensed mobs: what a knotted spawner makes folds into one mob of its kind, which counts as all of them
         NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.essence.MobStacks::onFinalizeSpawn);
         NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.essence.MobStacks::onServerTick);
+        // Echo Obelisks: the tuner's clicks come before any block's own; the relayed streams fly hop by hop
+        NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, com.lealex.alchyforbidden.item.AttuningForkItem::onRightClickBlock);
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.essence.Relays::onServerTick);
         NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, com.lealex.alchyforbidden.essence.MobStacks::onDrops);
         NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.essence.MobStacks::onExperience);
-        // Deaths in a Killing Pit give Wrath (their drops go into it); deaths near a Lament Well leave a weeping ghost
-        NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) -> {
-            net.minecraft.world.entity.LivingEntity dead = event.getEntity();
-            if (dead.level().isClientSide() || dead instanceof net.minecraft.world.entity.player.Player) return;
-            for (var pit : com.lealex.alchyforbidden.block.entity.KillingPitBlockEntity.loaded(dead.level())) {
-                if (pit.holds(dead)) {
-                    pit.killed(dead);
-                    break;
-                }
-            }
-            for (var well : com.lealex.alchyforbidden.block.entity.LamentWellBlockEntity.loaded(dead.level())) {
-                for (int i = com.lealex.alchyforbidden.essence.MobStacks.count(dead); i > 0; i--) well.mourn(dead); // a ghost for each mob it held
-            }
-        });
-        NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.entity.living.LivingDropsEvent event) -> {
-            net.minecraft.world.entity.LivingEntity dead = event.getEntity();
-            if (dead.level().isClientSide()) return;
-            for (var pit : com.lealex.alchyforbidden.block.entity.KillingPitBlockEntity.loaded(dead.level())) {
-                if (pit.holds(dead)) {
-                    pit.collectDrops(event.getDrops());
-                    break;
-                }
-            }
-        });
-        // A warden killed beside an Echo Resonator opens its last tier (its body goes into the rift)
-        NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) -> {
-            if (!(event.getEntity() instanceof net.minecraft.world.entity.monster.warden.Warden warden)) return;
-            for (com.lealex.alchyforbidden.block.entity.ResonatorBlockEntity resonator
-                    : com.lealex.alchyforbidden.block.entity.ResonatorBlockEntity.loaded(warden.level())) {
-                if (resonator.getBlockPos().distSqr(warden.blockPosition()) <= 16 * 16) resonator.wardenDied(warden);
-            }
-        });
+        // Deaths in a Killing Pit, near a Lament Well or beside an Echo Resonator: AlchyX DeathWatch tells each machine
+        // (deathReach / onDeathNearby / takeDropsNearby on their block entities)
+    }
+
+    /** A component fed to the multiblock it kindles (its core or any of its parts): it works harder for a while. */
+    private static void kindle(PlayerInteractEvent.RightClickBlock event) {
+        var stack = event.getItemStack();
+        if (stack.isEmpty() || !(stack.getItem() instanceof com.lealex.alchyforbidden.item.ComponentItem)) return;
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+        var core = level.getBlockEntity(pos) instanceof com.lealex.alchyforbidden.block.entity.GrowingCoreBlockEntity own ? own
+                : CoreTracker.formedCoreAt(level, pos) instanceof com.lealex.alchyforbidden.block.entity.GrowingCoreBlockEntity part ? part : null;
+        if (core == null || !core.tryKindle(event.getEntity(), stack)) return;
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.SUCCESS);
     }
 
     private static void useStand(PlayerInteractEvent.RightClickBlock event) {

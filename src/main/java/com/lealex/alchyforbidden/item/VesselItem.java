@@ -72,7 +72,7 @@ public class VesselItem extends Item {
         if (now == null) {
             builder.accept(Component.translatable("item.alchyforbidden.vessel.empty", capacity()).withStyle(ChatFormatting.GRAY));
         } else {
-            builder.accept(Component.translatable("item.alchyforbidden.vessel.holds", now.amount(), capacity(), now.essence().displayName())
+            builder.accept(Component.translatable("item.alchyforbidden.vessel.holds", now.amount(), capacity(), now.essence().icon())
                     .withColor(now.essence().color()));
         }
         builder.accept(Component.translatable("item.alchyforbidden.vessel.fill").withStyle(ChatFormatting.DARK_GRAY));

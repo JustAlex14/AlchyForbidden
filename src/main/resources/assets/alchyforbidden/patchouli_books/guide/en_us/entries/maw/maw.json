@@ -1,0 +1,31 @@
+{
+  "name": "The Rift Maw",
+  "icon": "alchyforbidden:rift_maw",
+  "category": "alchyforbidden:maw",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:rift_maw",
+      "text": "The $(item)Rift Maw$() calls a creature out of the rift to be fought, and bound if I win."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Rift Maw",
+      "multiblock_id": "alchyforbidden:rift_maw_1",
+      "enable_visualize": true,
+      "text": "5 by 5 floor, crying obsidian on the corners."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Lures",
+      "text": "Each creature answers to its own lure, made at the altar. I give the maw the lure and a blank familiar ring of its tier, pay the essence, and wait. The rift opens and it comes through."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Inside the Wall",
+      "text": "A wall rises round the maw, 8 blocks out, 10 and 12 at the higher tiers. I cannot leave it. Fleeing is a loss, and so is dying, or taking more than five minutes.$(br2)A loss costs the lure and the essence, and the ring comes back blank. A win binds the creature into it."
+    }
+  ],
+  "advancement": "alchyforbidden:book/maw"
+}

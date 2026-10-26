@@ -1,0 +1,21 @@
+{
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alchyforbidden:familiar_ring_4",
+              "alchyforbidden:abyssal_core",
+              "alchyforbidden:weeping_chandelier_lure",
+              "alchyforbidden:void_golem_lure",
+              "alchyforbidden:bone_dragon_lure",
+              "alchyforbidden:severed_seraph_lure"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "ingredients": [
+    "minecraft:bone_block",
+    "minecraft:dragon_breath",
+    "minecraft:sculk_catalyst",
+    "minecraft:echo_shard",
+    "alchyforbidden:abyssal_core",
+    "alchyforbidden:rift_residue",
+    "alchyforbidden:rift_residue"
+  ],
+  "result": {
+    "id": "alchyforbidden:bone_dragon_lure"
+  },
+  "tier": 3,
+  "ticks": 300,
+  "sorrow": 300,
+  "corruption": 400
+}

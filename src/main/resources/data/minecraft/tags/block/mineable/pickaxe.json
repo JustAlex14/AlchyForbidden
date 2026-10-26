@@ -18,6 +18,12 @@
     "alchyforbidden:sacrificial_slab",
     "alchyforbidden:killing_pit",
     "alchyforbidden:lament_well",
-    "alchyforbidden:spiked_floor"
+    "alchyforbidden:spiked_floor",
+    "alchyforbidden:echo_obelisk",
+    "alchyforbidden:weeping_fountain",
+    "alchyforbidden:inscribing_bier",
+    "alchyforbidden:essence_infuser",
+    "alchyforbidden:binding_circle",
+    "alchyforbidden:rift_maw"
   ]
 }

@@ -37,7 +37,7 @@ public class ResonatorScreen extends AbstractContainerScreen<ResonatorMenu> {
     private static final int HEADER = 18;
     private static final int TABS_X = 96, TAB_W = 36; // (the title is the short name, so they fit beside it)
     private static final int MAP_X = 52, MAP_Y = 22, MAP = 60;          // the round's square
-    private static final int BAR_X = 150, BAR_TOP = 22, BAR_BOTTOM = 80; // the Corruption waiting
+    private static final int BAR_X = 150, BAR_TOP = 32, BAR_BOTTOM = 80; // the Corruption waiting (its icon over it)
     private static final int STATUS_Y = 88, STATUS_END = 116;           // the lines under the round, above the inventory
     private static final int COLUMN_X = 64, COLUMN_W = 104;             // Growth: what it wants, right of the costs
 
@@ -79,7 +79,6 @@ public class ResonatorScreen extends AbstractContainerScreen<ResonatorMenu> {
             stock(graphics, x, y, resonator, mouseX, mouseY);
             round(graphics, x, y, resonator);
             waiting(graphics, x, y, resonator, mouseX, mouseY);
-            status(graphics, x, y, resonator);
         } else {
             growth(graphics, x, y, resonator, mouseX, mouseY);
         }
@@ -116,25 +115,12 @@ public class ResonatorScreen extends AbstractContainerScreen<ResonatorMenu> {
         }
     }
 
-    /** How it does, under the round: the altar it feeds (or why it keeps its Corruption), wrapped, never cut. */
-    private void status(GuiGraphicsExtractor graphics, int x, int y, ResonatorBlockEntity resonator) {
-        BlockPos altar = resonator.linkedAltar();
-        String line = altar == null ? Component.translatable("gui.alchyforbidden.resonator_no_altar", Config.resonatorReach()).getString()
-                : Component.translatable("gui.alchyforbidden.resonator_feeds", altar.getX(), altar.getY(), altar.getZ()).getString();
-        int ly = y + STATUS_Y;
-        for (String part : Lines.wrap(font, line, imageWidth - 16)) {
-            if (ly > y + STATUS_END - 8) break;
-            graphics.text(font, part, x + 8, ly, altar == null ? THEME.warn() : THEME.faint(), false);
-            ly += 10;
-        }
-    }
-
     /** The next tier: what it costs (given / needed) with the offering slot under, what it still wants at the right. */
     private void growth(GuiGraphicsExtractor graphics, int x, int y, ResonatorBlockEntity resonator, int mouseX, int mouseY) {
         var costs = resonator.nextCosts();
-        for (int i = 0; i < costs.size() && i < 3; i++) {
+        for (int i = 0; i < costs.size() && i < 4; i++) { // four rows, 17 apart, above the offering slot (y 96)
             Config.Cost cost = costs.get(i);
-            int ix = x + 10, iy = y + 24 + i * 19;
+            int ix = x + 10, iy = y + 22 + i * 17;
             ItemStack shown = new ItemStack(cost.item());
             graphics.item(shown, ix, iy);
             int given = resonator.givenOf(cost.item());
@@ -142,8 +128,8 @@ public class ResonatorScreen extends AbstractContainerScreen<ResonatorMenu> {
             if (over(mouseX, mouseY, ix, iy, 16, 16)) graphics.setTooltipForNextFrame(font, shown, mouseX, mouseY);
         }
         int ox = x + ResonatorMenu.OFFER_X, oy = y + ResonatorMenu.OFFER_Y;
-        THEME.well(graphics, ox - 1, oy - 1, ox + 17, oy + 17);
-        if (over(mouseX, mouseY, ox, oy, 16, 16) && !menu.slots.get(ResonatorMenu.OFFER).hasItem()) {
+        if (menu.slots.get(ResonatorMenu.OFFER).isActive()) THEME.well(graphics, ox - 1, oy - 1, ox + 17, oy + 17); // none at the last tier
+        if (menu.slots.get(ResonatorMenu.OFFER).isActive() && over(mouseX, mouseY, ox, oy, 16, 16) && !menu.slots.get(ResonatorMenu.OFFER).hasItem()) {
             graphics.setTooltipForNextFrame(font, List.of(Component.translatable("gui.alchyforbidden.offer_slot")), Optional.empty(), mouseX, mouseY);
         }
         // the state, in its own column right of the costs, wrapped
@@ -191,7 +177,7 @@ public class ResonatorScreen extends AbstractContainerScreen<ResonatorMenu> {
         float sinceBlast = time - resonator.blastStart() - ResonatorBlockEntity.STREAM_TICKS; // tier 3: the stream arrives
         for (int i = 0; i < 4; i++) {
             boolean flash = (t >= 1 && ((int) t - 1) % 4 == i && t - (int) t < 0.4F) // just after the pearl passes it
-                    || (resonator.wardenWorks() && i == resonator.blastTarget() && sinceBlast >= 0 && sinceBlast < 8);
+                    || (resonator.wardenWorks() && sinceBlast >= 0 && sinceBlast < 8); // tier 3: all four at once
             int[] c = corners[i];
             graphics.fakeItem(new ItemStack(Items.SCULK_SHRIEKER), c[0] - 8, c[1] - 8);
             if (flash) graphics.fill(c[0] - 9, c[1] - 9, c[0] + 9, c[1] + 9, 0x803FC6D0);
@@ -205,11 +191,12 @@ public class ResonatorScreen extends AbstractContainerScreen<ResonatorMenu> {
             graphics.fakeItem(new ItemStack(Items.WARDEN_SPAWN_EGG), cx - 8, cy - 8);
             float flow = (time - resonator.blastStart()) / ResonatorBlockEntity.STREAM_TICKS;
             if (flow >= 0 && flow <= 1) {
-                int[] to = corners[resonator.blastTarget()];
-                for (int k = 0; k < 3; k++) {
-                    float f = Mth.clamp(flow - k * 0.08F, 0, 1);
-                    int bx = Math.round(cx + (to[0] - cx) * f), by = Math.round(cy + (to[1] - cy) * f);
-                    graphics.fill(bx - 1, by - 1, bx + 2, by + 2, k == 0 ? 0xFF3FC6D0 : 0x803FC6D0);
+                for (int[] to : corners) {
+                    for (int k = 0; k < 3; k++) {
+                        float f = Mth.clamp(flow - k * 0.08F, 0, 1);
+                        int bx = Math.round(cx + (to[0] - cx) * f), by = Math.round(cy + (to[1] - cy) * f);
+                        graphics.fill(bx - 1, by - 1, bx + 2, by + 2, k == 0 ? 0xFF3FC6D0 : 0x803FC6D0);
+                    }
                 }
             }
         } else if (t >= 0) { // the pearl: out of the rift, then round the shriekers
@@ -225,6 +212,7 @@ public class ResonatorScreen extends AbstractContainerScreen<ResonatorMenu> {
     /** The Corruption kept here (none goes to waste: it waits for an altar with room). */
     private void waiting(GuiGraphicsExtractor graphics, int x, int y, ResonatorBlockEntity resonator, int mouseX, int mouseY) {
         int bx = x + BAR_X, top = y + BAR_TOP, bottom = y + BAR_BOTTOM;
+        graphics.text(font, com.lealex.alchyforbidden.essence.Essence.CORRUPTION.icon(), bx - 1, top - 10, 0xFFFFFFFF, false);
         graphics.fill(bx - 1, top - 1, bx + 7, bottom + 1, 0xFF0B0A10);
         graphics.fill(bx, top, bx + 6, bottom, 0xFF1A1820);
         int cap = Math.max(1, Config.resonatorBuffer());

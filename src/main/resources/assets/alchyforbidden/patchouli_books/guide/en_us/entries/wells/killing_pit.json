@@ -1,0 +1,31 @@
+{
+  "name": "The Killing Pit",
+  "icon": "alchyforbidden:killing_pit",
+  "category": "alchyforbidden:wells",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:killing_pit",
+      "text": "The $(item)Killing Pit$(): spikes in a hole. Every creature in it suffers, and suffering is Wrath."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Killing Pit",
+      "multiblock_id": "alchyforbidden:killing_pit_1",
+      "enable_visualize": true,
+      "text": "5 by 5 floor, a wall two high round a 3 by 3 hole."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Suffering",
+      "text": "Each second each creature inside pays Wrath by its size, and more the longer it has suffered. A death in it pays a burst.$(br2)The pit keeps what they drop and the experience they leave, for me to take when I pass. When I want none of it, it keeps nothing."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mercy, of a Kind",
+      "text": "At its second tier it calls monsters in at night. At its third it heals any creature under 30 parts in a hundred of its health, for 5 Corruption, so the suffering goes on.$(br2)I am not proud of the pit. I built it anyway."
+    }
+  ],
+  "advancement": "alchyforbidden:book/wells"
+}

@@ -1,0 +1,17 @@
+{
+  "ingredients": [
+    "minecraft:golden_apple",
+    "minecraft:echo_shard",
+    "alchyforbidden:rift_residue",
+    "minecraft:crying_obsidian",
+    "minecraft:chorus_fruit"
+  ],
+  "result": {
+    "id": "alchyforbidden:void_delicacy"
+  },
+  "tier": 3,
+  "ticks": 200,
+  "wrath": 60,
+  "sorrow": 60,
+  "corruption": 120
+}

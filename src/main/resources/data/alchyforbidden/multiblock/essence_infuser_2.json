@@ -1,0 +1,212 @@
+{
+  "core": "alchyforbidden:essence_infuser",
+  "layers": [
+    [
+      ".........",
+      ".FFFFFFF.",
+      ".FFFFFFF.",
+      ".FFVVVFF.",
+      ".FFVFVFF.",
+      ".FFVVVFF.",
+      ".FFFFFFF.",
+      ".FFFFFFF.",
+      "........."
+    ],
+    [
+      ".........",
+      ".b..R..b.",
+      "..O...O..",
+      ".........",
+      ".R..X..R.",
+      ".........",
+      "..O...O..",
+      ".b..R..b.",
+      "........."
+    ],
+    [
+      ".........",
+      ".P.....P.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".P.....P.",
+      "........."
+    ],
+    [
+      ".........",
+      ".Q.....Q.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".Q.....Q.",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ]
+  ],
+  "key": {
+    ".": {
+      "any": true
+    },
+    "X": {
+      "core": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "O": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "L": {
+      "block": "alchyforbidden:rift_lantern"
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": "true"
+      }
+    }
+  },
+  "result": [
+    [
+      ".........",
+      ".FFFFFFF.",
+      ".FFFFFFF.",
+      ".FFVVVFF.",
+      ".FFVFVFF.",
+      ".FFVVVFF.",
+      ".FFFFFFF.",
+      ".FFFFFFF.",
+      "........."
+    ],
+    [
+      ".........",
+      ".b..R..b.",
+      "..O...O..",
+      ".........",
+      ".R.....R.",
+      ".........",
+      "..O...O..",
+      ".b..R..b.",
+      "........."
+    ],
+    [
+      ".........",
+      ".P.....P.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".P.....P.",
+      "........."
+    ],
+    [
+      ".........",
+      ".Q.....Q.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".Q.....Q.",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ]
+  ],
+  "result_key": {
+    ".": {
+      "keep": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "O": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "L": {
+      "block": "alchyforbidden:rift_lantern"
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": "true"
+      }
+    }
+  }
+}

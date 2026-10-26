@@ -1,0 +1,18 @@
+{
+  "ingredients": [
+    "minecraft:soul_lantern",
+    "minecraft:candle",
+    "minecraft:iron_chain",
+    "minecraft:ghast_tear",
+    "alchyforbidden:abyssal_core",
+    "alchyforbidden:rift_residue",
+    "alchyforbidden:rift_residue"
+  ],
+  "result": {
+    "id": "alchyforbidden:weeping_chandelier_lure"
+  },
+  "tier": 3,
+  "ticks": 300,
+  "sorrow": 400,
+  "wrath": 300
+}

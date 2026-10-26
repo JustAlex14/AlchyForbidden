@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "alchyforbidden:item/spell_ring_3",
+    "layer1": "alchyforbidden:item/spell_ring_3_stone"
+  }
+}

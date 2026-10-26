@@ -1,0 +1,18 @@
+{
+  "ingredients": [
+    "minecraft:crying_obsidian",
+    "minecraft:obsidian",
+    "minecraft:heavy_core",
+    "minecraft:echo_shard",
+    "alchyforbidden:abyssal_core",
+    "alchyforbidden:rift_residue",
+    "alchyforbidden:rift_residue"
+  ],
+  "result": {
+    "id": "alchyforbidden:void_golem_lure"
+  },
+  "tier": 3,
+  "ticks": 300,
+  "wrath": 400,
+  "corruption": 300
+}

@@ -1,0 +1,14 @@
+{
+  "name": "Sorrow",
+  "icon": "alchyforbidden:sorrow_tear",
+  "category": "alchyforbidden:griefs",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Sorrow",
+      "text": "Sorrow gathers in the dark. Where the light is three or lower, a vessel on me fills by one each second. In the deep dark, by three.$(br2)I had a great deal of time to stand in the dark."
+    }
+  ],
+  "advancement": "alchyforbidden:book/griefs"
+}

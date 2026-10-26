@@ -5,14 +5,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 
 /**
- * The three essences of the mage's craft. WRATH (anger, from killing) and SORROW (grief, from the dark) can be
- * carried in vessels; SCULK CORRUPTION is the altar's own: it gathers in the altar from the sculk around it and is
- * never carried. Rites spend them.
+ * The three essences of the mage's craft: WRATH (anger, from killing), SORROW (grief, from the dark) and SCULK
+ * CORRUPTION (from deaths by a sculk catalyst, the resonator). All three can be carried in vessels. Rites spend them.
  */
 public enum Essence implements StringRepresentable {
     WRATH("wrath", 0xD0304A, true),
     SORROW("sorrow", 0x3FC6D0, true),
-    CORRUPTION("corruption", 0x0E7A70, false);
+    CORRUPTION("corruption", 0x0E7A70, true);
 
     public static final Codec<Essence> CODEC = StringRepresentable.fromEnum(Essence::values);
 
@@ -43,5 +42,14 @@ public enum Essence implements StringRepresentable {
 
     public Component displayName() {
         return Component.translatable("essence.alchyforbidden." + id);
+    }
+
+    private static final net.minecraft.network.chat.FontDescription ICONS =
+            new net.minecraft.network.chat.FontDescription.Resource(net.minecraft.resources.Identifier.fromNamespaceAndPath("alchyforbidden", "icons"));
+
+    /** Its sign as text (a glyph of the font alchyforbidden:icons, white so it keeps its own colours): for amounts, "8" + icon. */
+    public Component icon() {
+        return Component.literal(String.valueOf((char) (0xE000 + ordinal())))
+                .withStyle(style -> style.withFont(ICONS).withColor(net.minecraft.network.chat.TextColor.fromRgb(0xFFFFFF)));
     }
 }

@@ -1,0 +1,29 @@
+{
+  "name": "Through",
+  "icon": "alchyforbidden:rift_eye",
+  "category": "alchyforbidden:door",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Unpaid",
+      "text": "I used to fall asleep making speeches for them. Four men in a tavern above, drinking my coin. Somewhere in this book the anger stopped filling pages.$(br2)I did not notice when."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What I Did",
+      "text": "The land above is lighter now. Every grief my altars drank was taken from under it. Nobody up there knows, and that is all right.$(br2)It can heal now. Someone else will have to do the healing."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Eye Again",
+      "text": "The eye watched every trial. It looked pleased, if an eye can. I asked it once what it wanted from me. It showed me the rift, and past the rift, sky.$(br2)There is no way up through the city. The fall closed behind me. The only door left is the one it opened."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Going",
+      "text": "So I am going through. I tell myself it is to get out, and it is. I tell myself it is to find four men, and maybe it is.$(br2)I leave this grimoire for whoever falls next. The debt stands. I am not finished."
+    }
+  ],
+  "advancement": "alchyforbidden:book/door"
+}

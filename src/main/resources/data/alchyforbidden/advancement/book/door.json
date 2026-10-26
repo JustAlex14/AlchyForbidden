@@ -1,0 +1,7 @@
+{
+  "criteria": {
+    "won": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "ingredients": [
+    "alchyforbidden:bone_ink",
+    "alchyforbidden:bone_ink",
+    "minecraft:echo_shard",
+    "alchyforbidden:corruption_spore"
+  ],
+  "result": {
+    "id": "alchyforbidden:echo_ink",
+    "count": 2
+  },
+  "tier": 2,
+  "ticks": 160,
+  "wrath": 0,
+  "sorrow": 30,
+  "corruption": 30
+}

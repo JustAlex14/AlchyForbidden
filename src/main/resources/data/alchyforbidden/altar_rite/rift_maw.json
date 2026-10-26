@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:crying_obsidian",
+    "minecraft:iron_chain",
+    "minecraft:bone_block",
+    "minecraft:chiseled_deepslate"
+  ],
+  "result": {
+    "id": "alchyforbidden:rift_maw"
+  },
+  "tier": 1,
+  "ticks": 160,
+  "wrath": 40,
+  "corruption": 30
+}

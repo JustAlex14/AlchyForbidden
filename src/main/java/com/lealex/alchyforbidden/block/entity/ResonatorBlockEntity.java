@@ -155,6 +155,18 @@ public class ResonatorBlockEntity extends GrowingCoreBlockEntity implements net.
     }
 
     /** A warden died beside it: its third tier can grow (if the rest is given). Its body goes into the rift. */
+    // ---- A warden killed beside it opens the last tier (AlchyX DeathWatch) ----
+
+    @Override
+    public int deathReach() {
+        return 16;
+    }
+
+    @Override
+    public void onDeathNearby(net.minecraft.world.entity.LivingEntity dead, net.minecraft.world.damagesource.DamageSource source) {
+        if (dead instanceof net.minecraft.world.entity.monster.warden.Warden) wardenDied(dead);
+    }
+
     public void wardenDied(net.minecraft.world.entity.LivingEntity warden) {
         if (wardenSlain || !isFormed() || tier >= maxTier()) return;
         wardenSlain = true;
@@ -230,6 +242,15 @@ public class ResonatorBlockEntity extends GrowingCoreBlockEntity implements net.
         return Math.max(0, Config.resonatorMaxPearls() - pearls - eyes);
     }
 
+    /** A Weeping Fountain drinks from what it keeps waiting: true if it had that much (then it is gone). */
+    public boolean takeBuffered(int amount) {
+        if (amount <= 0 || buffer < amount) return false;
+        buffer -= amount;
+        setChanged();
+        syncToClients();
+        return true;
+    }
+
     public int buffer() {
         return buffer;
     }
@@ -300,8 +321,8 @@ public class ResonatorBlockEntity extends GrowingCoreBlockEntity implements net.
     }
 
     private void relink() {
-        AltarBlockEntity altar = nearestAltar();
-        BlockPos now = altar == null ? null : altar.getBlockPos().immutable();
+        var altar = feedAltar();
+        BlockPos now = altar == null ? null : altar.receiverPos().immutable();
         if (java.util.Objects.equals(now, linkedAltar)) return;
         linkedAltar = now;
         setChanged();
@@ -392,7 +413,7 @@ public class ResonatorBlockEntity extends GrowingCoreBlockEntity implements net.
         }
         if (!flying) {
             if (now % 40 == 0) relink();
-            boolean full = buffer >= Config.resonatorBuffer() && nearestAltar() == null;
+            boolean full = buffer >= Config.resonatorBuffer() && !roomNow(now);
             if (full || pearls + eyes <= 0) {
                 if (running) stop();
                 return;
@@ -413,33 +434,34 @@ public class ResonatorBlockEntity extends GrowingCoreBlockEntity implements net.
     }
 
     /**
-     * Tier 3: the shriekers draw on the dead warden's core, one after the other: a stream of its energy flows from the
-     * core to the shrieker (client/AltarRifts), and as it arrives the shrieker screams and booms: Corruption.
+     * Tier 3: the four shriekers draw on the dead warden's core all at once: a stream of its energy flows from the
+     * crystal to each (client/AltarRifts), and as they arrive the shriekers scream and boom together: Corruption x 4.
      */
     private void blasts(long now) {
         if (flying) { // a pearl left over from the second tier
             flying = false;
             setAnimationDisplay(PEARL, ItemStack.EMPTY);
         }
-        boolean full = buffer >= Config.resonatorBuffer() && nearestAltar() == null;
+        boolean full = buffer >= Config.resonatorBuffer() && !roomNow(now);
         long since = now - blastStart;
         if (since >= Config.resonatorBlastTicks() || since < 0) {
             if (full) {
                 if (now % 40 == 0) relink();
                 return;
             }
-            blastTarget = (blastTarget + 1) % CORNERS;
             blastStart = now;
             running = true; // (no rift at the last tier: the crystal over the warden does the work)
             setChanged();
             syncToClients();
             if (level instanceof ServerLevel server) { // from the crystal (the stream's end is drawn one block over the pos it is given)
-                AltarRiftPayload.part(server, AltarRiftPayload.ABSORB, BlockPos.containing(crystalCenter()), emitter(blastTarget).below(),
-                        net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 0);
+                for (int corner = 0; corner < CORNERS; corner++) {
+                    AltarRiftPayload.part(server, AltarRiftPayload.ABSORB, BlockPos.containing(crystalCenter()), emitter(corner).below(),
+                            net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 0);
+                }
             }
             playSound(BlockPos.containing(wardenCore()), SoundEvents.WARDEN_HEARTBEAT, 1.0f, 0.6f);
         } else if (since == STREAM_TICKS) {
-            boom(blastTarget);
+            for (int corner = 0; corner < CORNERS; corner++) boom(corner);
         }
     }
 
@@ -485,7 +507,7 @@ public class ResonatorBlockEntity extends GrowingCoreBlockEntity implements net.
         server.sendParticles(ParticleTypes.SCULK_CHARGE_POP, at.x, at.y - 0.4, at.z, 6, 0.3, 0.1, 0.3, 0.01);
         playSound(emitter, SoundEvents.SCULK_SHRIEKER_SHRIEK, 0.5f, 1.2f);
         playSound(emitter, SoundEvents.WARDEN_SONIC_BOOM, 0.35f, 1.5f);
-        deliver(Config.resonatorPerBoom(standing), emitter);
+        deliver(Math.round(Config.resonatorPerBoom(standing) * kindle()), emitter); // a Spore of Corruption makes each shriek give more
         RandomSource random = level.getRandom();
         int chance = flyingEye ? Config.resonatorEyeBreakChance() : Config.resonatorBreakChance();
         if (!wardenWorks() && random.nextInt(100) < chance) {
@@ -497,21 +519,78 @@ public class ResonatorBlockEntity extends GrowingCoreBlockEntity implements net.
     }
 
     /** The Corruption goes to the nearest awake altar with room (a stream into its eye), the rest waits here. */
+
+    // ---- Kindling (GrowingCoreBlockEntity) ----
+
+    @Override
+    public net.minecraft.world.item.Item kindling() {
+        return com.lealex.alchyforbidden.registry.ModRegistries.CORRUPTION_SPORE.get();
+    }
+
+    @Override
+    protected int kindleTicks() {
+        return 1200;
+    }
+
+    @Override
+    protected float kindleFactor() {
+        return 1.5F;
+    }
+
+    @Override
+    protected net.minecraft.core.particles.ParticleOptions kindleParticle() {
+        return com.lealex.alchyforbidden.registry.ModRegistries.CORRUPTION_MOTE.get();
+    }
+
     private void deliver(int amount, BlockPos from) {
         if (!(level instanceof ServerLevel server)) return;
         int total = amount + buffer;
+        if (relayLink() != null) { // through its relays
+            var route = com.lealex.alchyforbidden.essence.Relays.route(server, worldPosition, relayLink());
+            linkedAltar = route == null ? null : route.receiver().receiverPos().immutable();
+            total = com.lealex.alchyforbidden.essence.Relays.send(server, worldPosition, relayLink(), Essence.CORRUPTION, total, from);
+            buffer = Math.min(Config.resonatorBuffer(), total);
+            setChanged();
+            syncToClients();
+            return;
+        }
         AltarBlockEntity altar = nearestAltar();
         linkedAltar = altar == null ? null : altar.getBlockPos().immutable();
         if (altar != null) {
             int taken = altar.addEssence(Essence.CORRUPTION, total);
             if (taken > 0) {
-                AltarRiftPayload.part(server, AltarRiftPayload.ABSORB, from, altar.getBlockPos(), net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 0);
+                com.lealex.alchyforbidden.essence.Relays.guide(server, from, altar.getBlockPos().above(), Essence.CORRUPTION); // into its eye
                 total -= taken;
             }
         }
         buffer = Math.min(Config.resonatorBuffer(), total);
         setChanged();
         syncToClients();
+    }
+
+    /** What its Corruption goes to: the end of its relay chain (an altar, a fountain), or the nearest awake altar with room. */
+    private com.lealex.alchyforbidden.essence.@Nullable EssenceReceiver feedAltar() {
+        if (relayLink() == null) return nearestAltar();
+        // (only looks: asked every tick, it must not move the obelisks' turns)
+        var route = level == null ? null : com.lealex.alchyforbidden.essence.Relays.route(level, worldPosition, relayLink(), Essence.CORRUPTION, false);
+        return route == null ? null : route.receiver();
+    }
+
+    /** hasRoom, looked at again at most once a second (it walks the obelisk chain). */
+    private long roomCheckedAt = Long.MIN_VALUE;
+    private boolean roomCached;
+
+    private boolean roomNow(long now) {
+        if (now - roomCheckedAt >= 20 || now < roomCheckedAt) {
+            roomCheckedAt = now;
+            roomCached = hasRoom();
+        }
+        return roomCached;
+    }
+
+    private boolean hasRoom() {
+        var receiver = feedAltar();
+        return receiver != null && receiver.room(Essence.CORRUPTION) > 0;
     }
 
     private @Nullable AltarBlockEntity nearestAltar() {
@@ -587,6 +666,7 @@ public class ResonatorBlockEntity extends GrowingCoreBlockEntity implements net.
 
     @Override
     protected void clientWorking(RandomSource random, long elapsed, double cx, double cy, double cz) {
+        kindledParticles(random, cx, cy, cz);
         if (level == null) return;
         if (wardenWorks() && !awake(level.getGameTime())) { // its first moments (the figure draws them; the particles here)
             introParticles(random, level.getGameTime() - awakenedAt);
@@ -733,5 +813,11 @@ public class ResonatorBlockEntity extends GrowingCoreBlockEntity implements net.
         blastStart = input.getLongOr("blastStart", Long.MIN_VALUE / 2);
         awakenedAt = input.getLongOr("awakenedAt", standing >= 3 ? 1L : 0L); // (saved before it existed: done if it stood at its last tier)
         linkedAltar = input.read("linkedAltar", BlockPos.CODEC).orElse(null);
+    }
+
+    /** What it keeps waiting beside the crosshair (AlchyX LookMeters). */
+    @Override
+    public void lookMeters(java.util.List<LookMeter> out) {
+        out.add(new LookMeter(buffer(), com.lealex.alchyforbidden.Config.resonatorBuffer(), 0xFF000000 | com.lealex.alchyforbidden.essence.Essence.CORRUPTION.color(), com.lealex.alchyforbidden.essence.Essence.CORRUPTION.icon()));
     }
 }

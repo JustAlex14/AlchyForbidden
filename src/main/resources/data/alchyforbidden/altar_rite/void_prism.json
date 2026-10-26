@@ -1,0 +1,21 @@
+{
+  "ingredients": [
+    "minecraft:nether_star",
+    "alchyforbidden:rift_residue",
+    "alchyforbidden:rift_residue",
+    "alchyforbidden:rift_residue",
+    "alchyforbidden:rift_residue",
+    "minecraft:echo_shard",
+    "minecraft:crying_obsidian",
+    "minecraft:amethyst_block"
+  ],
+  "result": {
+    "id": "alchyforbidden:void_prism",
+    "count": 4
+  },
+  "tier": 3,
+  "ticks": 300,
+  "wrath": 200,
+  "sorrow": 200,
+  "corruption": 400
+}

@@ -1,0 +1,18 @@
+{
+  "ingredients": [
+    "minecraft:phantom_membrane",
+    "minecraft:beacon",
+    "minecraft:feather",
+    "alchyforbidden:abyssal_core",
+    "alchyforbidden:rift_residue",
+    "alchyforbidden:rift_residue",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "alchyforbidden:severed_seraph_lure"
+  },
+  "tier": 3,
+  "ticks": 300,
+  "wrath": 300,
+  "sorrow": 400
+}

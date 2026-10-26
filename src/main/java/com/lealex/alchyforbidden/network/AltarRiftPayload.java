@@ -20,8 +20,8 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 /**
  * The great rift over a growing altar, for the players watching it (client/AltarRifts draws it):
  * OPEN (rift = its place, size = how wide) as the altar starts gathering itself, CLOSE once the tier stands,
- * EMERGE: a grown part flies out of the rift down to pos (the part is a veiled shell, hidden on the clients until it
- * lands), SINK: a cleared part flies up into the rift and is gone.
+ * MOVE: it goes up with a rising core. The parts themselves fly through AlchyX (growth/GrowthPayload, client/growth/
+ * GrowthParts); EMERGE / SINK / RISE are kept here only as numbers.
  */
 public record AltarRiftPayload(int kind, BlockPos rift, BlockPos pos, BlockState look, int size) implements CustomPacketPayload {
     public static final int OPEN = 0, CLOSE = 1, EMERGE = 2, SINK = 3;
@@ -29,8 +29,19 @@ public record AltarRiftPayload(int kind, BlockPos rift, BlockPos pos, BlockState
     public static final int ABSORB = 4;
     /** A platform part rising one block, out of the block below pos into pos (no rift). */
     public static final int RISE = 5;
+
+    /** How long a RISE part takes to come up `blocks` blocks (size = blocks; 0 counts as 1): 60 ticks, 30 more a block. */
+    public static int riseTicks(int blocks) {
+        return com.lealex.alchyx.growth.GrowthPayload.riseTicks(blocks);
+    }
     /** A warden killed beside a resonator taken by the rift: rift = where it opens, pos = the body, size = its yaw. */
     public static final int TAKEN = 6;
+    /** Essence sent along a link: a guided stream straight from the centre of rift to the centre of pos, size = essence + 1. */
+    public static final int GUIDE = 7;
+    /** The rift opened at `rift` moves (with the core rising under it) to `pos`, over `size` ticks. */
+    public static final int MOVE = 8;
+    /** How long a guided stream flies (essence/Relays sends the next hop as one lands). */
+    public static final int GUIDE_TICKS = 24;
 
     public static final Type<AltarRiftPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(AlchyForbidden.MODID, "altar_rift"));
     public static final StreamCodec<RegistryFriendlyByteBuf, AltarRiftPayload> STREAM_CODEC = StreamCodec.composite(

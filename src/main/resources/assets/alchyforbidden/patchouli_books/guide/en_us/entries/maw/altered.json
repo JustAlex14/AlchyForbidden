@@ -1,0 +1,19 @@
+{
+  "name": "Altered Things",
+  "icon": "alchyforbidden:rift_residue",
+  "category": "alchyforbidden:maw",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Grades",
+      "text": "Sometimes what comes through is altered: Rifted, Deep-Rifted, Void-Rifted. Stronger, harder to kill, and carrying affixes of the rift.$(br2)Night helps the odds, a new moon more, the deep dark most. Rift residue given with the lure helps too."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Residue and Prisms",
+      "text": "An altered creature slain leaves $(item)rift residue$(). Releasing a familiar gives more. Residue corrupts a familiar one grade further, though one try in four cracks its ring for half an hour instead.$(br2)A $(item)void prism$() buys a filter, to keep only the affixes I want."
+    }
+  ],
+  "advancement": "alchyforbidden:book/maw"
+}

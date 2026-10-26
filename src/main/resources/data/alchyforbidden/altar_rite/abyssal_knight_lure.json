@@ -1,0 +1,18 @@
+{
+  "ingredients": [
+    "minecraft:netherite_scrap",
+    "minecraft:iron_sword",
+    "alchyforbidden:rift_alloy",
+    "alchyforbidden:rift_alloy",
+    "minecraft:crying_obsidian",
+    "alchyforbidden:void_ink",
+    "alchyforbidden:rift_residue"
+  ],
+  "result": {
+    "id": "alchyforbidden:abyssal_knight_lure"
+  },
+  "tier": 3,
+  "ticks": 240,
+  "wrath": 200,
+  "corruption": 150
+}

@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:amethyst_shard",
+    "minecraft:emerald",
+    "minecraft:sugar",
+    "minecraft:feather"
+  ],
+  "result": {
+    "id": "alchyforbidden:gem_swift"
+  },
+  "tier": 2,
+  "ticks": 160,
+  "sorrow": 30,
+  "corruption": 20
+}

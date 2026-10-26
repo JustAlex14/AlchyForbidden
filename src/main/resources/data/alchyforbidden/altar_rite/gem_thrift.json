@@ -1,0 +1,16 @@
+{
+  "ingredients": [
+    "minecraft:amethyst_shard",
+    "minecraft:emerald",
+    "minecraft:gold_ingot",
+    "minecraft:glowstone_dust"
+  ],
+  "result": {
+    "id": "alchyforbidden:gem_thrift"
+  },
+  "tier": 2,
+  "ticks": 160,
+  "wrath": 20,
+  "sorrow": 20,
+  "corruption": 20
+}

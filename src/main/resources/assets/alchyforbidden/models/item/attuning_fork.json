@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "alchyforbidden:item/attuning_fork"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "ingredients": [
+    "alchyforbidden:void_prism",
+    "alchyforbidden:rift_silk",
+    "alchyforbidden:rift_silk",
+    "minecraft:sculk_catalyst",
+    "alchyforbidden:wrath_ember",
+    "alchyforbidden:sorrow_tear",
+    "alchyforbidden:corruption_spore",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "alchyforbidden:abyssal_core"
+  },
+  "tier": 3,
+  "ticks": 400,
+  "wrath": 300,
+  "sorrow": 300,
+  "corruption": 400
+}

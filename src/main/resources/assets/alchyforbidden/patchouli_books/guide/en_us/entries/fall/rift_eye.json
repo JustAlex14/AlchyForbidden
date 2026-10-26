@@ -1,0 +1,23 @@
+{
+  "name": "The Rift Eye",
+  "icon": "alchyforbidden:rift_eye",
+  "category": "alchyforbidden:fall",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:crafting",
+      "recipe": "alchyforbidden:rift_eye",
+      "text": "I made a small one of the eye to carry. An $(item)eye of ender$(), two $(item)echo shards$() and an amethyst shard. It is not the eye. It looks where the eye looks."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Where It Looks",
+      "text": "When I turn it in my hand it tells me what it wants next, a line I hear more than read. Near an altar it speaks of the altar. Far from anything it points down, to the nearest buried city, the way an eye of ender points to its stronghold.$(br2)Held, its gaze drifts from me toward the place."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What Comes Next",
+      "text": "Near a structure of mine, it shows what the rift will grow there next. The stones still to come stand in violet, breathing, where they will be.$(br2)I place none of them. The rift does."
+    }
+  ]
+}

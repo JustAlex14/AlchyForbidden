@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:amethyst_shard",
+    "minecraft:lapis_block",
+    "minecraft:clock",
+    "minecraft:ghast_tear"
+  ],
+  "result": {
+    "id": "alchyforbidden:gem_lasting"
+  },
+  "tier": 2,
+  "ticks": 160,
+  "sorrow": 50,
+  "corruption": 20
+}

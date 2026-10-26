@@ -1,0 +1,19 @@
+{
+  "ingredients": [
+    "alchyforbidden:spell_ring_2",
+    "minecraft:netherite_ingot",
+    "alchyforbidden:rift_alloy",
+    "alchyforbidden:rift_alloy",
+    "alchyforbidden:rift_silk",
+    "alchyforbidden:rift_silk",
+    "minecraft:crying_obsidian"
+  ],
+  "result": {
+    "id": "alchyforbidden:spell_ring_3"
+  },
+  "tier": 3,
+  "ticks": 240,
+  "wrath": 80,
+  "sorrow": 80,
+  "corruption": 150
+}

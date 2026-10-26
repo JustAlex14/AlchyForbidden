@@ -1,0 +1,28 @@
+{
+  "name": "The Altar Grows",
+  "icon": "minecraft:sculk_vein",
+  "category": "alchyforbidden:altar",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "It Grows Itself",
+      "text": "I never laid a second stone. I gave the altar what its next tier asked for, and it opened a rift over itself and grew. Pillars rose out of the floor, the platform climbed, the core rose with it.$(br2)Three tiers. The higher it stood, the more it could make."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Loud Work",
+      "text": "Growth is loud. Near a sculk shrieker it shrieks, and something in the city answers. Anywhere else it draws monsters out of the dark.$(br2)Twelve blocks of wool or carpet within five of the core muffle it. I learned that the hard way. Twice."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "In the Way",
+      "text": "The rift eats loose ground, stone and sculk in its path. Anything else stops it, and the altar told me which block and where. Once I cleared it, it went on.$(br2)When a pillar was broken, the altar kept the tier it had earned. I laid the first stones again and the rift grew back the rest. Even carried away, the core remembers."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Every Structure",
+      "text": "Everything I built down here works this way. I set the first tier by hand. It forms. The rift grows every tier after it from what I give.$(br2)That is the one law of this book. I will not write it again."
+    }
+  ]
+}

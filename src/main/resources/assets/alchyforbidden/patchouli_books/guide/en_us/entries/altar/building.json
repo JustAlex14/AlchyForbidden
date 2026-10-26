@@ -1,0 +1,25 @@
+{
+  "name": "Building the Altar",
+  "icon": "alchyforbidden:altar",
+  "category": "alchyforbidden:altar",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:crafting",
+      "recipe": "alchyforbidden:altar",
+      "text": "The $(item)altar$() core: an echo shard, amethyst shards, chiseled deepslate and polished deepslate. The old builders' stone, my carving."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Rift Altar",
+      "multiblock_id": "alchyforbidden:altar_1",
+      "enable_visualize": true,
+      "text": "Polished deepslate under it, a candle on each corner."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Eye on Its Center",
+      "text": "An altar without the eye sleeps. I set the little eye on its center and the altar woke, and it has watched me since. When I must move it, I lift the eye off first.$(br2)Awake, it takes what I offer and tells me what it wants. It keeps the three griefs for me too, each in its own measure."
+    }
+  ]
+}

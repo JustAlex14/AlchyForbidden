@@ -1,0 +1,31 @@
+{
+  "name": "The Echo Resonator",
+  "icon": "alchyforbidden:resonator",
+  "category": "alchyforbidden:wells",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:resonator",
+      "text": "The $(item)Echo Resonator$() came out of the altar. It turns the city's own screams into Corruption."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Echo Resonator",
+      "multiblock_id": "alchyforbidden:resonator_1",
+      "enable_visualize": true,
+      "text": "A 5 by 5 floor, a sculk shrieker on each corner."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Round",
+      "text": "I feed it ender pearls, or eyes of ender when I have them. It throws one through a small rift and it flies from shrieker to shrieker, and each one it passes screams Corruption into the nearest awake altar.$(br2)A pearl breaks 45 times in a hundred at each shrieker. An eye, only 15."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Third Tier",
+      "text": "Its last tier wanted more than things. It wanted a warden killed within sixteen blocks of it. The rift took the body, laid it on a table, and a crystal tore out its heart.$(br2)No pearl since. All four shriekers draw on that heart at once, every second and a half."
+    }
+  ],
+  "advancement": "alchyforbidden:book/wells"
+}

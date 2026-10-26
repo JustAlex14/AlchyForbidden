@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:book",
+    "minecraft:bone",
+    "minecraft:sculk",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "alchyforbidden:rift_bestiary"
+  },
+  "tier": 1,
+  "ticks": 100,
+  "sorrow": 10,
+  "corruption": 10
+}

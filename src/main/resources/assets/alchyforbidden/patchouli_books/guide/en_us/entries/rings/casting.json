@@ -1,0 +1,19 @@
+{
+  "name": "Casting",
+  "icon": "minecraft:blaze_powder",
+  "category": "alchyforbidden:rings",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Casting",
+      "text": "The ring I am ready with answers when I call it, and I turn from ring to ring the way a swordsman shifts his grip.$(br2)A cast takes its essence from my reserve, then my vessels, and each ring needs its rest before it answers again. The spells grow with my carvings."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Spells",
+      "text": "The first tier is small: a bolt, a step through mist, a light, a bone spear. The second fills a book: shields, leaps, snares, a pocket into my ender chest. The third is the rift itself. Chains, a meteor, a gate, a black hole that swallows what it has broken, an anchor to come home to."
+    }
+  ],
+  "advancement": "alchyforbidden:book/rings"
+}

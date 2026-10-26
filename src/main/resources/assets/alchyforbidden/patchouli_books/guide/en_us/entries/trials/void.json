@@ -1,0 +1,29 @@
+{
+  "name": "The Fourth Tier",
+  "icon": "alchyforbidden:familiar_ring_4",
+  "category": "alchyforbidden:trials",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Pulled In",
+      "text": "At its fourth tier the maw calls the great ones, and it does not fight them here. It pulled me into the rift, onto a disc of stone in the void. Whoever stands on the maw's own stones is pulled in with me. Whoever follows me in joins the fight."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Unworthy",
+      "text": "In the void there is no death. A killing blow casts you out, unworthy, back where you stood, weak and half blind. If I am cast out, the trial is lost for us all.$(br2)Ten minutes. The great one must fall in that time."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Great Ones",
+      "text": "A chandelier that weeps soul fire and walks on its arms once its chain breaks. A golem of obsidian that opens to its core. A dragon of bone. A seraph with its halo broken.$(br2)Each changes as it bleeds. The altered ones change twice."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Worthy",
+      "text": "Win, and the ring of the fourth tier binds it. It rides small at my shoulder until something threatens me, then it is all of itself again. The rift pays residue and prisms besides."
+    }
+  ],
+  "advancement": "alchyforbidden:book/trials"
+}

@@ -1,0 +1,16 @@
+{
+  "ingredients": [
+    "alchyforbidden:spell_ring_1",
+    "minecraft:diamond",
+    "alchyforbidden:rift_alloy",
+    "minecraft:amethyst_cluster"
+  ],
+  "result": {
+    "id": "alchyforbidden:spell_ring_2"
+  },
+  "tier": 2,
+  "ticks": 180,
+  "wrath": 30,
+  "sorrow": 30,
+  "corruption": 40
+}

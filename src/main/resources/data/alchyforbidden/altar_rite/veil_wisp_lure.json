@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:candle",
+    "minecraft:phantom_membrane",
+    "minecraft:soul_sand",
+    "alchyforbidden:sorrow_tear"
+  ],
+  "result": {
+    "id": "alchyforbidden:veil_wisp_lure"
+  },
+  "tier": 1,
+  "ticks": 120,
+  "sorrow": 30,
+  "corruption": 10
+}

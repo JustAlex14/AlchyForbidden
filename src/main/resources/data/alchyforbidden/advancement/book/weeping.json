@@ -1,0 +1,20 @@
+{
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alchyforbidden:weeping_fountain",
+              "alchyforbidden:wrath_ember",
+              "alchyforbidden:sorrow_tear",
+              "alchyforbidden:corruption_spore",
+              "alchyforbidden:essence_infuser"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

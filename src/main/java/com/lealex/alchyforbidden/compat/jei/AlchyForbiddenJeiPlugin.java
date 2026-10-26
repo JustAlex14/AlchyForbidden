@@ -59,6 +59,18 @@ public class AlchyForbiddenJeiPlugin implements IModPlugin {
 
     public record WellTier(int tier) {}
 
+    public static final IRecipeType<com.lealex.alchyforbidden.Config.Product> FOUNTAIN =
+            IRecipeType.create(AlchyForbidden.MODID, "weeping_fountain", com.lealex.alchyforbidden.Config.Product.class);
+
+    public static final IRecipeType<com.lealex.alchyforbidden.essence.Inscription> CARVINGS = IRecipeType.create(AlchyForbidden.MODID, "bier_carving", com.lealex.alchyforbidden.essence.Inscription.class);
+
+    /** The Binding Circle's spells (one page each), the Rift Maw's creatures (one page each), the Essence Infuser's tiers. */
+    public static final IRecipeType<com.lealex.alchyforbidden.essence.Spell> SPELLS = IRecipeType.create(AlchyForbidden.MODID, "binding_circle", com.lealex.alchyforbidden.essence.Spell.class);
+    public static final IRecipeType<com.lealex.alchyforbidden.familiar.RiftCreature> CREATURES = IRecipeType.create(AlchyForbidden.MODID, "rift_maw", com.lealex.alchyforbidden.familiar.RiftCreature.class);
+    public static final IRecipeType<InfuserTier> INFUSER = IRecipeType.create(AlchyForbidden.MODID, "essence_infuser", InfuserTier.class);
+
+    public record InfuserTier(int tier) {}
+
     @Override
     public Identifier getPluginUid() {
         return UID;
@@ -72,6 +84,11 @@ public class AlchyForbiddenJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new ResonatorCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new PitCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new WellCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new FountainCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new CarvingCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new SpellCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new CreatureCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new InfuserCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     // What the pages hold now, per tier (to swap them when the server sends its list again), and JEI while it runs
@@ -96,6 +113,14 @@ public class AlchyForbiddenJeiPlugin implements IModPlugin {
         registration.addRecipes(RESONATOR, List.of(new ResonatorTier(1), new ResonatorTier(2), new ResonatorTier(3)));
         registration.addRecipes(PIT, List.of(new PitTier(1), new PitTier(2), new PitTier(3)));
         registration.addRecipes(WELL, List.of(new WellTier(1), new WellTier(2), new WellTier(3)));
+        registration.addRecipes(FOUNTAIN, com.lealex.alchyforbidden.Config.fountainProducts());
+        registration.addRecipes(CARVINGS, java.util.Arrays.stream(com.lealex.alchyforbidden.essence.Inscription.values())
+                .sorted(java.util.Comparator.comparingInt(com.lealex.alchyforbidden.essence.Inscription::tier).thenComparing(c -> c.part().ordinal())).toList());
+        registration.addRecipes(SPELLS, java.util.Arrays.stream(com.lealex.alchyforbidden.essence.Spell.values())
+                .sorted(java.util.Comparator.comparingInt(com.lealex.alchyforbidden.essence.Spell::tier)).toList());
+        registration.addRecipes(CREATURES, java.util.Arrays.stream(com.lealex.alchyforbidden.familiar.RiftCreature.values())
+                .sorted(java.util.Comparator.comparingInt(com.lealex.alchyforbidden.familiar.RiftCreature::tier)).toList());
+        registration.addRecipes(INFUSER, List.of(new InfuserTier(1), new InfuserTier(2), new InfuserTier(3)));
     }
 
     private static List<AltarRite> ofTier(List<AltarRite> rites, int tier) {
@@ -139,7 +164,8 @@ public class AlchyForbiddenJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(com.lealex.alchyforbidden.client.AltarScreen.class, 177, 21, 58, 12,
                 RITES.toArray(new IRecipeType<?>[0]));
         registration.addRecipeClickArea(com.lealex.alchyforbidden.client.ResonatorScreen.class, 52, 22, 60, 60, RESONATOR);
-        registration.addRecipeClickArea(com.lealex.alchyforbidden.client.SourceScreen.class, 4, 4, 18, 12, PIT, WELL);
+        registration.addRecipeClickArea(com.lealex.alchyforbidden.client.SourceScreen.class, 4, 4, 18, 12, PIT, WELL, FOUNTAIN, SPELLS, CREATURES, INFUSER);
+        registration.addRecipeClickArea(com.lealex.alchyforbidden.client.InscribingScreen.class, 4, 4, 18, 12, CARVINGS);
     }
 
     @Override
@@ -148,6 +174,12 @@ public class AlchyForbiddenJeiPlugin implements IModPlugin {
         registration.addCraftingStation(RESONATOR, ModRegistries.RESONATOR_ITEM.get());
         registration.addCraftingStation(PIT, ModRegistries.KILLING_PIT_ITEM.get());
         registration.addCraftingStation(WELL, ModRegistries.LAMENT_WELL_ITEM.get());
+        registration.addCraftingStation(FOUNTAIN, ModRegistries.WEEPING_FOUNTAIN_ITEM.get());
+        registration.addCraftingStation(CARVINGS, ModRegistries.INSCRIBING_BIER_ITEM.get());
+        registration.addCraftingStation(SPELLS, ModRegistries.SOUL_CIRCLE_ITEM.get());
+        registration.addCraftingStation(CREATURES, ModRegistries.RIFT_MAW_ITEM.get());
+        registration.addCraftingStation(CREATURES, ModRegistries.RIFT_BESTIARY.get());
+        registration.addCraftingStation(INFUSER, ModRegistries.ESSENCE_INFUSER_ITEM.get());
     }
 
     private static class RiteCategory extends AbstractRecipeCategory<AltarRite> {
@@ -189,7 +221,7 @@ public class AlchyForbiddenJeiPlugin implements IModPlugin {
             for (Essence essence : Essence.values()) {
                 int need = rite.costs()[essence.ordinal()];
                 if (need <= 0) continue;
-                Component line = Component.literal(need + " ").append(essence.displayName());
+                Component line = Component.literal(need + " ").append(essence.icon());
                 if (x > 2 && x + font.width(line) > 158) { // no room left on this line: the next one
                     x = 2;
                     y += 11;
@@ -263,7 +295,7 @@ public class AlchyForbiddenJeiPlugin implements IModPlugin {
             graphics.text(font, Component.translatable("jei.alchyforbidden.resonator_per_shriek", per), 1, LINES_Y,
                     0xFF000000 | RiteCategory.darker(Essence.CORRUPTION.color()), false);
             float every = (tier < 3 ? com.lealex.alchyforbidden.Config.resonatorLegTicks(tier) : com.lealex.alchyforbidden.Config.resonatorBlastTicks()) / 20f;
-            graphics.text(font, Component.translatable("jei.alchyforbidden.resonator_every", String.format(java.util.Locale.ROOT, "%.1f", every)),
+            graphics.text(font, Component.translatable(tier < 3 ? "jei.alchyforbidden.resonator_every" : "jei.alchyforbidden.resonator_every_all", String.format(java.util.Locale.ROOT, "%.1f", every)),
                     1, LINES_Y + 11, TEXT, false);
             graphics.text(font, Component.translatable(tier == 3 ? "jei.alchyforbidden.resonator_needs_kill" : "jei.alchyforbidden.resonator_to_altar"),
                     1, LINES_Y + 22, tier == 3 ? 0xFF8A3030 : GREY, false);
@@ -370,6 +402,195 @@ public class AlchyForbiddenJeiPlugin implements IModPlugin {
             graphics.text(font, Component.translatable("jei.alchyforbidden.well_ghosts", com.lealex.alchyforbidden.Config.wellGhostSorrow(tier)), 1, y += 11, teal, false);
             graphics.text(font, Component.translatable("jei.alchyforbidden.well_max", com.lealex.alchyforbidden.Config.wellMaxGhosts(tier)), 1, y += 11, TEXT, false);
             if (tier == 2) graphics.text(font, Component.translatable("jei.alchyforbidden.well_offerings"), 1, 79, 0xFF707070, false);
+        }
+    }
+
+    /** One thing the Weeping Fountain weeps: the item, what it costs, how long at each tier, the tier opening it. */
+    private static class FountainCategory extends AbstractRecipeCategory<com.lealex.alchyforbidden.Config.Product> {
+        FountainCategory(IGuiHelper gui) {
+            super(FOUNTAIN, Component.translatable("jei.alchyforbidden.fountain"), gui.createDrawableItemLike(ModRegistries.WEEPING_FOUNTAIN_ITEM.get()), 160, 48);
+        }
+
+        @Override
+        public void setRecipe(IRecipeLayoutBuilder builder, com.lealex.alchyforbidden.Config.Product product, IFocusGroup focuses) {
+            builder.addOutputSlot(1, 16).setOutputSlotBackground().add(new ItemStack(product.item()));
+        }
+
+        @Override
+        public void draw(com.lealex.alchyforbidden.Config.Product product, IRecipeSlotsView slots, GuiGraphicsExtractor graphics, double mouseX, double mouseY) {
+            Font font = Minecraft.getInstance().font;
+            int color = 0xFF000000 | RiteCategory.darker(product.essence().color());
+            graphics.text(font, Component.translatable("jei.alchyforbidden.fountain_tier", product.tier()), 30, 2, TEXT, false);
+            graphics.text(font, Component.translatable("jei.alchyforbidden.fountain_cost", product.cost(), product.essence().icon()), 30, 14, color, false);
+            String times = "";
+            for (int tier = product.tier(); tier <= 3; tier++) {
+                double seconds = product.seconds() / com.lealex.alchyforbidden.Config.fountainSpeed(tier);
+                times += (times.isEmpty() ? "" : " / ") + String.format(java.util.Locale.ROOT, "%.0fs", seconds);
+            }
+            graphics.text(font, Component.translatable("jei.alchyforbidden.fountain_time", times), 30, 26, TEXT, false);
+            graphics.text(font, Component.translatable("jei.alchyforbidden.fountain_from"), 30, 38, 0xFF707070, false);
+        }
+    }
+
+    /** A carving the Inscribing Bier writes into a body: its part and tier, what it takes, what it does, what it costs to keep. */
+    private static class CarvingCategory extends AbstractRecipeCategory<com.lealex.alchyforbidden.essence.Inscription> {
+        CarvingCategory(IGuiHelper gui) {
+            super(CARVINGS, Component.translatable("jei.alchyforbidden.carving"), gui.createDrawableItemLike(ModRegistries.INSCRIBING_BIER_ITEM.get()), 160, 96);
+        }
+
+        @Override
+        public void setRecipe(IRecipeLayoutBuilder builder, com.lealex.alchyforbidden.essence.Inscription carving, IFocusGroup focuses) {
+            var costs = carving.costs();
+            for (int i = 0; i < costs.size() && i < 6; i++) builder.addInputSlot(1 + i * 20, 24).setStandardSlotBackground().add(costs.get(i).stack());
+        }
+
+        @Override
+        public void draw(com.lealex.alchyforbidden.essence.Inscription carving, IRecipeSlotsView slots, GuiGraphicsExtractor graphics, double mouseX, double mouseY) {
+            Font font = Minecraft.getInstance().font;
+            int color = 0xFF000000 | RiteCategory.darker(carving.color());
+            graphics.text(font, Component.translatable("inscription.alchyforbidden." + carving.id()), 1, 2, color, false);
+            graphics.text(font, Component.translatable("jei.alchyforbidden.carving_where",
+                    Component.translatable("inscription.alchyforbidden.part." + carving.part().id()), carving.tier()), 1, 12, TEXT, false);
+            int x = 1; // its essences, one after the other in their colours
+            for (Essence essence : Essence.values()) {
+                int need = carving.essence(essence);
+                if (need <= 0) continue;
+                Component part = Component.literal(need + " ").append(essence.icon());
+                graphics.text(font, part, x, 46, 0xFF000000 | RiteCategory.darker(essence.color()), false);
+                x += font.width(part) + 8;
+            }
+            int y = 58;
+            for (String line : com.lealex.alchyx.client.Lines.wrap(font, Component.translatable("inscription.alchyforbidden." + carving.id() + ".effect").getString(), 158)) {
+                if (y > 76) break;
+                graphics.text(font, line, 1, y, TEXT, false);
+                y += 10;
+            }
+            com.lealex.alchyforbidden.Config.Upkeep upkeep = com.lealex.alchyforbidden.Config.upkeep(carving);
+            if (upkeep != null) {
+                graphics.text(font, Component.translatable("jei.alchyforbidden.carving_upkeep", upkeep.amount(), upkeep.essence().icon()), 1, 86,
+                        0xFF000000 | RiteCategory.darker(upkeep.essence().color()), false);
+            }
+        }
+    }
+
+    /** Lines of text wrapped to the page, styles (icons) kept; at most {@code most} lines from y. Returns the next y. */
+    private static int wrapped(GuiGraphicsExtractor graphics, Font font, Component text, int y, int most, int color) {
+        int shown = 0;
+        for (net.minecraft.util.FormattedCharSequence line : font.split(text, 158)) {
+            if (shown++ >= most) break;
+            graphics.text(font, line, 1, y, color, false);
+            y += 10;
+        }
+        return y;
+    }
+
+    private static String seconds(int ticks) {
+        return ticks % 20 == 0 ? String.valueOf(ticks / 20) : String.format(java.util.Locale.ROOT, "%.1f", ticks / 20.0);
+    }
+
+    /** A spell the Binding Circle imbues into a ring: the circle tier and ring it needs, what imbuing takes, what a cast costs, what it does. */
+    private static class SpellCategory extends AbstractRecipeCategory<com.lealex.alchyforbidden.essence.Spell> {
+        SpellCategory(IGuiHelper gui) {
+            super(SPELLS, Component.translatable("jei.alchyforbidden.spell"), gui.createDrawableItemLike(ModRegistries.SOUL_CIRCLE_ITEM.get()), 160, 104);
+        }
+
+        @Override
+        public void setRecipe(IRecipeLayoutBuilder builder, com.lealex.alchyforbidden.essence.Spell spell, IFocusGroup focuses) {
+            builder.addInputSlot(1, 24).setStandardSlotBackground().add(new ItemStack(ModRegistries.ringOfTier(spell.tier())));
+            var items = spell.bindItems();
+            for (int i = 0; i < items.size() && i < 5; i++) {
+                builder.addInputSlot(29 + i * 20, 24).setStandardSlotBackground().add(new ItemStack(items.get(i).item(), items.get(i).count()));
+            }
+        }
+
+        @Override
+        public void draw(com.lealex.alchyforbidden.essence.Spell spell, IRecipeSlotsView slots, GuiGraphicsExtractor graphics, double mouseX, double mouseY) {
+            Font font = Minecraft.getInstance().font;
+            graphics.text(font, spell.displayName(), 1, 2, 0xFF000000 | RiteCategory.darker(spell.color()), false);
+            graphics.text(font, Component.translatable("jei.alchyforbidden.spell_where", spell.tier()), 1, 12, TEXT, false);
+            int[] imbue = new int[Essence.values().length];
+            for (Essence essence : Essence.values()) imbue[essence.ordinal()] = spell.bindEssence(essence);
+            graphics.text(font, Component.translatable("jei.alchyforbidden.spell_imbue", com.lealex.alchyforbidden.essence.Spells.costLine(imbue)), 1, 46, TEXT, false);
+            graphics.text(font, Component.translatable("jei.alchyforbidden.spell_cast",
+                    com.lealex.alchyforbidden.essence.Spells.costLine(spell.castCosts()), seconds(spell.cooldown())), 1, 57, TEXT, false);
+            wrapped(graphics, font, spell.description(), 70, 3, 0xFF707070);
+        }
+    }
+
+    /** A creature the Rift Maw calls: its lure and the ring it binds into, the maw tier, what the call costs, where it is fought. */
+    private static class CreatureCategory extends AbstractRecipeCategory<com.lealex.alchyforbidden.familiar.RiftCreature> {
+        CreatureCategory(IGuiHelper gui) {
+            super(CREATURES, Component.translatable("jei.alchyforbidden.creature"), gui.createDrawableItemLike(ModRegistries.RIFT_MAW_ITEM.get()), 160, 100);
+        }
+
+        @Override
+        public void setRecipe(IRecipeLayoutBuilder builder, com.lealex.alchyforbidden.familiar.RiftCreature creature, IFocusGroup focuses) {
+            var lure = ModRegistries.LURES.get(creature);
+            if (lure != null) builder.addInputSlot(1, 24).setStandardSlotBackground().add(new ItemStack(lure.get()));
+            net.minecraft.world.item.Item ring = ModRegistries.familiarRingOfTier(creature.tier());
+            builder.addInputSlot(21, 24).setStandardSlotBackground().add(new ItemStack(ring));
+            ItemStack bound = new ItemStack(ring);
+            bound.set(ModRegistries.FAMILIAR.get(), com.lealex.alchyforbidden.familiar.FamiliarData.fresh(creature, 0, List.of()));
+            builder.addOutputSlot(61, 24).setOutputSlotBackground().add(bound);
+        }
+
+        @Override
+        public void draw(com.lealex.alchyforbidden.familiar.RiftCreature creature, IRecipeSlotsView slots, GuiGraphicsExtractor graphics, double mouseX, double mouseY) {
+            Font font = Minecraft.getInstance().font;
+            Component name = creature.displayName();
+            graphics.text(font, name, 1, 2, 0xFF000000 | RiteCategory.darker(creature.color()), false);
+            if (creature.boss()) {
+                graphics.text(font, Component.translatable("jei.alchyforbidden.creature_boss"), 4 + font.width(name), 2, 0xFF8A2030, false);
+            }
+            graphics.text(font, Component.translatable("jei.alchyforbidden.creature_where", creature.tier()), 1, 12, TEXT, false);
+            graphics.text(font, ">", 45, 29, TEXT, false);
+            graphics.text(font, Component.translatable("jei.alchyforbidden.creature_cost",
+                    com.lealex.alchyforbidden.essence.Spells.costLine(creature.summonCosts())), 1, 46, TEXT, false);
+            Component arena = creature.tier() >= 4
+                    ? Component.translatable("jei.alchyforbidden.creature_void", com.lealex.alchyforbidden.Config.voidArenaRadius())
+                    : Component.translatable("jei.alchyforbidden.creature_arena", com.lealex.alchyforbidden.Config.arenaRadius(creature.tier()));
+            graphics.text(font, arena, 1, 57, TEXT, false);
+            wrapped(graphics, font, Component.translatable("jei.alchyforbidden.creature_bind"), 70, 1, TEXT);
+            wrapped(graphics, font, Component.translatable("jei.alchyforbidden.creature_more"), 82, 1, 0xFF707070);
+        }
+    }
+
+    /** One tier of the Essence Infuser: empty vessels in, filled vessels out, how fast, and the bond with a player at the last tier. */
+    private static class InfuserCategory extends AbstractRecipeCategory<InfuserTier> {
+        InfuserCategory(IGuiHelper gui) {
+            super(INFUSER, Component.translatable("jei.alchyforbidden.infuser"), gui.createDrawableItemLike(ModRegistries.ESSENCE_INFUSER_ITEM.get()), 160, 78);
+        }
+
+        private static List<net.minecraft.world.item.Item> vessels() {
+            return List.of(ModRegistries.CRACKED_VESSEL.get(), ModRegistries.BOUND_VESSEL.get(), ModRegistries.RIFT_VESSEL.get());
+        }
+
+        @Override
+        public void setRecipe(IRecipeLayoutBuilder builder, InfuserTier tier, IFocusGroup focuses) {
+            List<ItemStack> empty = new java.util.ArrayList<>(), full = new java.util.ArrayList<>();
+            for (Essence essence : Essence.values()) { // in step: each vessel, then each essence
+                for (net.minecraft.world.item.Item vessel : vessels()) {
+                    empty.add(new ItemStack(vessel));
+                    ItemStack filled = new ItemStack(vessel);
+                    com.lealex.alchyforbidden.item.VesselItem.fill(filled, essence, Integer.MAX_VALUE);
+                    full.add(filled);
+                }
+            }
+            builder.addInputSlot(1, 14).setStandardSlotBackground().addItemStacks(empty);
+            builder.addOutputSlot(41, 14).setOutputSlotBackground().addItemStacks(full);
+        }
+
+        @Override
+        public void draw(InfuserTier tier, IRecipeSlotsView slots, GuiGraphicsExtractor graphics, double mouseX, double mouseY) {
+            Font font = Minecraft.getInstance().font;
+            int t = tier.tier();
+            graphics.text(font, Component.translatable("jei.alchyforbidden.infuser_tier", t), 1, 2, TEXT, false);
+            graphics.text(font, ">", 25, 19, TEXT, false);
+            graphics.text(font, Component.translatable("jei.alchyforbidden.infuser_rate", com.lealex.alchyforbidden.Config.infuserRate(t)), 64, 19, TEXT, false);
+            int y = wrapped(graphics, font, Component.translatable("jei.alchyforbidden.infuser_from", com.lealex.alchyforbidden.Config.infuserReach()), 40, 2, 0xFF707070);
+            if (t >= 3) {
+                wrapped(graphics, font, Component.translatable("jei.alchyforbidden.infuser_bond", com.lealex.alchyforbidden.Config.infuserBodyRate()), y + 2, 2, 0xFF5A1E8C);
+            }
         }
     }
 }

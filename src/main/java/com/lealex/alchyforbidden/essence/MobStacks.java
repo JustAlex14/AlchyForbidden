@@ -32,10 +32,24 @@ public final class MobStacks {
     public static final int STACK_CAP = 64;
     /** How near the spawner the mob a new one folds into must be. */
     private static final double REACH = 8;
+    /** How near its gathering point the stack must be (it may wander off a little). */
+    private static final double TARGET_REACH = 3;
 
     private record Pending(Mob mob, BlockPos spawner) {}
 
     private static final List<Pending> PENDING = new ArrayList<>();
+    /** The knotted spawners this client knows of (the knot is synced with the spawner: client/KnotVisuals draws them). */
+    private static final java.util.Set<BlockEntity> CLIENT_KNOTS = java.util.Collections.newSetFromMap(new java.util.WeakHashMap<>());
+
+    /** The knot's state reached this client (ModRegistries.KNOTTED's sync). */
+    public static void knotSeen(BlockEntity spawner, boolean on) {
+        if (on) CLIENT_KNOTS.add(spawner);
+        else CLIENT_KNOTS.remove(spawner);
+    }
+
+    public static java.util.Set<BlockEntity> clientKnots() {
+        return CLIENT_KNOTS;
+    }
 
     /** How many mobs this one is (1 for a mob that is not condensed). */
     public static int count(Entity entity) {
@@ -50,7 +64,8 @@ public final class MobStacks {
     public static void onFinalizeSpawn(FinalizeSpawnEvent event) {
         if (event.getSpawner() == null || event.getLevel().isClientSide()) return;
         event.getSpawner().ifLeft(spawner -> {
-            if (bound(spawner)) PENDING.add(new Pending(event.getEntity(), spawner.getBlockPos()));
+            if (!bound(spawner)) return;
+            PENDING.add(new Pending(event.getEntity(), spawner.getBlockPos()));
         });
     }
 
@@ -61,7 +76,15 @@ public final class MobStacks {
         for (Pending pending : now) {
             Mob mob = pending.mob();
             if (!mob.isAlive() || !(mob.level() instanceof ServerLevel level)) continue;
-            AABB near = new AABB(pending.spawner()).inflate(REACH);
+            // a rider it came with (a spider jockey's skeleton) is not the spawner's kind: gone with it, or it would be
+            // left standing when the spider folds into its stack
+            List<net.minecraft.world.entity.Entity> riders = new ArrayList<>();
+            mob.getIndirectPassengers().forEach(riders::add);
+            for (net.minecraft.world.entity.Entity rider : riders) rider.discard();
+            // its gathering point, if the knot gave the spawner one: the stack stands there
+            BlockEntity spawner = level.getBlockEntity(pending.spawner());
+            BlockPos target = spawner == null ? null : com.lealex.alchyforbidden.item.RiftKnotItem.target(spawner);
+            AABB near = target == null ? new AABB(pending.spawner()).inflate(REACH) : new AABB(target.above()).inflate(TARGET_REACH);
             Mob stack = null;
             for (Mob other : level.getEntitiesOfClass(Mob.class, near, other -> other != mob && other.isAlive()
                     && other.getType() == mob.getType() && other.hasData(ModRegistries.MOB_STACK) && count(other) < STACK_CAP)) {
@@ -70,6 +93,11 @@ public final class MobStacks {
             }
             if (stack == null) { // the first: the others fold into it
                 mob.setData(ModRegistries.MOB_STACK, 1);
+                if (target != null) {
+                    level.sendParticles(ParticleTypes.REVERSE_PORTAL, mob.getX(), mob.getY() + 0.8, mob.getZ(), 10, 0.3, 0.5, 0.3, 0.05);
+                    mob.teleportTo(target.getX() + 0.5, target.getY() + 1, target.getZ() + 0.5);
+                    level.sendParticles(ModRegistries.RIFT_MOTE.get(), target.getX() + 0.5, target.getY() + 1.2, target.getZ() + 0.5, 12, 0.3, 0.4, 0.3, 0.03);
+                }
                 continue;
             }
             int folded = Math.min(STACK_CAP, count(stack) + count(mob));
@@ -82,24 +110,47 @@ public final class MobStacks {
         }
     }
 
-    /** A condensed mob's drops, as many times as it holds mobs (before the Killing Pit takes them). */
+    /**
+     * A condensed mob's drops: its loot table rolled again for every other mob it holds (so a rare drop comes at its
+     * own chance per mob), added to what it dropped itself (before the Killing Pit takes them). What it wore or held
+     * drops once: one body.
+     */
     public static void onDrops(LivingDropsEvent event) {
-        int count = count(event.getEntity());
-        if (count <= 1 || event.getEntity().level().isClientSide()) return;
-        List<ItemEntity> more = new ArrayList<>();
-        for (ItemEntity item : event.getDrops()) {
-            ItemStack stack = item.getItem();
-            int total = stack.getCount() * count;
+        net.minecraft.world.entity.LivingEntity dead = event.getEntity();
+        int count = count(dead);
+        if (count <= 1 || !(dead.level() instanceof ServerLevel level)) return;
+        var table = dead.getLootTable();
+        if (table.isEmpty()) return;
+        // gathered first, merged by kind, so 64 rolls make a few full stacks, not hundreds of item entities; past the
+        // config's cap the rolls made stand for all of them (scaled up, rounded by chance: the same loot on average)
+        int extra = count - 1, rolls = Math.min(extra, com.lealex.alchyforbidden.Config.stackLootRolls());
+        List<ItemStack> rolled = new ArrayList<>();
+        for (int i = 0; i < rolls; i++) {
+            dead.dropFromLootTable(level, event.getSource(), event.isRecentlyHit(), table.get(), stack -> {
+                for (ItemStack kept : rolled) {
+                    if (kept.getCount() < kept.getMaxStackSize() && ItemStack.isSameItemSameComponents(kept, stack)) {
+                        int moved = Math.min(stack.getCount(), kept.getMaxStackSize() - kept.getCount());
+                        kept.grow(moved);
+                        stack.shrink(moved);
+                        if (stack.isEmpty()) return;
+                    }
+                }
+                rolled.add(stack.copy());
+            });
+        }
+        double scale = extra / (double) rolls;
+        for (ItemStack stack : rolled) {
+            double exact = stack.getCount() * scale;
+            int total = (int) exact + (level.getRandom().nextDouble() < exact - (int) exact ? 1 : 0);
             int max = Math.max(1, stack.getMaxStackSize());
-            item.setItem(stack.copyWithCount(Math.min(max, total)));
-            total -= Math.min(max, total);
             while (total > 0) {
                 int part = Math.min(max, total);
-                more.add(new ItemEntity(item.level(), item.getX(), item.getY(), item.getZ(), stack.copyWithCount(part)));
+                ItemEntity item = new ItemEntity(level, dead.getX(), dead.getY(), dead.getZ(), stack.copyWithCount(part));
+                item.setDefaultPickUpDelay();
+                event.getDrops().add(item);
                 total -= part;
             }
         }
-        event.getDrops().addAll(more);
     }
 
     public static void onExperience(LivingExperienceDropEvent event) {

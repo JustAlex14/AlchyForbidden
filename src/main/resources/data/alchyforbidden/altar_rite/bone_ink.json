@@ -1,0 +1,17 @@
+{
+  "ingredients": [
+    "minecraft:bone_meal",
+    "minecraft:bone_meal",
+    "minecraft:ink_sac",
+    "alchyforbidden:sorrow_tear"
+  ],
+  "result": {
+    "id": "alchyforbidden:bone_ink",
+    "count": 4
+  },
+  "tier": 1,
+  "ticks": 120,
+  "wrath": 0,
+  "sorrow": 10,
+  "corruption": 0
+}

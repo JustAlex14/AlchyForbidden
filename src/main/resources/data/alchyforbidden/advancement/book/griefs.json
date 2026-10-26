@@ -1,0 +1,19 @@
+{
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alchyforbidden:altar",
+              "alchyforbidden:cracked_vessel",
+              "alchyforbidden:bound_vessel",
+              "alchyforbidden:rift_vessel"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

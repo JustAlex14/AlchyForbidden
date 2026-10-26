@@ -1,0 +1,22 @@
+{
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alchyforbidden:rift_maw",
+              "alchyforbidden:familiar_ring_1",
+              "alchyforbidden:familiar_ring_2",
+              "alchyforbidden:familiar_ring_3",
+              "alchyforbidden:sculk_crawler_lure",
+              "alchyforbidden:veil_wisp_lure",
+              "alchyforbidden:shard_hound_lure"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

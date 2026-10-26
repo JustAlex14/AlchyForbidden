@@ -1,0 +1,24 @@
+{
+  "name": "Components",
+  "icon": "alchyforbidden:rift_alloy",
+  "category": "alchyforbidden:weeping",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "The Solids",
+      "text": "The fountain also weeps what my rites are made of. An $(item)Ember of Wrath$(), a $(item)Tear of Sorrow$() and a $(item)Spore of Corruption$() at its first tier. A $(item)Mourning Pearl$() at its second, $(item)Rift Silk$() at its third. Nothing else makes them."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Rest",
+      "text": "At the altar I make the others from those. $(item)Bone Ink$() at the first tier, $(item)Rift Alloy$() and $(item)Echo Ink$() at the second, $(item)Void Ink$() and the $(item)Abyssal Core$() at the third.$(br2)Every structure past its first tier asks for some. The great works ask for the dearest."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Kindling",
+      "text": "Some of them burn as well. An Ember pressed to a Killing Pit makes it work half again as hard for a minute. A Tear does the same for a Lament Well, a Spore for a Resonator. A Mourning Pearl makes a fountain weep twice as fast for two minutes. The time adds up."
+    }
+  ],
+  "advancement": "alchyforbidden:book/weeping"
+}

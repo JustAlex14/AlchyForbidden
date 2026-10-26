@@ -1,0 +1,19 @@
+{
+  "name": "Corruption",
+  "icon": "alchyforbidden:corruption_spore",
+  "category": "alchyforbidden:griefs",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Corruption",
+      "text": "The third is the city's own, the sculk's hunger. A creature that dies within eight blocks of a $(item)sculk catalyst$(), with an awake altar within sixteen, gives that altar four Corruption and twice its experience.$(br2)The catalyst does not bloom then. The altar drinks first."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What the Curse Was",
+      "text": "That is what was wrong with my land. The rift and the sculk together, eating up through the ground. Not the sculk alone, as I believed for a year.$(br2)An altar turns that hunger into something I can spend. Every grief it drinks is one the earth above does not."
+    }
+  ],
+  "advancement": "alchyforbidden:book/griefs"
+}

@@ -1,0 +1,14 @@
+{
+  "ingredients": [
+    "minecraft:water_bucket",
+    "minecraft:amethyst_shard",
+    "minecraft:soul_lantern",
+    "minecraft:chiseled_deepslate"
+  ],
+  "result": {
+    "id": "alchyforbidden:weeping_fountain"
+  },
+  "tier": 1,
+  "ticks": 140,
+  "sorrow": 30
+}

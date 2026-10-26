@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:amethyst_shard",
+    "minecraft:ender_pearl",
+    "minecraft:spyglass",
+    "minecraft:prismarine_crystals"
+  ],
+  "result": {
+    "id": "alchyforbidden:gem_reach"
+  },
+  "tier": 2,
+  "ticks": 160,
+  "sorrow": 20,
+  "corruption": 40
+}

@@ -1,0 +1,38 @@
+{
+  "ambient_light": 0.35,
+  "attributes": {
+    "minecraft:audio/ambient_sounds": {
+      "mood": {
+        "block_search_extent": 8,
+        "offset": 2.0,
+        "sound": "minecraft:ambient.cave",
+        "tick_delay": 3000
+      }
+    },
+    "minecraft:gameplay/bed_rule": {
+      "can_set_spawn": "never",
+      "can_sleep": "never",
+      "explodes": true
+    },
+    "minecraft:gameplay/respawn_anchor_works": false,
+    "minecraft:visual/ambient_light_color": "#3a2a52",
+    "minecraft:visual/fog_color": "#0e0818",
+    "minecraft:visual/sky_color": "#05020a",
+    "minecraft:visual/sky_light_color": "#7a4ad8",
+    "minecraft:visual/sky_light_factor": 0.0
+  },
+  "coordinate_scale": 1.0,
+  "default_clock": "minecraft:the_end",
+  "has_ceiling": false,
+  "has_ender_dragon_fight": false,
+  "has_fixed_time": true,
+  "has_skylight": false,
+  "height": 256,
+  "infiniburn": "#minecraft:infiniburn_end",
+  "logical_height": 256,
+  "min_y": 0,
+  "monster_spawn_block_light_limit": 0,
+  "monster_spawn_light_level": 0,
+  "skybox": "end",
+  "timelines": "#minecraft:in_end"
+}

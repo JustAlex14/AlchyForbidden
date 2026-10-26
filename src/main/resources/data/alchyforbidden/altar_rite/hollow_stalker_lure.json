@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:phantom_membrane",
+    "minecraft:ink_sac",
+    "alchyforbidden:mourning_pearl",
+    "minecraft:bone_block"
+  ],
+  "result": {
+    "id": "alchyforbidden:hollow_stalker_lure"
+  },
+  "tier": 2,
+  "ticks": 160,
+  "sorrow": 60,
+  "corruption": 60
+}

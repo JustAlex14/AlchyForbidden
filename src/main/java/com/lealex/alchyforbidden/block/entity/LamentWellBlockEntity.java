@@ -108,8 +108,36 @@ public class LamentWellBlockEntity extends GrowingCoreBlockEntity implements net
     }
 
     /** Sorrow its ghosts make each second now (either side: the ghost count is synced). */
+    @Override
+    public BlockPos relayOrigin() {
+        return worldPosition.above(DEPTH);
+    }
+
+
+    // ---- Kindling (GrowingCoreBlockEntity) ----
+
+    @Override
+    public net.minecraft.world.item.Item kindling() {
+        return com.lealex.alchyforbidden.registry.ModRegistries.SORROW_TEAR.get();
+    }
+
+    @Override
+    protected int kindleTicks() {
+        return 1200;
+    }
+
+    @Override
+    protected float kindleFactor() {
+        return 1.5F;
+    }
+
+    @Override
+    protected net.minecraft.core.particles.ParticleOptions kindleParticle() {
+        return com.lealex.alchyforbidden.registry.ModRegistries.SORROW_MOTE.get();
+    }
+
     public int ratePerSecond() {
-        return ghostCount * Config.wellGhostSorrow(standing);
+        return Math.round(ghostCount * Config.wellGhostSorrow(standing) * kindle());
     }
 
     @Override
@@ -123,7 +151,7 @@ public class LamentWellBlockEntity extends GrowingCoreBlockEntity implements net
                 ghostCount = ghosts.size();
                 syncToClients();
             }
-            grief += ghosts.size() * Config.wellGhostSorrow(standing);
+            grief += ghosts.size() * Config.wellGhostSorrow(standing) * kindle(); // a Tear of Sorrow makes its ghosts weep harder
             if (now % 200 == 0 && !ghosts.isEmpty()) playSound(worldPosition.above(DEPTH), SoundEvents.SOUL_ESCAPE.value(), 0.5f, 0.5f);
         }
         if (standing >= 2 && now % 10 == 0) { // offerings thrown down the shaft
@@ -166,6 +194,20 @@ public class LamentWellBlockEntity extends GrowingCoreBlockEntity implements net
     }
 
     /** A mob died near it: its ghost weeps round the well for a while. */
+    // ---- Deaths near the well (AlchyX DeathWatch): a ghost for each mob a stack held ----
+
+    @Override
+    public int deathReach() {
+        int range = Math.max(Config.wellGhostRange(1), Math.max(Config.wellGhostRange(2), Config.wellGhostRange(3)));
+        return range + DEPTH + 1; // the widest tier's ghost range round the mouth, measured from the core under it
+    }
+
+    @Override
+    public void onDeathNearby(LivingEntity dead, net.minecraft.world.damagesource.DamageSource source) {
+        if (dead instanceof net.minecraft.world.entity.player.Player) return;
+        for (int i = com.lealex.alchyforbidden.essence.MobStacks.count(dead); i > 0; i--) mourn(dead);
+    }
+
     public void mourn(LivingEntity dead) {
         if (!isFormed() || level == null || ghosts.size() >= Config.wellMaxGhosts(standing)) return;
         int range = Config.wellGhostRange(standing);
@@ -206,6 +248,15 @@ public class LamentWellBlockEntity extends GrowingCoreBlockEntity implements net
         return new com.lealex.alchyforbidden.menu.SourceMenu(id, inventory, this);
     }
 
+    /** A Weeping Fountain drinks from what it keeps waiting: true if it had that much (then it is gone). */
+    public boolean takeBuffered(int amount) {
+        if (amount <= 0 || buffer < amount) return false;
+        buffer -= amount;
+        setChanged();
+        syncToClients();
+        return true;
+    }
+
     public int buffer() {
         return buffer;
     }
@@ -217,6 +268,7 @@ public class LamentWellBlockEntity extends GrowingCoreBlockEntity implements net
     /** Client: souls rising out of the hole, motes from the rift in it, each ghost on its slow round over the ring. */
     @Override
     protected void clientWorking(RandomSource random, long elapsed, double cx, double cy, double cz) {
+        kindledParticles(random, cx, cy, cz);
         if (level == null || !isFormed()) return;
         double x = worldPosition.getX() + 0.5, z = worldPosition.getZ() + 0.5, hole = worldPosition.getY() + 1.2;
         if (random.nextInt(6) == 0) level.addParticle(ModRegistries.RIFT_MOTE.get(), x + (random.nextDouble() - 0.5) * 0.6, hole, z + (random.nextDouble() - 0.5) * 0.6, 0, 0.03, 0);
@@ -248,5 +300,11 @@ public class LamentWellBlockEntity extends GrowingCoreBlockEntity implements net
         buffer = input.getIntOr("sorrow", 0);
         grief = input.getFloatOr("grief", 0);
         ghostCount = input.getIntOr("ghosts", 0);
+    }
+
+    /** What it keeps waiting beside the crosshair (AlchyX LookMeters). */
+    @Override
+    public void lookMeters(java.util.List<LookMeter> out) {
+        out.add(new LookMeter(buffer(), com.lealex.alchyforbidden.Config.wellBuffer(), 0xFF000000 | com.lealex.alchyforbidden.essence.Essence.SORROW.color(), com.lealex.alchyforbidden.essence.Essence.SORROW.icon()));
     }
 }

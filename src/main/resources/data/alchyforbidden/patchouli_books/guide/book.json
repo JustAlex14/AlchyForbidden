@@ -1,0 +1,17 @@
+{
+  "name": "item.alchyforbidden.guide",
+  "landing_text": "info.alchyforbidden.guide.landing",
+  "version": 1,
+  "creative_tab": "alchyforbidden:main",
+  "use_resource_pack": true,
+  "i18n": true,
+  "model": "alchyforbidden:grimoire",
+  "show_progress": false,
+  "open_sound": "minecraft:item.book.page_turn",
+  "flip_sound": "minecraft:item.book.page_turn",
+  "macros": {
+    "$(item)": "$(#5A1E8C)",
+    "$(thing)": "$(#0E5A60)"
+  },
+  "book_texture": "alchyforbidden:textures/gui/grimoire.png"
+}

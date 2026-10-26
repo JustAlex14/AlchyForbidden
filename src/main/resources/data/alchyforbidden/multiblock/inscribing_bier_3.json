@@ -1,0 +1,218 @@
+{
+  "core": "alchyforbidden:inscribing_bier",
+  "layers": [
+    [
+      "FFFFFFFFF",
+      "FFFFFFFFF",
+      "FFFFFFFFF",
+      "FFFVVVFFF",
+      "FFFVFVFFF",
+      "FFFVVVFFF",
+      "FFFFFFFFF",
+      "FFFFFFFFF",
+      "FFFFFFFFF"
+    ],
+    [
+      "b.v...v.b",
+      ".b..b..b.",
+      "v.O...O.v",
+      ".........",
+      ".R.SXS.R.",
+      ".........",
+      "v.O...O.v",
+      ".b..b..b.",
+      "b.v...v.b"
+    ],
+    [
+      "P.......P",
+      ".P..P..P.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".P..P..P.",
+      "P.......P"
+    ],
+    [
+      "Q.......Q",
+      ".Q..P..Q.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".Q..P..Q.",
+      "Q.......Q"
+    ],
+    [
+      "L.......L",
+      "....Q....",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "....Q....",
+      "L.......L"
+    ],
+    [
+      ".........",
+      "....F....",
+      "....F....",
+      "....F....",
+      "....F....",
+      "....F....",
+      "....F....",
+      "....F....",
+      "........."
+    ]
+  ],
+  "key": {
+    ".": {
+      "any": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "L": {
+      "block": "alchyforbidden:rift_lantern"
+    },
+    "O": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "S": {
+      "block": "alchyforbidden:sacrificial_slab"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "X": {
+      "core": true
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": "true"
+      }
+    }
+  },
+  "result": [
+    [
+      "FFFFFFFFF",
+      "FFFFFFFFF",
+      "FFFFFFFFF",
+      "FFFVVVFFF",
+      "FFFVFVFFF",
+      "FFFVVVFFF",
+      "FFFFFFFFF",
+      "FFFFFFFFF",
+      "FFFFFFFFF"
+    ],
+    [
+      "b.v...v.b",
+      ".b..b..b.",
+      "v.O...O.v",
+      ".........",
+      ".R.S.S.R.",
+      ".........",
+      "v.O...O.v",
+      ".b..b..b.",
+      "b.v...v.b"
+    ],
+    [
+      "P.......P",
+      ".P..P..P.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".P..P..P.",
+      "P.......P"
+    ],
+    [
+      "Q.......Q",
+      ".Q..P..Q.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".Q..P..Q.",
+      "Q.......Q"
+    ],
+    [
+      "L.......L",
+      "....Q....",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "....Q....",
+      "L.......L"
+    ],
+    [
+      ".........",
+      "....F....",
+      "....F....",
+      "....F....",
+      "....F....",
+      "....F....",
+      "....F....",
+      "....F....",
+      "........."
+    ]
+  ],
+  "result_key": {
+    ".": {
+      "keep": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "L": {
+      "block": "alchyforbidden:rift_lantern"
+    },
+    "O": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "S": {
+      "block": "alchyforbidden:sacrificial_slab"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": "true"
+      }
+    }
+  }
+}

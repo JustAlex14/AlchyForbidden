@@ -51,7 +51,7 @@ import org.jspecify.annotations.Nullable;
  * (a counter and a structure check every two seconds). If the structure is broken while the core stays, the tier is
  * kept: the player builds the first tier again and the altar grows the rest back by itself, for nothing.
  */
-public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.minecraft.world.MenuProvider {
+public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.minecraft.world.MenuProvider, com.lealex.alchyforbidden.essence.EssenceReceiver {
     public static final int MAX_TIER = 3;
     private static final int RITE = OWN_PHASES;
     /** Stands the altar has: four at its first two tiers, eight once the outer ring stands. */
@@ -136,6 +136,23 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
     }
 
     /** Adds to the reserve (up to the cap); returns what it took. */
+    @Override
+    public int room(com.lealex.alchyforbidden.essence.Essence essence) {
+        return Math.max(0, reserveCap() - reserve[essence.ordinal()]);
+    }
+
+    /** Streams land in its eye. */
+    @Override
+    public BlockPos intakePos() {
+        return getBlockPos().above();
+    }
+
+    @Override
+    public BlockPos receiverPos() {
+        return getBlockPos();
+    }
+
+    @Override
     public int addEssence(com.lealex.alchyforbidden.essence.Essence essence, int amount) {
         int taken = Math.max(0, Math.min(amount, reserveCap() - reserve[essence.ordinal()]));
         if (taken > 0) {
@@ -276,7 +293,14 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
 
     /** Begins the rite the stands make (the screen's button). Says why not when it cannot. */
     public void beginRite(Player player) {
-        if (player instanceof ServerPlayer) tryBeginRite(player);
+        if (player instanceof ServerPlayer serverPlayer && tryBeginRite(player)) {
+            // the player walks out to the altar's foot and chants while it runs; the screen opens again after
+            double distance = standing >= 3 ? 6.5 : standing == 2 ? 4.5 : 3.0;
+            net.minecraft.world.phys.Vec3 spot = com.lealex.alchyforbidden.essence.Chants.spotToward(player, worldPosition, distance,
+                    worldPosition.getY() - standing + 1);
+            com.lealex.alchyforbidden.essence.Chants.begin(serverPlayer, worldPosition, spot, Math.max(20, riteTicks),
+                    () -> {}, () -> { if (!isRemoved()) openGui(serverPlayer); });
+        }
     }
 
     /** Begins the rite the stands make, if it can (the player, if any, is told why not). True if it began. */
@@ -293,7 +317,7 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
             for (com.lealex.alchyforbidden.essence.Essence essence : com.lealex.alchyforbidden.essence.Essence.values()) {
                 int need = rite.costs()[essence.ordinal()];
                 if (reserve[essence.ordinal()] < need) {
-                    problem = Component.translatable("altar.alchyforbidden.rite_essence", need - reserve[essence.ordinal()], essence.displayName());
+                    problem = Component.translatable("altar.alchyforbidden.rite_essence", need - reserve[essence.ordinal()], essence.icon());
                     break;
                 }
             }
@@ -519,6 +543,26 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
     @Override
     protected boolean platformBase(BlockPos pos) {
         return platformLayer(pos) == 0;
+    }
+
+    /** Its pillars (by default) and the arches laid over them rise out of the ground. */
+    @Override
+    protected boolean platform(BlockPos pos, BlockState look) {
+        return super.platform(pos, look) || archLayer(pos, look) > 0;
+    }
+
+    /** The arches (steps, beam, keystone, the lantern under it) come up from the floor to the top of the pillars. */
+    @Override
+    protected int riseFromBase(BlockPos pos, BlockState look) {
+        return archLayer(pos, look);
+    }
+
+    /** Layer over the floor of a cell of the arches over the pillars (outside the platform, 5 up or more), 0 otherwise. */
+    private int archLayer(BlockPos pos, BlockState look) {
+        if (pillarLook(look) || look.isAir()) return 0;
+        if (Math.abs(pos.getX() - worldPosition.getX()) <= goal && Math.abs(pos.getZ() - worldPosition.getZ()) <= goal) return 0;
+        int layer = pos.getY() - (worldPosition.getY() - rise(standing) - 1);
+        return layer >= 5 ? layer : 0;
     }
 
     /** Layer over the floor of a cell inside the platform's footprint for the tier being grown, -1 outside it. */
@@ -755,6 +799,14 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
         for (int i = 0; i < 3; i++) {
             reserve[i] = i < saved.length ? saved[i] : 0;
             riteCost[i] = i < spent.length ? spent[i] : 0;
+        }
+    }
+
+    /** Its three essences beside the crosshair (AlchyX LookMeters). */
+    @Override
+    public void lookMeters(java.util.List<LookMeter> out) {
+        for (com.lealex.alchyforbidden.essence.Essence e : com.lealex.alchyforbidden.essence.Essence.values()) {
+            out.add(new LookMeter(essence(e), reserveCap(), 0xFF000000 | e.color(), e.icon()));
         }
     }
 }

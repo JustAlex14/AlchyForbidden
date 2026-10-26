@@ -1,0 +1,26 @@
+{
+  "name": "The Lament Well",
+  "icon": "alchyforbidden:lament_well",
+  "category": "alchyforbidden:wells",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:lament_well",
+      "text": "The $(item)Lament Well$() mourns what dies near it, and mourning is Sorrow."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Lament Well",
+      "multiblock_id": "alchyforbidden:lament_well_1",
+      "enable_visualize": true,
+      "text": "5 by 5 floor, a low ring round the hole, candles on the corners."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Ghosts",
+      "text": "A creature that dies within 8 blocks of the well leaves a ghost for 30 seconds, and each ghost weeps Sorrow every second. 12 and 16 blocks at the higher tiers, and more ghosts at once.$(br2)From its second tier I could give it things of loss: a named thing, a broken tool, a music disc, a totem."
+    }
+  ],
+  "advancement": "alchyforbidden:book/wells"
+}

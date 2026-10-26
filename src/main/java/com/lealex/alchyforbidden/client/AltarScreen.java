@@ -149,7 +149,7 @@ public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
 
     // ---- The essences ----
 
-    private static final int BAR_TOP = 22, BAR_BOTTOM = 96, BAR_W = 4;
+    private static final int BAR_TOP = 32, BAR_BOTTOM = 96, BAR_W = 3, BAR_STEP = 7; // icons over them
 
     /** Three bars at the left (Wrath, Sorrow, Sculk Corruption), what the stands' rite would spend marked on each. */
     private void essenceBars(GuiGraphicsExtractor graphics, int x, int y, AltarBlockEntity altar, int mouseX, int mouseY) {
@@ -164,7 +164,8 @@ public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
         Essence[] essences = Essence.values();
         for (int i = 0; i < essences.length; i++) {
             Essence essence = essences[i];
-            int bx = x + 8 + i * (BAR_W + 2), top = y + BAR_TOP, bottom = y + BAR_BOTTOM;
+            int bx = x + 6 + i * BAR_STEP, top = y + BAR_TOP, bottom = y + BAR_BOTTOM;
+            graphics.text(font, essence.icon(), bx - 3, top - 10, 0xFFFFFFFF, false);
             graphics.fill(bx - 1, top - 1, bx + BAR_W + 1, bottom + 1, 0xFF0B0A10);
             graphics.fill(bx, top, bx + BAR_W, bottom, 0xFF1A1820);
             int have = altar.essence(essence);
@@ -196,7 +197,7 @@ public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
             int need = rite.costs()[essence.ordinal()];
             if (need <= 0) continue;
             boolean enough = altar == null || altar.essence(essence) >= need;
-            lines.add(Component.literal(need + " ").append(essence.displayName())
+            lines.add(Component.literal(need + " ").append(essence.icon())
                     .withColor(enough ? essence.color() : 0xFF5050));
         }
     }
@@ -211,11 +212,12 @@ public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
             graphics.fill(ex, ey, ex + 16, ey + 16, 0xB026232E);
         }
         int ox = x + AltarMenu.OFFER_X, oy = y + AltarMenu.OFFER_Y;
-        THEME.well(graphics, ox - 1, oy - 1, ox + 17, oy + 17);
+        boolean offerOpen = menu.slots.get(AltarMenu.OFFER).isActive(); // none at the last tier
+        if (offerOpen) THEME.well(graphics, ox - 1, oy - 1, ox + 17, oy + 17);
         // no labels beside the two slots (the state is written there): what they are shows under the mouse
         if (over(mouseX, mouseY, ex, ey, 16, 16) && !menu.slots.get(AltarMenu.EYE).hasItem()) {
             graphics.setTooltipForNextFrame(font, List.of(Component.translatable("gui.alchyforbidden.eye_slot")), Optional.empty(), mouseX, mouseY);
-        } else if (over(mouseX, mouseY, ox, oy, 16, 16) && !menu.slots.get(AltarMenu.OFFER).hasItem()) {
+        } else if (offerOpen && over(mouseX, mouseY, ox, oy, 16, 16) && !menu.slots.get(AltarMenu.OFFER).hasItem()) {
             graphics.setTooltipForNextFrame(font, List.of(Component.translatable("gui.alchyforbidden.offer_slot")), Optional.empty(), mouseX, mouseY);
         }
         if (altar == null) return;

@@ -1,6 +1,8 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "alchyforbidden:item/rift_vessel"
+    "layer0": "alchyforbidden:item/rift_vessel",
+    "layer1": "alchyforbidden:item/rift_vessel_liquid",
+    "layer2": "alchyforbidden:item/rift_vessel_glass"
   }
 }

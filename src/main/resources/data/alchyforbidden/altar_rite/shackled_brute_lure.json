@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:iron_chain",
+    "minecraft:obsidian",
+    "alchyforbidden:rift_alloy",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "alchyforbidden:shackled_brute_lure"
+  },
+  "tier": 2,
+  "ticks": 160,
+  "wrath": 80,
+  "corruption": 40
+}

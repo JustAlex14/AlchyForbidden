@@ -1,0 +1,19 @@
+{
+  "name": "Vessels",
+  "icon": "alchyforbidden:cracked_vessel",
+  "category": "alchyforbidden:griefs",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:cracked_vessel",
+      "text": "A $(item)cracked vessel$() was my first rite, and it cost nothing. It holds 100 of whichever grief fills it first."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Holding It",
+      "text": "A bound vessel holds 400, a rift vessel 1600. I pour them into the altar when I come back from the dark, and sculk itself pours in as well.$(br2)The altar held 400 of each at its first tier, 1600 at its second, 6400 at its third. What I carry in vessels I spend later, on my body and my spells."
+    }
+  ],
+  "advancement": "alchyforbidden:book/griefs"
+}

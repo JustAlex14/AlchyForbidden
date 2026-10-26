@@ -1,0 +1,29 @@
+{
+  "name": "Carving",
+  "icon": "minecraft:pointed_dripstone",
+  "category": "alchyforbidden:carvings",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Room",
+      "text": "A part takes one carving at the bier's first tier, two at its second, three at its third. My body carried three carvings at first. Each time I lay down and paid more, it made room for three more, up to fifteen.$(br2)Burning one away hurts. It is meant to."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stronger Together",
+      "text": "Each carving past the first makes every carving a fifth stronger. That is the corruption: it does not weaken me, it feeds them. I wear the marks on my skin now, and the veins where they meet.$(br2)Some carvings eat essence while they work. Wings eat Corruption in the air."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What I Carved",
+      "text": "Night eyes, a stone shell, a deep heart. Wings of echo and wings of chain, a second leap, feet that walk on water, lava and air. Skin that hurts what strikes it. Forty and more.$(br2)The bier knows each one, and tells me what it does before the knife does."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Reserve",
+      "text": "One carving of the chest keeps essence in the body itself: the Essence Reserve, up to 1000 of each. What I kill and what I mourn goes there first. Near an awake altar it pours itself in."
+    }
+  ],
+  "advancement": "alchyforbidden:book/carvings"
+}

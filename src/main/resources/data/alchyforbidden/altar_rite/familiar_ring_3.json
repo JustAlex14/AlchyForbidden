@@ -1,0 +1,19 @@
+{
+  "ingredients": [
+    "alchyforbidden:familiar_ring_2",
+    "minecraft:netherite_scrap",
+    "minecraft:wither_skeleton_skull",
+    "alchyforbidden:rift_alloy",
+    "alchyforbidden:rift_alloy",
+    "minecraft:crying_obsidian",
+    "alchyforbidden:rift_silk"
+  ],
+  "result": {
+    "id": "alchyforbidden:familiar_ring_3"
+  },
+  "tier": 3,
+  "ticks": 240,
+  "wrath": 150,
+  "sorrow": 80,
+  "corruption": 120
+}

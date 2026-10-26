@@ -1,0 +1,14 @@
+{
+  "name": "Wrath",
+  "icon": "alchyforbidden:wrath_ember",
+  "category": "alchyforbidden:griefs",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Wrath",
+      "text": "Wrath is what a killing leaves. Every hostile creature I kill pours into the vessels I carry, five for every ten health it had.$(br2)I have more than enough of it. I think of four men at the top of a hole, and the vessels fill faster in my head, if not in my hand."
+    }
+  ],
+  "advancement": "alchyforbidden:book/griefs"
+}

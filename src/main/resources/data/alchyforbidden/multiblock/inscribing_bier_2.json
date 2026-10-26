@@ -1,0 +1,200 @@
+{
+  "core": "alchyforbidden:inscribing_bier",
+  "layers": [
+    [
+      ".........",
+      ".FFFFFFF.",
+      ".FFFFFFF.",
+      ".FFVVVFF.",
+      ".FFVFVFF.",
+      ".FFVVVFF.",
+      ".FFFFFFF.",
+      ".FFFFFFF.",
+      "........."
+    ],
+    [
+      ".........",
+      ".b..R..b.",
+      "..O...O..",
+      ".........",
+      ".R.SXS.R.",
+      ".........",
+      "..O...O..",
+      ".b..R..b.",
+      "........."
+    ],
+    [
+      ".........",
+      ".P.....P.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".P.....P.",
+      "........."
+    ],
+    [
+      ".........",
+      ".Q.....Q.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".Q.....Q.",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ]
+  ],
+  "key": {
+    ".": {
+      "any": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "O": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "S": {
+      "block": "alchyforbidden:sacrificial_slab"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "X": {
+      "core": true
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    }
+  },
+  "result": [
+    [
+      ".........",
+      ".FFFFFFF.",
+      ".FFFFFFF.",
+      ".FFVVVFF.",
+      ".FFVFVFF.",
+      ".FFVVVFF.",
+      ".FFFFFFF.",
+      ".FFFFFFF.",
+      "........."
+    ],
+    [
+      ".........",
+      ".b..R..b.",
+      "..O...O..",
+      ".........",
+      ".R.S.S.R.",
+      ".........",
+      "..O...O..",
+      ".b..R..b.",
+      "........."
+    ],
+    [
+      ".........",
+      ".P.....P.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".P.....P.",
+      "........."
+    ],
+    [
+      ".........",
+      ".Q.....Q.",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".Q.....Q.",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ],
+    [
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      ".........",
+      "........."
+    ]
+  ],
+  "result_key": {
+    ".": {
+      "keep": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "O": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "S": {
+      "block": "alchyforbidden:sacrificial_slab"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    }
+  }
+}

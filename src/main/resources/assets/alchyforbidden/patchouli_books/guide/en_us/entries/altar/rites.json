@@ -1,0 +1,18 @@
+{
+  "name": "Rites",
+  "icon": "minecraft:candle",
+  "category": "alchyforbidden:altar",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "The Stands",
+      "text": "The candles became stands. On each I lay one thing, and when the stands hold a rite the altar knows, I begin. Four stands until the third tier, eight after.$(br2)Once I trusted it, I let hoppers lay the offerings, and the altar began by itself whenever they made a rite."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Chant",
+      "text": "When I begin a rite I step back and chant until it is done. Taking anything off a stand breaks the rite, and the essence comes back.$(br2)Each rite asks a tier, and many ask essence. Essence is the price of everything here. The next chapter is about nothing else."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "The Rift Knot",
+  "icon": "alchyforbidden:rift_knot",
+  "category": "alchyforbidden:wells",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:rift_knot",
+      "text": "A $(item)Rift Knot$() ties a spawner to the rift. What it spawns folds into one creature, up to 64 deep."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "One for Many",
+      "text": "A folded creature has the health of one and the loot of all. In my pit it suffers for all of them. In my well it leaves a ghost for each.$(br2)I press the knot to the ground where they should gather, within 32 of the spawner, and then to the spawner itself."
+    }
+  ],
+  "advancement": "alchyforbidden:book/wells"
+}

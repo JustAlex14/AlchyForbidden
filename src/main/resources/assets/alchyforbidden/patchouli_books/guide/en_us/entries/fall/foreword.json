@@ -1,0 +1,33 @@
+{
+  "name": "Read This First",
+  "icon": "minecraft:writable_book",
+  "category": "alchyforbidden:fall",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Paid Men",
+      "text": "I hired four men to go down with me. Swords, rope, lamps, and my coin up front, because they asked for it up front.$(br2)I was looking for what cursed the land above my hut. Fields that would not take seed. Wells gone bitter. Everyone blamed the weather. I knew it came from under us."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Fall",
+      "text": "In the deep dark the floor opened under me. I fell into a city nobody built in our age. When I could stand I heard them above, arguing. Then I heard them leave. They had my pay already. They did not even drop a rope.$(br2)I remember their names. I write them nowhere, so I cannot burn the page in a temper."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The City",
+      "text": "The city is stone, clean and cold, and the sculk grows over it like moss on a grave. Something walks its halls and hunts by sound. I learned to walk on wool and to breathe slowly. I learned that the sculk listens.$(br2)In the middle of the city stands a great frame. Its portal is dead."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Eye",
+      "text": "Under the frame I found a rift. A tear in the air, violet at the lips, black inside. In the black, an eye. It looked at me as if it had waited.$(br2)Its words came behind my own eyes. Where to step. When to hold my breath. How the old builders made their stone listen. I do not know what it is. It kept me alive."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How to Read It",
+      "text": "This is my grimoire, kept in the dark. I write what I built and what it cost me. The numbers are true. I counted them when I had nothing to do but count.$(br2)The later pages are not as calm as these. Forgive the hand. You will see why."
+    }
+  ]
+}

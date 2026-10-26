@@ -93,6 +93,11 @@ public class AltarMenu extends AbstractContainerMenu implements CoreMenu {
         });
         addSlot(new TabSlot(offering, 0, OFFER_X, OFFER_Y, GROWTH) {
             @Override
+            public boolean isActive() { // gone once the multiblock is at its last tier
+                return super.isActive() && AltarMenu.this.altar != null && AltarMenu.this.altar.tier() < AltarMenu.this.altar.maxTier();
+            }
+
+            @Override
             public void setChanged() {
                 super.setChanged();
                 ItemStack stack = getItem();

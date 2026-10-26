@@ -1,0 +1,19 @@
+{
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "alchyforbidden:binding_circle",
+              "alchyforbidden:spell_ring_1",
+              "alchyforbidden:spell_ring_2",
+              "alchyforbidden:spell_ring_3"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

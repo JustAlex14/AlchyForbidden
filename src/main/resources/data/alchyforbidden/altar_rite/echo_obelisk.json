@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:amethyst_block",
+    "minecraft:echo_shard",
+    "minecraft:polished_deepslate",
+    "minecraft:polished_deepslate"
+  ],
+  "result": {
+    "id": "alchyforbidden:echo_obelisk",
+    "count": 2
+  },
+  "tier": 2,
+  "ticks": 120,
+  "corruption": 30
+}

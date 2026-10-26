@@ -1,0 +1,18 @@
+{
+  "ingredients": [
+    "alchyforbidden:echo_ink",
+    "alchyforbidden:echo_ink",
+    "alchyforbidden:rift_residue",
+    "minecraft:crying_obsidian",
+    "alchyforbidden:mourning_pearl"
+  ],
+  "result": {
+    "id": "alchyforbidden:void_ink",
+    "count": 2
+  },
+  "tier": 3,
+  "ticks": 200,
+  "wrath": 80,
+  "sorrow": 80,
+  "corruption": 120
+}

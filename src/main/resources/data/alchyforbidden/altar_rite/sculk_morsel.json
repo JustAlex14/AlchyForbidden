@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:rotten_flesh",
+    "minecraft:rotten_flesh",
+    "minecraft:sculk",
+    "minecraft:bone_meal"
+  ],
+  "result": {
+    "id": "alchyforbidden:sculk_morsel",
+    "count": 4
+  },
+  "tier": 1,
+  "ticks": 100,
+  "corruption": 15
+}

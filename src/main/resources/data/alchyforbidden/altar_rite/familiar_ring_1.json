@@ -1,0 +1,14 @@
+{
+  "ingredients": [
+    "minecraft:copper_ingot",
+    "minecraft:bone",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "alchyforbidden:familiar_ring_1"
+  },
+  "tier": 1,
+  "ticks": 140,
+  "wrath": 20,
+  "sorrow": 10
+}

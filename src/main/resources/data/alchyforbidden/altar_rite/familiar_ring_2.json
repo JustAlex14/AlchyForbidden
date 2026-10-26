@@ -1,0 +1,16 @@
+{
+  "ingredients": [
+    "alchyforbidden:familiar_ring_1",
+    "alchyforbidden:rift_alloy",
+    "minecraft:wither_rose",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "alchyforbidden:familiar_ring_2"
+  },
+  "tier": 2,
+  "ticks": 180,
+  "wrath": 60,
+  "sorrow": 30,
+  "corruption": 30
+}

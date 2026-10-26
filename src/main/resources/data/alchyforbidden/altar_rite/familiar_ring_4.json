@@ -1,0 +1,20 @@
+{
+  "ingredients": [
+    "alchyforbidden:familiar_ring_3",
+    "minecraft:nether_star",
+    "alchyforbidden:void_prism",
+    "alchyforbidden:void_prism",
+    "alchyforbidden:abyssal_core",
+    "minecraft:crying_obsidian",
+    "alchyforbidden:rift_residue",
+    "alchyforbidden:rift_residue"
+  ],
+  "result": {
+    "id": "alchyforbidden:familiar_ring_4"
+  },
+  "tier": 3,
+  "ticks": 300,
+  "wrath": 300,
+  "sorrow": 300,
+  "corruption": 400
+}

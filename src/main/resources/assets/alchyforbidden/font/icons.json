@@ -1,0 +1,13 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "alchyforbidden:font/essences.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue000\ue001\ue002"
+      ]
+    }
+  ]
+}

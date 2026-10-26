@@ -1,0 +1,26 @@
+{
+  "name": "The Inscribing Bier",
+  "icon": "alchyforbidden:inscribing_bier",
+  "category": "alchyforbidden:carvings",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:inscribing_bier",
+      "text": "The $(item)Inscribing Bier$() is where I carve the rift into my own body."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Inscribing Bier",
+      "multiblock_id": "alchyforbidden:inscribing_bier_1",
+      "enable_visualize": true,
+      "text": "5 by 5 floor, the core between two blocks, candles on the corners."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Lying Down",
+      "text": "I lie down on the slab and the rift shows me my own body, part by part: head, chest, arms, back, legs, feet, skin.$(br2)Each carving asks for things and for essence, taken from the bier, from my body, my vessels, the sources and the altars near."
+    }
+  ],
+  "advancement": "alchyforbidden:book/carvings"
+}

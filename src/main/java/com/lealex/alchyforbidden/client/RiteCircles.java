@@ -96,7 +96,7 @@ public final class RiteCircles {
                 // signs rising off the rim, more of them as it nears its end
                 float radius = RADIUS[Mth.clamp(altar.standing(), 1, 3) - 1];
                 Vec3 middle = floorMiddle(altar);
-                int count = 1 + (int) (seen.progress * 3);
+                int count = com.lealex.alchyx.AlchyXClientConfig.count(1 + (int) (seen.progress * 3), random);
                 for (int i = 0; i < count; i++) {
                     double a = random.nextDouble() * Math.PI * 2;
                     double x = middle.x + Math.cos(a) * radius, z = middle.z + Math.sin(a) * radius;
@@ -150,8 +150,8 @@ public final class RiteCircles {
             poseStack.mulPose(Axis.YP.rotationDegrees(circle.turn()));
             float r = circle.radius();
             event.getSubmitNodeCollector().submitCustomGeometry(poseStack, RenderTypes.entityTranslucentEmissive(CIRCLE), (pose, buffer) -> {
-                flat(pose, buffer, r, a << 24 | circle.color());
-                flat(pose, buffer, r * (1.03F + 0.05F * circle.flash()), glow << 24 | circle.color()); // its halo
+                com.lealex.alchyx.client.FlatDisc.quad(pose, buffer, r, a << 24 | circle.color());
+                com.lealex.alchyx.client.FlatDisc.quad(pose, buffer, r * (1.03F + 0.05F * circle.flash()), glow << 24 | circle.color()); // its halo
             });
             poseStack.popPose();
             // the band of signs, the other way, a little above
@@ -159,21 +159,9 @@ public final class RiteCircles {
             poseStack.translate(0, 0.01, 0);
             poseStack.mulPose(Axis.YP.rotationDegrees(-circle.turn() * 1.7F));
             event.getSubmitNodeCollector().submitCustomGeometry(poseStack, RenderTypes.entityTranslucentEmissive(RUNES), (pose, buffer) ->
-                    flat(pose, buffer, r, a << 24 | 0xFFFFFF));
+                    com.lealex.alchyx.client.FlatDisc.quad(pose, buffer, r, a << 24 | 0xFFFFFF));
             poseStack.popPose();
             poseStack.popPose();
-        }
-    }
-
-    /** A flat square of the texture, its middle at the origin, half side r, facing up (and down). */
-    private static void flat(PoseStack.Pose pose, VertexConsumer buffer, float r, int color) {
-        float[][] corners = {{-r, -r, 0, 0}, {-r, r, 0, 1}, {r, r, 1, 1}, {r, -r, 1, 0}};
-        for (int pass = 0; pass < 2; pass++) {
-            for (int k = 0; k < 4; k++) {
-                float[] c = corners[pass == 0 ? k : 3 - k];
-                buffer.addVertex(pose, c[0], 0, c[1]).setColor(color).setUv(c[2], c[3]).setOverlay(OverlayTexture.NO_OVERLAY)
-                        .setLight(LightCoordsUtil.FULL_BRIGHT).setNormal(pose, 0, pass == 0 ? 1 : -1, 0);
-            }
         }
     }
 }

@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:polished_blackstone_slab",
+    "minecraft:pointed_dripstone",
+    "minecraft:echo_shard",
+    "minecraft:chiseled_deepslate"
+  ],
+  "result": {
+    "id": "alchyforbidden:inscribing_bier"
+  },
+  "tier": 1,
+  "ticks": 160,
+  "wrath": 30,
+  "sorrow": 30
+}

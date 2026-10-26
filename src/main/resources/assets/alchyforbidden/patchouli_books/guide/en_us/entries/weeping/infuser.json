@@ -1,0 +1,26 @@
+{
+  "name": "The Essence Infuser",
+  "icon": "alchyforbidden:essence_infuser",
+  "category": "alchyforbidden:weeping",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:essence_infuser",
+      "text": "The $(item)Essence Infuser$() pours one of the three griefs into the vessel I leave in it."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Essence Infuser",
+      "multiblock_id": "alchyforbidden:essence_infuser_1",
+      "enable_visualize": true,
+      "text": "5 by 5 floor, a candle on each corner."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Bound to Me",
+      "text": "At its third tier I bound it to myself, once my body carried an Essence Reserve. For as long as it stands, it sends 40 of each grief a second into me, wherever I am."
+    }
+  ],
+  "advancement": "alchyforbidden:book/weeping"
+}

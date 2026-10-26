@@ -1,0 +1,16 @@
+{
+  "ingredients": [
+    "minecraft:brewing_stand",
+    "minecraft:amethyst_shard",
+    "minecraft:echo_shard",
+    "minecraft:chiseled_deepslate"
+  ],
+  "result": {
+    "id": "alchyforbidden:essence_infuser"
+  },
+  "tier": 1,
+  "ticks": 140,
+  "wrath": 20,
+  "sorrow": 20,
+  "corruption": 20
+}

@@ -1,0 +1,396 @@
+{
+  "core": "alchyforbidden:rift_maw",
+  "layers": [
+    [
+      "...........",
+      ".FFFFFFFFF.",
+      ".FVVVVVVVF.",
+      ".FVRSSSRVF.",
+      ".FVS152SVF.",
+      ".FVS8X6SVF.",
+      ".FVS473SVF.",
+      ".FVRSSSRVF.",
+      ".FVVVVVVVF.",
+      ".FFFFFFFFF.",
+      "..........."
+    ],
+    [
+      "...........",
+      ".bv..O..vb.",
+      ".vb..R..bv.",
+      "...........",
+      "...........",
+      ".OR.....RO.",
+      "...........",
+      "...........",
+      ".vb..R..bv.",
+      ".bv..O..vb.",
+      "..........."
+    ],
+    [
+      "...........",
+      ".P.......P.",
+      "..P.....P..",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..P.....P..",
+      ".P.......P.",
+      "..........."
+    ],
+    [
+      "...........",
+      ".P.......P.",
+      "..Q.....Q..",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..Q.....Q..",
+      ".P.......P.",
+      "..........."
+    ],
+    [
+      "...........",
+      ".Q.......Q.",
+      "..L.....L..",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..L.....L..",
+      ".Q.......Q.",
+      "..........."
+    ],
+    [
+      "...........",
+      ".L.......L.",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      ".L.......L.",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..........."
+    ]
+  ],
+  "key": {
+    ".": {
+      "any": true
+    },
+    "X": {
+      "core": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "S": {
+      "block": "alchyforbidden:sacrificial_slab"
+    },
+    "O": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "L": {
+      "block": "alchyforbidden:rift_lantern"
+    },
+    "G": {
+      "block": "alchyforbidden:rift_glass"
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": "true"
+      }
+    },
+    "1": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "5": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "2": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "6": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "3": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "7": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "4": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "west"
+      }
+    },
+    "8": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "west"
+      }
+    }
+  },
+  "result": [
+    [
+      "...........",
+      ".FFFFFFFFF.",
+      ".FVVVVVVVF.",
+      ".FVRSSSRVF.",
+      ".FVS152SVF.",
+      ".FVS8.6SVF.",
+      ".FVS473SVF.",
+      ".FVRSSSRVF.",
+      ".FVVVVVVVF.",
+      ".FFFFFFFFF.",
+      "..........."
+    ],
+    [
+      "...........",
+      ".bv..O..vb.",
+      ".vb..R..bv.",
+      "...........",
+      "...........",
+      ".OR.....RO.",
+      "...........",
+      "...........",
+      ".vb..R..bv.",
+      ".bv..O..vb.",
+      "..........."
+    ],
+    [
+      "...........",
+      ".P.......P.",
+      "..P.....P..",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..P.....P..",
+      ".P.......P.",
+      "..........."
+    ],
+    [
+      "...........",
+      ".P.......P.",
+      "..Q.....Q..",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..Q.....Q..",
+      ".P.......P.",
+      "..........."
+    ],
+    [
+      "...........",
+      ".Q.......Q.",
+      "..L.....L..",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..L.....L..",
+      ".Q.......Q.",
+      "..........."
+    ],
+    [
+      "...........",
+      ".L.......L.",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      ".L.......L.",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..........."
+    ],
+    [
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "...........",
+      "..........."
+    ]
+  ],
+  "result_key": {
+    ".": {
+      "keep": true
+    },
+    "F": {
+      "block": "alchyforbidden:altar_flagstone"
+    },
+    "V": {
+      "block": "alchyforbidden:veined_deepslate"
+    },
+    "S": {
+      "block": "alchyforbidden:sacrificial_slab"
+    },
+    "O": {
+      "block": "alchyforbidden:offering_stand"
+    },
+    "R": {
+      "block": "alchyforbidden:mage_rune"
+    },
+    "b": {
+      "block": "alchyforbidden:pillar_base"
+    },
+    "P": {
+      "block": "alchyforbidden:warden_pillar"
+    },
+    "Q": {
+      "block": "alchyforbidden:pillar_capital"
+    },
+    "L": {
+      "block": "alchyforbidden:rift_lantern"
+    },
+    "G": {
+      "block": "alchyforbidden:rift_glass"
+    },
+    "v": {
+      "block": "minecraft:sculk_vein",
+      "state": {
+        "down": "true"
+      }
+    },
+    "1": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "5": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "north"
+      }
+    },
+    "2": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "6": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "east"
+      }
+    },
+    "3": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "7": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "south"
+      }
+    },
+    "4": {
+      "block": "alchyforbidden:circle_corner",
+      "state": {
+        "facing": "west"
+      }
+    },
+    "8": {
+      "block": "alchyforbidden:circle_side",
+      "state": {
+        "facing": "west"
+      }
+    }
+  }
+}

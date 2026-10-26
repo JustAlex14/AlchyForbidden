@@ -55,7 +55,8 @@ public class RiftEyeItem extends Item {
             Goal goal = goalFor(server, serverPlayer);
             if (goal.at() == null) stack.remove(ModRegistries.GAZE.get());
             else stack.set(ModRegistries.GAZE.get(), GlobalPos.of(server.dimension(), goal.at()));
-            serverPlayer.sendSystemMessage(goal.line().copy().withStyle(ChatFormatting.LIGHT_PURPLE), true);
+            // it speaks like the game's people do: its box, its face, its words typed out (client/EyeSpeech)
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(serverPlayer, new com.lealex.alchyforbidden.network.EyeSpeechPayload(goal.line()));
             server.playSound(null, player.blockPosition(), ModRegistries.EYE_WHISPER.get(), SoundSource.PLAYERS, 0.7f,
                     0.9f + server.getRandom().nextFloat() * 0.2f);
             player.getCooldowns().addCooldown(stack, COOLDOWN);

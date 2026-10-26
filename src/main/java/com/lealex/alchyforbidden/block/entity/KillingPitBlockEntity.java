@@ -117,14 +117,20 @@ public class KillingPitBlockEntity extends GrowingCoreBlockEntity implements net
     }
 
     /** Inside the pit, where mobs are hurt and their deaths count: the 3 x 3 over the core, as deep as the tier. */
+    @Override
+    public BlockPos relayOrigin() {
+        return worldPosition.above(2);
+    }
+
     public AABB inside() {
         int deep = standing >= 2 ? 3 : 2;
         return new AABB(worldPosition.getX() - 1, worldPosition.getY() + 1, worldPosition.getZ() - 1,
                 worldPosition.getX() + 2, worldPosition.getY() + 1 + deep, worldPosition.getZ() + 2);
     }
 
-    private List<Mob> hostilesInside() {
-        return level == null ? List.of() : level.getEntitiesOfClass(Mob.class, inside().inflate(0.2), mob -> mob instanceof Enemy && mob.isAlive());
+    /** Every mob in it, hostile or not (golems, animals, villagers...): players are not mobs. */
+    private List<Mob> mobsInside() {
+        return level == null ? List.of() : level.getEntitiesOfClass(Mob.class, inside().inflate(0.2), Mob::isAlive);
     }
 
     @Override
@@ -132,7 +138,7 @@ public class KillingPitBlockEntity extends GrowingCoreBlockEntity implements net
         if (!(level instanceof ServerLevel server) || !isFormed()) return;
         long now = level.getGameTime();
         if (now % 20 == 0) { // the spikes, and the Wrath of what suffers on them
-            List<Mob> inside = hostilesInside();
+            List<Mob> inside = mobsInside();
             java.util.Set<java.util.UUID> here = new java.util.HashSet<>();
             float second = 0;
             int base = Config.pitWrathPerSecond(standing), every = Math.max(1, Config.pitTortureSeconds());
@@ -149,9 +155,11 @@ public class KillingPitBlockEntity extends GrowingCoreBlockEntity implements net
                 mob.hurtServer(server, server.damageSources().cactus(), Config.pitDamage(standing));
             }
             suffered.keySet().retainAll(here);
+            second *= kindle(); // an Ember of Wrath burning in it
             rage += second;
-            if (Math.round(second) != ratePerSecond) {
-                ratePerSecond = Math.round(second);
+            int rate = Math.round(second);
+            if (rate != ratePerSecond && (rate == 0 || ratePerSecond == 0 || Math.abs(rate - ratePerSecond) >= Math.max(2, ratePerSecond / 10))) {
+                ratePerSecond = rate; // (a rate that keeps growing is sent once a tenth bigger, not every second)
                 syncToClients();
             }
             if (now % 100 == 0 && (rage >= 1 || buffer > 0)) {
@@ -167,7 +175,7 @@ public class KillingPitBlockEntity extends GrowingCoreBlockEntity implements net
     }
 
     private void lure(ServerLevel server) {
-        int room = Config.pitMaxMobs() - hostilesInside().size();
+        int room = Config.pitMaxMobs() - mobsInside().size();
         if (room <= 0) return;
         AABB around = new AABB(worldPosition).inflate(Config.pitLureRange());
         AABB in = inside();
@@ -188,7 +196,7 @@ public class KillingPitBlockEntity extends GrowingCoreBlockEntity implements net
     private void mend(ServerLevel server) {
         float below = Config.pitHealBelow() / 100F;
         int cost = Config.pitHealCost();
-        for (Mob mob : hostilesInside()) {
+        for (Mob mob : mobsInside()) {
             if (mob.getHealth() >= mob.getMaxHealth() * below) continue;
             if (cost > 0) {
                 AltarBlockEntity altar = payer(cost);
@@ -220,14 +228,33 @@ public class KillingPitBlockEntity extends GrowingCoreBlockEntity implements net
 
     // ---- Deaths in it (AlchyForbidden's death and drops events) ----
 
-    public boolean holds(LivingEntity dead) {
-        return isFormed() && dead instanceof Enemy && inside().inflate(0.5).contains(dead.position());
+    // ---- Deaths in the pit (AlchyX DeathWatch) ----
+
+    @Override
+    public int deathReach() {
+        return 8;
     }
 
-    /** A hostile mob died in the pit: its Wrath. */
+    @Override
+    public void onDeathNearby(LivingEntity dead, net.minecraft.world.damagesource.DamageSource source) {
+        if (!(dead instanceof net.minecraft.world.entity.player.Player) && holds(dead)) killed(dead);
+    }
+
+    @Override
+    public boolean takeDropsNearby(LivingEntity dead, java.util.Collection<ItemEntity> drops) {
+        if (!holds(dead)) return false;
+        collectDrops(drops);
+        return true;
+    }
+
+    public boolean holds(LivingEntity dead) {
+        return isFormed() && dead instanceof Mob && inside().inflate(0.5).contains(dead.position());
+    }
+
+    /** A mob died in the pit: its Wrath. */
     public void killed(LivingEntity dead) {
         int stacked = com.lealex.alchyforbidden.essence.MobStacks.count(dead);
-        int wrath = Math.max(1, Math.round(dead.getMaxHealth() / 10F * Config.wrathPer10Health() * Config.pitWrathPercent(standing) / 100F)) * stacked;
+        int wrath = Math.round(Math.max(1, Math.round(dead.getMaxHealth() / 10F * Config.wrathPer10Health() * Config.pitWrathPercent(standing) / 100F)) * stacked * kindle());
         if (level instanceof ServerLevel server) {
             Vec3 at = dead.position();
             server.sendParticles(new DustParticleOptions(0xD0304A, 1.4F), at.x, at.y + 0.6, at.z, 16, 0.3, 0.4, 0.3, 0.02);
@@ -348,6 +375,15 @@ public class KillingPitBlockEntity extends GrowingCoreBlockEntity implements net
         return new com.lealex.alchyforbidden.menu.SourceMenu(id, inventory, this);
     }
 
+    /** A Weeping Fountain drinks from what it keeps waiting: true if it had that much (then it is gone). */
+    public boolean takeBuffered(int amount) {
+        if (amount <= 0 || buffer < amount) return false;
+        buffer -= amount;
+        setChanged();
+        syncToClients();
+        return true;
+    }
+
     public int buffer() {
         return buffer;
     }
@@ -366,13 +402,36 @@ public class KillingPitBlockEntity extends GrowingCoreBlockEntity implements net
     }
 
     /** Wrath the suffering in it makes each second now. Synced. */
+
+    // ---- Kindling (GrowingCoreBlockEntity) ----
+
+    @Override
+    public net.minecraft.world.item.Item kindling() {
+        return com.lealex.alchyforbidden.registry.ModRegistries.WRATH_EMBER.get();
+    }
+
+    @Override
+    protected int kindleTicks() {
+        return 1200;
+    }
+
+    @Override
+    protected float kindleFactor() {
+        return 1.5F;
+    }
+
+    @Override
+    protected net.minecraft.core.particles.ParticleOptions kindleParticle() {
+        return com.lealex.alchyforbidden.registry.ModRegistries.WRATH_MOTE.get();
+    }
+
     public int ratePerSecond() {
         return ratePerSecond;
     }
 
     /** Hostile mobs in it now (either side). */
     public int hostileCount() {
-        return hostilesInside().size();
+        return mobsInside().size();
     }
 
 
@@ -381,6 +440,7 @@ public class KillingPitBlockEntity extends GrowingCoreBlockEntity implements net
     /** Client: embers off the spikes, more with mobs in it. */
     @Override
     protected void clientWorking(RandomSource random, long elapsed, double cx, double cy, double cz) {
+        kindledParticles(random, cx, cy, cz);
         if (level == null || !isFormed() || random.nextInt(3) != 0) return;
         double x = worldPosition.getX() - 1 + random.nextDouble() * 3, z = worldPosition.getZ() - 1 + random.nextDouble() * 3;
         level.addParticle(new DustParticleOptions(0xB01828, 0.9F), x, worldPosition.getY() + 1.2, z, 0, 0.03, 0);
@@ -410,5 +470,11 @@ public class KillingPitBlockEntity extends GrowingCoreBlockEntity implements net
         drops.clearContent();
         List<net.minecraft.world.item.ItemStack> kept = input.read("drops", net.minecraft.world.item.ItemStack.OPTIONAL_CODEC.listOf()).orElse(List.of());
         for (int i = 0; i < kept.size() && i < drops.getContainerSize(); i++) drops.getItems().set(i, kept.get(i));
+    }
+
+    /** What it keeps waiting beside the crosshair (AlchyX LookMeters). */
+    @Override
+    public void lookMeters(java.util.List<LookMeter> out) {
+        out.add(new LookMeter(buffer(), com.lealex.alchyforbidden.Config.pitBuffer(), 0xFF000000 | com.lealex.alchyforbidden.essence.Essence.WRATH.color(), com.lealex.alchyforbidden.essence.Essence.WRATH.icon()));
     }
 }

@@ -1,0 +1,24 @@
+{
+  "name": "Familiars",
+  "icon": "alchyforbidden:familiar_ring_1",
+  "category": "alchyforbidden:maw",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:familiar_ring_1",
+      "text": "A familiar ring is worn on the left hand. Three of them, no more."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Calling",
+      "text": "I call one out with a word, and send it back with another. Only one answers at a time.$(br2)It follows me, fights what hurts me and what I strike, and comes through a rift when I am far or when I vanish. I named mine. I pet it, when nothing is watching."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "When It Falls",
+      "text": "A familiar that falls cracks its ring for three minutes. The maw mends it sooner, for Sorrow. Calling a bound familiar costs nothing."
+    }
+  ],
+  "advancement": "alchyforbidden:book/maw"
+}

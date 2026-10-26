@@ -1,0 +1,14 @@
+{
+  "ingredients": [
+    "minecraft:amethyst_shard",
+    "minecraft:amethyst_shard",
+    "minecraft:iron_ingot",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "alchyforbidden:attuning_fork"
+  },
+  "tier": 1,
+  "ticks": 80,
+  "corruption": 10
+}

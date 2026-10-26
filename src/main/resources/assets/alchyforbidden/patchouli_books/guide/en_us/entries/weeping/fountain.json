@@ -1,0 +1,31 @@
+{
+  "name": "The Weeping Fountain",
+  "icon": "alchyforbidden:weeping_fountain",
+  "category": "alchyforbidden:weeping",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:weeping_fountain",
+      "text": "The $(item)Weeping Fountain$() weeps the things I cannot find down here, paid in essence."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Weeping Fountain",
+      "multiblock_id": "alchyforbidden:weeping_fountain_1",
+      "enable_visualize": true,
+      "text": "5 by 5 floor, a basin wall one high round it."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What It Weeps",
+      "text": "I tell it what to weep, and it weeps them one at a time, paying from its own store first, then from the sources near it, then from an altar within 24.$(br2)Amethyst, crying obsidian and echo shards first. Ghast tears and pearls at its second tier. Catalysts and wither skulls at its third."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Speed",
+      "text": "Its second tier weeps three times as fast as the first. Its third weeps thirty times as fast.$(br2)I sat by it for an hour once, only to hear water again."
+    }
+  ],
+  "advancement": "alchyforbidden:book/weeping"
+}

@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:ender_eye",
+    "minecraft:echo_shard",
+    "minecraft:book",
+    "minecraft:chiseled_deepslate"
+  ],
+  "result": {
+    "id": "alchyforbidden:binding_circle"
+  },
+  "tier": 1,
+  "ticks": 160,
+  "sorrow": 30,
+  "corruption": 30
+}

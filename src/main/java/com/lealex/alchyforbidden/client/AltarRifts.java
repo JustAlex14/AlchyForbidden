@@ -31,16 +31,15 @@ import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 
 /**
- * The great rift over a growing altar (client). It tears open above the altar while the altar gathers itself, and
- * every part the altar grows flies out of it on an arc down to its place, small at first, turning, growing to its
- * size and coming to rest square; there the hidden shell is shown. A part the next tier clears flies up into it.
- * Once the tier stands the rift closes. Flying parts are drawn full bright (they come out of the rift's light).
+ * The great rift over a growing multiblock (client). It tears open above the core while it gathers itself, goes up
+ * with a rising core, and closes once the tier stands; the parts flying out of it and into it are AlchyX's
+ * (client/growth/GrowthParts, style alchyforbidden:rift). Also the essence streams and the warden taken by a rift.
  */
 public final class AltarRifts {
     private AltarRifts() {}
 
     private static final int VIOLET = 0xB98CFF;
-    private static final int OPEN_TICKS = 40, CLOSE_TICKS = 20, FLY_TICKS = 20, SINK_TICKS = 18, RISE_TICKS = 60;
+    private static final int OPEN_TICKS = 40, CLOSE_TICKS = 20, FLY_TICKS = 20, SINK_TICKS = 18; // (a rise lasts AltarRiftPayload.riseTicks)
     private static final ContextKey<Frame> RENDER_KEY =
             new ContextKey<>(Identifier.fromNamespaceAndPath(AlchyForbidden.MODID, "altar_rifts"));
 
@@ -49,10 +48,24 @@ public final class AltarRifts {
         final float size;
         int age = 0;
         int closing = -1; // ticks since it began to close, -1 while open
+        // moving with the core under it: from where it was to `moveTo` (blocks from `at`) over moveTicks from moveStart
+        double fromY = 0, moveTo = 0;
+        int moveStart = 0, moveTicks = 0;
 
         Rift(BlockPos at, float size) {
             this.at = at;
             this.size = size;
+        }
+
+        /** How far above where it opened it is now (it slides up with a rising core). */
+        double lift(float partial) {
+            if (moveTicks <= 0) return moveTo;
+            float t = Mth.clamp((age + partial - moveStart) / moveTicks, 0, 1);
+            return fromY + (moveTo - fromY) * ease(t);
+        }
+
+        Vec3 middle(float partial) {
+            return Vec3.atCenterOf(at).add(0, lift(partial), 0);
         }
 
         float open(float partial) {
@@ -62,30 +75,9 @@ public final class AltarRifts {
         }
     }
 
-    private static final class Part {
-        final BlockPos rift, pos;
-        final BlockState look;
-        final boolean sinking, rising;
-        int age = 0;
+    private record ShownRift(BlockPos at, Vec3 middle, float size, float open, float time) {}
 
-        Part(BlockPos rift, BlockPos pos, BlockState look, boolean sinking, boolean rising) {
-            this.rift = rift;
-            this.pos = pos;
-            this.look = look;
-            this.sinking = sinking;
-            this.rising = rising;
-        }
-
-        int length() {
-            return rising ? RISE_TICKS : sinking ? SINK_TICKS : FLY_TICKS;
-        }
-    }
-
-    private record ShownRift(BlockPos at, float size, float open, float time) {}
-
-    private record ShownPart(BlockPos rift, BlockPos pos, BlockState look, boolean sinking, boolean rising, float age) {}
-
-    private record Frame(List<ShownRift> rifts, List<ShownPart> parts) {}
+    private record Frame(List<ShownRift> rifts) {}
 
     private static final Map<BlockPos, Rift> RIFTS = new HashMap<>();
 
@@ -102,11 +94,7 @@ public final class AltarRifts {
         }
 
         net.minecraft.core.particles.ParticleOptions trail() {
-            return switch (essence) {
-                case 1 -> new net.minecraft.core.particles.DustParticleOptions(0xD0304A, 1.1F);
-                case 2 -> net.minecraft.core.particles.ParticleTypes.SOUL;
-                default -> ModRegistries.SCULK_FLECK.get();
-            };
+            return trailOf(essence);
         }
 
         net.minecraft.core.particles.ParticleOptions puff() {
@@ -124,28 +112,56 @@ public final class AltarRifts {
         }
     }
 
+    /** The particle an essence's stream is made of (1 Wrath, 2 Sorrow, else Sculk Corruption). */
+    private static net.minecraft.core.particles.ParticleOptions glowOf(int essence) {
+        return switch (essence) {
+            case 1 -> net.minecraft.core.particles.ParticleTypes.SMALL_FLAME;
+            case 2 -> net.minecraft.core.particles.ParticleTypes.SOUL_FIRE_FLAME;
+            default -> net.minecraft.core.particles.ParticleTypes.SCULK_SOUL;
+        };
+    }
+
+    private static net.minecraft.core.particles.ParticleOptions trailOf(int essence) {
+        return switch (essence) {
+            case 1 -> ModRegistries.WRATH_MOTE.get();
+            case 2 -> ModRegistries.SORROW_MOTE.get();
+            default -> ModRegistries.CORRUPTION_MOTE.get();
+        };
+    }
+
     private static final int STREAM_TICKS = 26;
     private static final List<Stream> STREAMS = new ArrayList<>();
-    private static final List<Part> PARTS = new ArrayList<>();
 
     public static void receive(AltarRiftPayload payload) {
         switch (payload.kind()) {
             case AltarRiftPayload.OPEN -> RIFTS.put(payload.rift(), new Rift(payload.rift(), payload.size()));
+            case AltarRiftPayload.MOVE -> {
+                Rift rift = RIFTS.get(payload.rift());
+                if (rift != null) {
+                    rift.fromY = rift.lift(0);
+                    rift.moveTo = payload.pos().getY() - payload.rift().getY();
+                    rift.moveStart = rift.age;
+                    rift.moveTicks = Math.max(1, payload.size());
+                }
+            }
             case AltarRiftPayload.ABSORB -> STREAMS.add(new Stream(Vec3.atCenterOf(payload.rift()), Vec3.atCenterOf(payload.pos()).add(0, 1.0, 0), payload.size()));
+            // essence sent along a link: AlchyX's guided stream, in the essence's particle, the path glimpsed in rift motes
+            case AltarRiftPayload.GUIDE -> {
+                Vec3 from = Vec3.atCenterOf(payload.rift()), to = Vec3.atCenterOf(payload.pos());
+                com.lealex.alchyx.client.GuidedStreams.add(from, to, trailOf(payload.size()), ModRegistries.RIFT_MOTE.get(),
+                        net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME, AltarRiftPayload.GUIDE_TICKS);
+                // a brighter companion on the same line (soul fire, flame, sculk soul), so a stream reads from afar and in daylight
+                com.lealex.alchyx.client.GuidedStreams.add(from, to, glowOf(payload.size()), null, null, AltarRiftPayload.GUIDE_TICKS);
+            }
             case AltarRiftPayload.TAKEN -> {
                 RIFTS.put(payload.rift(), new Rift(payload.rift(), 3));
                 WardenTaken.start(payload.pos(), payload.rift(), payload.size());
             }
-            case AltarRiftPayload.RISE -> PARTS.add(new Part(payload.pos(), payload.pos(), payload.look(), false, true));
             case AltarRiftPayload.CLOSE -> {
                 Rift rift = RIFTS.get(payload.rift());
                 if (rift != null && rift.closing < 0) rift.closing = 0;
             }
-            default -> {
-                // a part (if the opening was missed, joining mid-growth: the rift opens now)
-                RIFTS.computeIfAbsent(payload.rift(), at -> new Rift(at, Math.max(3, payload.size())));
-                PARTS.add(new Part(payload.rift(), payload.pos(), payload.look(), payload.kind() == AltarRiftPayload.SINK, false));
-            }
+            default -> {}
         }
     }
 
@@ -160,7 +176,6 @@ public final class AltarRifts {
         ClientLevel level = minecraft.level;
         if (level == null) {
             RIFTS.clear();
-            PARTS.clear();
             STREAMS.clear();
             return;
         }
@@ -176,7 +191,8 @@ public final class AltarRifts {
             }
             stream.age++;
             float t = Mth.clamp(stream.age / (float) STREAM_TICKS, 0, 1);
-            for (int i = 0; i < 3; i++) { // the head of the stream, and a tail a little behind it
+            int head = com.lealex.alchyx.AlchyXClientConfig.count(3, random);
+            for (int i = 0; i < head; i++) { // the head of the stream, and a tail a little behind it
                 Vec3 p = stream.at(Math.max(0, t - i * 0.04F));
                 level.addParticle(stream.trail(), p.x + (random.nextDouble() - 0.5) * 0.15, p.y,
                         p.z + (random.nextDouble() - 0.5) * 0.15, 0, 0, 0);
@@ -204,73 +220,12 @@ public final class AltarRifts {
             }
             // a few motes drift out of the rift and fall slowly toward the altar
             if (rift.open(0) > 0.5F && random.nextInt(3) == 0) {
-                Vec3 c = Vec3.atCenterOf(rift.at);
+                Vec3 c = rift.middle(0);
                 double a = random.nextDouble() * Math.PI * 2, r = random.nextDouble() * rift.size * 0.3;
                 level.addParticle(ModRegistries.RIFT_MOTE.get(), c.x + Math.cos(a) * r, c.y, c.z + Math.sin(a) * r,
                         Math.cos(a) * 0.02, -0.03, Math.sin(a) * 0.02);
             }
         }
-        for (Iterator<Part> it = PARTS.iterator(); it.hasNext(); ) {
-            Part part = it.next();
-            part.age++;
-            if (part.rising) { // grinding up out of the stone: dust and grit round its foot
-                if (part.age % 4 == 0 && part.age < RISE_TICKS) {
-                    BlockParticleOption dust = new BlockParticleOption(ParticleTypes.BLOCK, part.look);
-                    double side = random.nextDouble() - 0.5;
-                    boolean alongX = random.nextBoolean();
-                    double px = part.pos.getX() + 0.5 + (alongX ? side : (random.nextBoolean() ? 0.52 : -0.52));
-                    double pz = part.pos.getZ() + 0.5 + (alongX ? (random.nextBoolean() ? 0.52 : -0.52) : side);
-                    level.addParticle(dust, px, part.pos.getY() + rise(part, part.age) - 0.95, pz, 0, 0.05, 0);
-                }
-            } else if (part.age % 3 == 0) { // a thin trail of the rift behind it
-                Vec3 at = flight(part, part.age);
-                level.addParticle(ModRegistries.RIFT_MOTE.get(), at.x, at.y, at.z, 0, 0, 0);
-            }
-            if (part.age >= part.length() && (!part.rising || arrived(level, part) || part.age > RISE_TICKS + 200)) {
-                if (!part.sinking) land(level, part);
-                it.remove();
-            }
-        }
-    }
-
-    /** The part comes to rest: its shell is shown, sculk flecks puff off it. */
-    private static void land(ClientLevel level, Part part) {
-        if (level.getBlockEntity(part.pos) instanceof ChamberShellBlockEntity shell && shell.isClientHidden()) shell.setClientHidden(false);
-        RandomSource random = level.getRandom();
-        Vec3 c = Vec3.atCenterOf(part.pos);
-        for (int i = 0; i < 6; i++) {
-            level.addParticle(ModRegistries.SCULK_FLECK.get(), c.x + (random.nextDouble() - 0.5) * 0.8, c.y + 0.4,
-                    c.z + (random.nextDouble() - 0.5) * 0.8, 0, 0.04, 0);
-        }
-    }
-
-    /**
-     * A risen part stays drawn at its place until the real block is there to take over (a shell, or the very block:
-     * the altar's core and the pedestal it leaves only arrive when the server moves the core).
-     */
-    private static boolean arrived(ClientLevel level, Part part) {
-        BlockState there = level.getBlockState(part.pos);
-        return there.equals(part.look) || com.lealex.alchyx.multiblock.ShellParts.isShell(there);
-    }
-
-    /** How far a rising part has come up (0 at the start, one block below its place; 1 there). */
-    private static float rise(Part part, float age) {
-        return ease(age / RISE_TICKS);
-    }
-
-    /** Where a part is along its way (the middle of the block): an arc between the rift and its place. */
-    private static Vec3 flight(Part part, float age) {
-        return flight(part.rift, part.pos, part.sinking, age / part.length());
-    }
-
-    private static Vec3 flight(BlockPos rift, BlockPos pos, boolean sinking, float t) {
-        t = Mth.clamp(t, 0, 1);
-        float k = sinking ? ease(t) : 1 - (1 - t) * (1 - t); // out of the rift fast, slowing as it lands
-        if (sinking) k = 1 - k;
-        Vec3 from = Vec3.atCenterOf(rift), to = Vec3.atCenterOf(pos);
-        Vec3 control = from.add(to).scale(0.5).add(0, 2.0, 0); // a little arc over the straight line
-        double u = 1 - k;
-        return from.scale(u * u).add(control.scale(2 * u * k)).add(to.scale(k * k));
     }
 
     private static float ease(float t) {
@@ -279,24 +234,14 @@ public final class AltarRifts {
     }
 
     public static void onExtract(ExtractLevelRenderStateEvent event) {
-        if (RIFTS.isEmpty() && PARTS.isEmpty()) {
+        if (RIFTS.isEmpty()) {
             event.getRenderState().setRenderData(RENDER_KEY, null);
             return;
         }
         float partial = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
         List<ShownRift> rifts = new ArrayList<>();
-        for (Rift rift : RIFTS.values()) rifts.add(new ShownRift(rift.at, rift.size, rift.open(partial), rift.age + partial));
-        List<ShownPart> parts = new ArrayList<>();
-        for (Part part : PARTS) parts.add(new ShownPart(part.rift, part.pos, part.look, part.sinking, part.rising, part.age + partial));
-        event.getRenderState().setRenderData(RENDER_KEY, new Frame(rifts, parts));
-    }
-
-    /** A moving block lit full bright, whatever the light where it ends up. */
-    private static final class Lit extends MovingBlockRenderState {
-        @Override
-        public int getBrightness(LightLayer layer, BlockPos pos) {
-            return 15;
-        }
+        for (Rift rift : RIFTS.values()) rifts.add(new ShownRift(rift.at, rift.middle(partial), rift.size, rift.open(partial), rift.age + partial));
+        event.getRenderState().setRenderData(RENDER_KEY, new Frame(rifts));
     }
 
     public static void onSubmit(SubmitCustomGeometryEvent event) {
@@ -309,45 +254,10 @@ public final class AltarRifts {
         for (ShownRift rift : frame.rifts()) {
             if (rift.open() <= 0) continue;
             poseStack.pushPose();
-            poseStack.translate(rift.at().getX() + 0.5 - camera.x, rift.at().getY() + 0.5 - camera.y, rift.at().getZ() + 0.5 - camera.z);
+            poseStack.translate(rift.middle().x - camera.x, rift.middle().y - camera.y, rift.middle().z - camera.z);
             float breath = 1 + 0.04F * Mth.sin(rift.time() * 0.15F); // it heaves a little, never still
             RiftDecal.submit(poseStack, collector, event.getLevelRenderState().cameraRenderState, rift.size() * breath,
                     (int) (rift.at().asLong() & 3), rift.open(), VIOLET);
-            poseStack.popPose();
-        }
-        for (ShownPart part : frame.parts()) {
-            if (part.rising()) { // slid straight up out of the block below, lit as the place it rises into
-                float up = ease(Math.min(1, part.age() / RISE_TICKS));
-                poseStack.pushPose();
-                poseStack.translate(part.pos().getX() - camera.x, part.pos().getY() - 1 + up - camera.y, part.pos().getZ() - camera.z);
-                MovingBlockRenderState state = new MovingBlockRenderState();
-                state.randomSeedPos = part.pos();
-                state.blockPos = part.pos();
-                state.blockState = part.look();
-                state.biome = minecraft.level.getBiome(part.pos());
-                state.cardinalLighting = minecraft.level.cardinalLighting();
-                state.lightEngine = minecraft.level.getLightEngine();
-                collector.submitMovingBlock(poseStack, state);
-                poseStack.popPose();
-                continue;
-            }
-            float t = Mth.clamp(part.age() / (part.sinking() ? SINK_TICKS : FLY_TICKS), 0, 1);
-            Vec3 at = flight(part.rift(), part.pos(), part.sinking(), t);
-            float grown = part.sinking() ? 1 - ease(t) : ease(t);
-            float scale = 0.3F + 0.7F * grown;
-            float turn = (1 - grown) * 270F; // turning on the way, square when it lands
-            poseStack.pushPose();
-            poseStack.translate(at.x - camera.x, at.y - camera.y, at.z - camera.z);
-            poseStack.mulPose(Axis.YP.rotationDegrees(turn));
-            poseStack.scale(scale, scale, scale);
-            poseStack.translate(-0.5, -0.5, -0.5);
-            MovingBlockRenderState state = new Lit();
-            state.randomSeedPos = part.pos();
-            state.blockPos = part.pos();
-            state.blockState = part.look();
-            state.biome = minecraft.level.getBiome(part.pos());
-            state.cardinalLighting = minecraft.level.cardinalLighting();
-            collector.submitMovingBlock(poseStack, state);
             poseStack.popPose();
         }
     }

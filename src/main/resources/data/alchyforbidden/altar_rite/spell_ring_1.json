@@ -1,0 +1,14 @@
+{
+  "ingredients": [
+    "minecraft:gold_ingot",
+    "minecraft:amethyst_shard",
+    "minecraft:echo_shard"
+  ],
+  "result": {
+    "id": "alchyforbidden:spell_ring_1"
+  },
+  "tier": 1,
+  "ticks": 140,
+  "sorrow": 20,
+  "corruption": 10
+}

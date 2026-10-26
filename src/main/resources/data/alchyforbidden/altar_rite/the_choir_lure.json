@@ -1,0 +1,18 @@
+{
+  "ingredients": [
+    "minecraft:bell",
+    "minecraft:sculk_shrieker",
+    "alchyforbidden:mourning_pearl",
+    "alchyforbidden:mourning_pearl",
+    "minecraft:amethyst_block",
+    "alchyforbidden:void_ink",
+    "alchyforbidden:rift_residue"
+  ],
+  "result": {
+    "id": "alchyforbidden:the_choir_lure"
+  },
+  "tier": 3,
+  "ticks": 240,
+  "sorrow": 200,
+  "corruption": 150
+}

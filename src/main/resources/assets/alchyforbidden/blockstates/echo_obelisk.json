@@ -1,0 +1,43 @@
+{
+  "variants": {
+    "facing=up,half=lower": {
+      "model": "alchyforbidden:block/echo_obelisk_floor"
+    },
+    "facing=up,half=upper": {
+      "model": "alchyforbidden:block/echo_obelisk_lantern"
+    },
+    "facing=down,half=lower": {
+      "model": "alchyforbidden:block/echo_obelisk_ceiling"
+    },
+    "facing=down,half=upper": {
+      "model": "alchyforbidden:block/echo_obelisk_lantern"
+    },
+    "facing=north,half=lower": {
+      "model": "alchyforbidden:block/echo_obelisk_wall"
+    },
+    "facing=north,half=upper": {
+      "model": "alchyforbidden:block/echo_obelisk_lantern"
+    },
+    "facing=east,half=lower": {
+      "model": "alchyforbidden:block/echo_obelisk_wall",
+      "y": 90
+    },
+    "facing=east,half=upper": {
+      "model": "alchyforbidden:block/echo_obelisk_lantern"
+    },
+    "facing=south,half=lower": {
+      "model": "alchyforbidden:block/echo_obelisk_wall",
+      "y": 180
+    },
+    "facing=south,half=upper": {
+      "model": "alchyforbidden:block/echo_obelisk_lantern"
+    },
+    "facing=west,half=lower": {
+      "model": "alchyforbidden:block/echo_obelisk_wall",
+      "y": 270
+    },
+    "facing=west,half=upper": {
+      "model": "alchyforbidden:block/echo_obelisk_lantern"
+    }
+  }
+}

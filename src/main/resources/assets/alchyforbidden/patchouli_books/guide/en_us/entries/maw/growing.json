@@ -1,0 +1,19 @@
+{
+  "name": "Growing Them",
+  "icon": "alchyforbidden:echo_heart",
+  "category": "alchyforbidden:maw",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Levels",
+      "text": "A familiar grows with what it kills, and with a quarter of what I kill, up to level 20. Treats made at the altar feed it: a sculk morsel, an echo heart, a void delicacy.$(br2)At levels 5, 10, 15 and 20 it learns a trait and a move, and keeps them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:rift_bestiary",
+      "text": "The $(item)Rift Bestiary$() holds every creature the rift has shown me, its lure, its traits and moves, and what mine have learned."
+    }
+  ],
+  "advancement": "alchyforbidden:book/maw"
+}

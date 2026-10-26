@@ -1,6 +1,19 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "alchyforbidden:item/rift_vessel"
+    "model": "alchyforbidden:item/rift_vessel",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      },
+      {
+        "type": "alchyforbidden:vessel_essence"
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -1
+      }
+    ]
   }
 }

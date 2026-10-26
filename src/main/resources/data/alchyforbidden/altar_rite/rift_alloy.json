@@ -1,0 +1,17 @@
+{
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:gold_ingot",
+    "minecraft:echo_shard",
+    "alchyforbidden:corruption_spore"
+  ],
+  "result": {
+    "id": "alchyforbidden:rift_alloy",
+    "count": 2
+  },
+  "tier": 2,
+  "ticks": 160,
+  "wrath": 20,
+  "sorrow": 0,
+  "corruption": 40
+}

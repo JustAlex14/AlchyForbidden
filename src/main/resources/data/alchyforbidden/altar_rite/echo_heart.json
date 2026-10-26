@@ -1,0 +1,17 @@
+{
+  "ingredients": [
+    "minecraft:cooked_beef",
+    "minecraft:glow_berries",
+    "minecraft:sculk_vein",
+    "alchyforbidden:corruption_spore"
+  ],
+  "result": {
+    "id": "alchyforbidden:echo_heart",
+    "count": 2
+  },
+  "tier": 2,
+  "ticks": 140,
+  "wrath": 20,
+  "sorrow": 20,
+  "corruption": 40
+}

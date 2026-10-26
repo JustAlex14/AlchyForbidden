@@ -38,8 +38,6 @@ public final class EyeFigure implements CodedFigure {
     }
 
     private static final Map<Object, Memory> MEMORY = new WeakHashMap<>();
-    /** As long as the platform takes to rise (client/AltarRifts RISE_TICKS). */
-    private static final float RISE_TICKS = 60;
 
     public static void register() {
         Figures.register(ID, new EyeFigure());
@@ -71,8 +69,9 @@ public final class EyeFigure implements CodedFigure {
                 && core.getBlockState().hasProperty(com.lealex.alchyforbidden.block.AltarBlock.RISING)
                 && core.getBlockState().getValue(com.lealex.alchyforbidden.block.AltarBlock.RISING)) {
             if (memory.riseStart < 0) memory.riseStart = context.time();
-            float k = Mth.clamp((context.time() - memory.riseStart) / RISE_TICKS, 0, 1);
-            y += k * k * (3 - 2 * k);
+            int blocks = core instanceof com.lealex.alchyforbidden.block.entity.GrowingCoreBlockEntity growing ? Math.max(1, growing.coreRise()) : 1;
+            float k = Mth.clamp((context.time() - memory.riseStart) / com.lealex.alchyforbidden.network.AltarRiftPayload.riseTicks(blocks), 0, 1);
+            y += blocks * k * k * (3 - 2 * k);
         } else {
             memory.riseStart = -1;
         }

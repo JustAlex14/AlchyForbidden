@@ -1,0 +1,24 @@
+{
+  "name": "Obelisks and the Fork",
+  "icon": "alchyforbidden:echo_obelisk",
+  "category": "alchyforbidden:wells",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:echo_obelisk",
+      "text": "An $(item)Echo Obelisk$() carries essence on toward where it is needed. Two blocks tall on the ground, one on a wall or a ceiling."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:attuning_fork",
+      "text": "The $(item)Attuning Fork$() joins them. I touch a source with it, then each obelisk in turn, then whatever should receive."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Links",
+      "text": "Each link reaches 24 blocks. An obelisk sends down up to 4 branches and passes over any end that is full. Two obelisks joined carry both ways, and joining the same pair again parts them.$(br2)An altar receives, and so do most of the things I build."
+    }
+  ],
+  "advancement": "alchyforbidden:book/wells"
+}

@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:bone_block",
+    "minecraft:sculk",
+    "minecraft:rotten_flesh",
+    "alchyforbidden:corruption_spore"
+  ],
+  "result": {
+    "id": "alchyforbidden:sculk_crawler_lure"
+  },
+  "tier": 1,
+  "ticks": 120,
+  "sorrow": 10,
+  "corruption": 30
+}

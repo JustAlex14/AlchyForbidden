@@ -1,0 +1,19 @@
+{
+  "name": "Rings and Gems",
+  "icon": "alchyforbidden:gem_swift",
+  "category": "alchyforbidden:rings",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:spell_ring_1",
+      "text": "A $(item)spell ring$() comes out of the altar. The second and third rings are made from the one before."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Wearing Them",
+      "text": "I wear them on the right hand, in the order I want them. Two at first, and one more for each tier of the circle. A ring of the first tier has one socket, the second two, the third four.$(br2)Gems go in the sockets: swift, fury, lasting, thrift, reach. A gem pressed to a ring sets itself."
+    }
+  ],
+  "advancement": "alchyforbidden:book/rings"
+}

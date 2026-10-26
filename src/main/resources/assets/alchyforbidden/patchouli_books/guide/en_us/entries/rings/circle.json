@@ -1,0 +1,26 @@
+{
+  "name": "The Binding Circle",
+  "icon": "alchyforbidden:binding_circle",
+  "category": "alchyforbidden:rings",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "alchyforbidden:binding_circle",
+      "text": "The $(item)Binding Circle$() writes a spell into a ring."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Binding Circle",
+      "multiblock_id": "alchyforbidden:binding_circle_1",
+      "enable_visualize": true,
+      "text": "5 by 5 floor, the core in its middle, candles on the sides."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Imbuing",
+      "text": "I lay a spell ring in the circle, choose a spell and pay its price. I chant while the ring rises and takes it. Each ring holds one spell, of its own tier or lower.$(br2)Unbinding costs Sorrow and a little blood."
+    }
+  ],
+  "advancement": "alchyforbidden:book/rings"
+}

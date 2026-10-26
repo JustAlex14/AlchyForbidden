@@ -1,0 +1,15 @@
+{
+  "ingredients": [
+    "minecraft:amethyst_cluster",
+    "minecraft:bone",
+    "minecraft:mutton",
+    "alchyforbidden:wrath_ember"
+  ],
+  "result": {
+    "id": "alchyforbidden:shard_hound_lure"
+  },
+  "tier": 1,
+  "ticks": 120,
+  "wrath": 30,
+  "corruption": 10
+}
