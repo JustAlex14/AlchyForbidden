@@ -634,6 +634,12 @@ public class AltarBlockEntity extends GrowingCoreBlockEntity implements net.mine
     // ---- The eye on the altar's center ----
 
     /** True once an eye sits over the altar's center: the altar is awake and can grow. Kept as the "eye" display. */
+    /** A showcased altar is given its eye, so it may grow. */
+    @Override
+    protected void prepareShowcase() {
+        placeEye(new ItemStack(ModRegistries.RIFT_EYE.get()));
+    }
+
     public boolean hasEye() {
         return !getAnimationDisplay(EYE).isEmpty();
     }

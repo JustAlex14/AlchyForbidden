@@ -105,7 +105,7 @@ public abstract class GrowingCoreBlockEntity extends TieredCoreBlockEntity {
 
     @Override
     protected int gatherTicks() {
-        return Config.gatherTicks();
+        return showcase() ? Math.min(25, Config.gatherTicks()) : Config.gatherTicks(); // a trailer's machine wastes no time
     }
 
     @Override
@@ -115,7 +115,7 @@ public abstract class GrowingCoreBlockEntity extends TieredCoreBlockEntity {
 
     @Override
     protected int blocksPerStep() {
-        return Config.blocksPerStep();
+        return showcase() ? Math.max(2, Config.blocksPerStep()) : Config.blocksPerStep();
     }
 
     @Override
@@ -206,7 +206,7 @@ public abstract class GrowingCoreBlockEntity extends TieredCoreBlockEntity {
 
     @Override
     protected void onGrowStart() {
-        if (level instanceof ServerLevel server) AltarNoise.sound(server, worldPosition, this::say);
+        if (level instanceof ServerLevel server && !showcase()) AltarNoise.sound(server, worldPosition, this::say); // a showcase grows quietly
     }
 
     @Override

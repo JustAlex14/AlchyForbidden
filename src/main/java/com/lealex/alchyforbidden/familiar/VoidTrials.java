@@ -340,6 +340,31 @@ public final class VoidTrials {
         if (trial.phase == 1 && trial.foe != null && arena.getEntity(trial.foe) instanceof RiftBeast beast) beast.watchIntro(player);
     }
 
+    // ---- For trailers: a void arena to stage entrances in, with the player taken there and back ----
+
+    private static final BlockPos SHOWCASE = new BlockPos(-SPACING, FLOOR_Y, 0);
+
+    /** Takes the player into a void arena of their own (built once), on its south edge facing its heart. */
+    public static boolean showcaseArena(ServerPlayer player) {
+        MinecraftServer server = player.level().getServer();
+        ServerLevel arena = server == null ? null : server.getLevel(VOID);
+        if (arena == null) return false;
+        int r = Config.voidArenaRadius();
+        build(arena, SHOWCASE, r);
+        if (player.level().dimension() != VOID) keepWayHome(player);
+        Vec3 spot = Vec3.atBottomCenterOf(SHOWCASE.above()).add(0, 0, r - 4);
+        player.teleportTo(arena, spot.x, spot.y, spot.z, Set.of(), 180F, 5F, true);
+        player.resetFallDistance();
+        PacketDistributor.sendToPlayer(player, new VoidArenaPayload(SHOWCASE, r, arena.getGameTime(), true));
+        return true;
+    }
+
+    /** Back where they were before the showcase arena. */
+    public static void showcaseReturn(ServerPlayer player) {
+        PacketDistributor.sendToPlayer(player, new VoidArenaPayload(SHOWCASE, 0, 0, false));
+        if (player.level().dimension() == VOID) sendHome(player);
+    }
+
     private static int freeSlot() {
         for (int i = 1; ; i++) {
             boolean used = false;

@@ -1,0 +1,414 @@
+{
+  "letterbox": true,
+  "stand": [
+    0,
+    0,
+    3
+  ],
+  "shots": [
+    {
+      "ticks": 180,
+      "orbit": {
+        "center": [
+          20,
+          0,
+          -6
+        ],
+        "radius": 80,
+        "height": 30,
+        "from": 160,
+        "to": 205,
+        "look_height": 2
+      },
+      "fade_in": 30
+    },
+    {
+      "ticks": 170,
+      "points": [
+        [
+          0,
+          22,
+          -8
+        ],
+        [
+          0,
+          14,
+          -22
+        ],
+        [
+          0,
+          8,
+          -26
+        ]
+      ],
+      "look": [
+        0,
+        9,
+        -32
+      ]
+    },
+    {
+      "ticks": 440,
+      "orbit": {
+        "center": [
+          0,
+          2,
+          -8
+        ],
+        "radius": 12,
+        "height": 8,
+        "from": 0,
+        "to": 200,
+        "look_height": 3
+      }
+    },
+    {
+      "ticks": 340,
+      "points": [
+        [
+          -30,
+          6,
+          -19
+        ],
+        [
+          -31,
+          7,
+          -8
+        ],
+        [
+          -30,
+          6,
+          3
+        ]
+      ],
+      "looks": [
+        [
+          -18,
+          1,
+          -16
+        ],
+        [
+          -18,
+          1,
+          -8
+        ],
+        [
+          -18,
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "ticks": 340,
+      "orbit": {
+        "center": [
+          0,
+          0,
+          12
+        ],
+        "radius": 13,
+        "height": 8,
+        "from": -55,
+        "to": 55,
+        "look_height": 0
+      }
+    },
+    {
+      "ticks": 340,
+      "points": [
+        [
+          30,
+          6,
+          -20
+        ],
+        [
+          31,
+          7,
+          -8
+        ],
+        [
+          30,
+          6,
+          3
+        ]
+      ],
+      "looks": [
+        [
+          17,
+          1,
+          -17
+        ],
+        [
+          17.5,
+          1,
+          -8
+        ],
+        [
+          18,
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "ticks": 290,
+      "orbit": {
+        "center": [
+          20,
+          0,
+          17
+        ],
+        "radius": 10,
+        "height": 6,
+        "from": -40,
+        "to": 50,
+        "look_height": 1
+      }
+    },
+    {
+      "ticks": 300,
+      "orbit": {
+        "center": [
+          -36,
+          0,
+          -6
+        ],
+        "radius": 9,
+        "height": 5,
+        "from": 170,
+        "to": 290,
+        "look_height": 1
+      }
+    },
+    {
+      "ticks": 200,
+      "points": [
+        [
+          25,
+          6,
+          -9
+        ],
+        [
+          42,
+          6,
+          -9
+        ],
+        [
+          57,
+          9,
+          -9
+        ]
+      ],
+      "look": [
+        76,
+        2,
+        -9
+      ]
+    },
+    {
+      "ticks": 460,
+      "orbit": {
+        "center": [
+          76,
+          0,
+          -9
+        ],
+        "radius": 19,
+        "height": 9,
+        "from": 90,
+        "to": 310,
+        "look_height": 2
+      },
+      "fade_out": 25
+    },
+    {
+      "ticks": 60,
+      "orbit": {
+        "center": [
+          0,
+          0,
+          -14
+        ],
+        "radius": 11,
+        "height": 5,
+        "from": -10,
+        "to": 10,
+        "look_height": 2
+      },
+      "fade_in": 20,
+      "fade_out": 16
+    },
+    {
+      "ticks": 200,
+      "points": [
+        [
+          30,
+          8,
+          6
+        ],
+        [
+          40,
+          22,
+          34
+        ],
+        [
+          20,
+          34,
+          60
+        ]
+      ],
+      "look": [
+        20,
+        4,
+        -6
+      ],
+      "ease": "out",
+      "fade_in": 25,
+      "fade_out": 45
+    }
+  ],
+  "texts": [
+    {
+      "at": 30,
+      "ticks": 130,
+      "text": "In the depths of the abyss, where I was left for dead...",
+      "style": "caption"
+    },
+    {
+      "at": 205,
+      "ticks": 120,
+      "text": "...something was waiting under the dead portal.",
+      "style": "caption"
+    },
+    {
+      "at": 580,
+      "ticks": 120,
+      "text": "I gave. The rift grew the rest.",
+      "style": "caption"
+    },
+    {
+      "at": 850,
+      "ticks": 120,
+      "text": "Down here, every grief has a use.",
+      "style": "caption"
+    },
+    {
+      "at": 1190,
+      "ticks": 120,
+      "text": "Wrath, wrung from what suffers.",
+      "style": "caption"
+    },
+    {
+      "at": 1530,
+      "ticks": 120,
+      "text": "Sorrow, wept by the stone itself.",
+      "style": "caption"
+    },
+    {
+      "at": 1850,
+      "ticks": 110,
+      "text": "I bound their hunger into rings.",
+      "style": "caption"
+    },
+    {
+      "at": 2140,
+      "ticks": 110,
+      "text": "Then I carved it into myself.",
+      "style": "caption"
+    },
+    {
+      "at": 2430,
+      "ticks": 120,
+      "text": "But the rift wanted more than grief.",
+      "style": "caption"
+    },
+    {
+      "at": 2660,
+      "ticks": 130,
+      "text": "So I called. Something answered.",
+      "style": "caption"
+    },
+    {
+      "at": 2970,
+      "ticks": 60,
+      "text": "Not all of them are small.",
+      "style": "caption"
+    },
+    {
+      "at": 3190,
+      "ticks": 120,
+      "text": "AlchyForbidden",
+      "style": "title",
+      "color": "#6FE3D8"
+    },
+    {
+      "at": 3215,
+      "ticks": 95,
+      "text": "The debt still stands.",
+      "style": "subtitle"
+    }
+  ],
+  "commands": [
+    {
+      "at": 360,
+      "command": "alchyx showcase build alchyforbidden:altar_1 ~ ~2 ~-11"
+    },
+    {
+      "at": 795,
+      "command": "alchyx showcase build alchyforbidden:resonator_1 ~-18 ~ ~-19"
+    },
+    {
+      "at": 850,
+      "command": "alchyx showcase build alchyforbidden:lament_well_1 ~-18 ~ ~-3"
+    },
+    {
+      "at": 1135,
+      "command": "alchyx showcase build alchyforbidden:killing_pit_1 ~ ~-1 ~9"
+    },
+    {
+      "at": 1475,
+      "command": "alchyx showcase build alchyforbidden:essence_infuser_1 ~17 ~ ~-20"
+    },
+    {
+      "at": 1530,
+      "command": "alchyx showcase build alchyforbidden:weeping_fountain_1 ~18 ~ ~-3"
+    },
+    {
+      "at": 1815,
+      "command": "alchyx showcase build alchyforbidden:binding_circle_1 ~20 ~ ~14"
+    },
+    {
+      "at": 2105,
+      "command": "alchyx showcase build alchyforbidden:inscribing_bier_1 ~-36 ~ ~-9"
+    },
+    {
+      "at": 2550,
+      "command": "alchyx showcase build alchyforbidden:rift_maw_1 ~76 ~ ~-12"
+    },
+    {
+      "at": 3042,
+      "command": "alchyforbidden showcase arena"
+    },
+    {
+      "at": 3080,
+      "command": "alchyforbidden showcase boss weeping_chandelier ~ ~4 ~-17 0"
+    },
+    {
+      "at": 3088,
+      "command": "alchyforbidden showcase boss severed_seraph ~ ~3 ~-17 0"
+    },
+    {
+      "at": 3096,
+      "command": "alchyforbidden showcase boss void_golem ~ ~ ~-17 0"
+    },
+    {
+      "at": 3104,
+      "command": "alchyforbidden showcase boss bone_dragon ~ ~4.5 ~-17 0"
+    },
+    {
+      "at": 3118,
+      "command": "alchyforbidden showcase return"
+    }
+  ]
+}

@@ -425,8 +425,15 @@ public class VoidGolemModel extends EntityModel<RiftBeastRenderState> {
         }
     }
 
-    /** Its entrance: rising out of the floor head bowed, dark; the core lights; it roars, fists to the sky. */
+    /** Its entrance: its pieces fly out of the rifts and slam into place, head bowed, dark; the core lights; it roars. */
     private void intro(float t) {
+        // legs, body, arms and head each fly in on a curve, turning, and land with a bounce
+        piece(rightLeg, t, com.lealex.alchyforbidden.familiar.VoidGolem.LEGS_LAND, -34, -36, 14);
+        piece(leftLeg, t, com.lealex.alchyforbidden.familiar.VoidGolem.LEGS_LAND + 2, 34, -36, 14);
+        piece(body, t, com.lealex.alchyforbidden.familiar.VoidGolem.BODY_LAND, 0, -70, 34);
+        piece(rightArm, t, com.lealex.alchyforbidden.familiar.VoidGolem.RIGHT_ARM_LAND, -56, -40, -10);
+        piece(leftArm, t, com.lealex.alchyforbidden.familiar.VoidGolem.LEFT_ARM_LAND, 56, -40, -10);
+        piece(head, t, com.lealex.alchyforbidden.familiar.VoidGolem.HEAD_LAND, 0, -46, -30);
         float lit = Mth.clamp((t - 66) / 5F, 0, 1), flare = 1 + 0.6F * Mth.clamp(1 - (t - 71) / 8F, 0, 1);
         core.xScale *= lit * flare;
         core.yScale *= lit * flare;
@@ -447,5 +454,26 @@ public class VoidGolemModel extends EntityModel<RiftBeastRenderState> {
             head.xRot = -0.6F * roar;
             body.xRot = -0.2F * roar + Mth.sin(t * 2F) * 0.03F * roar;
         }
+    }
+
+    /** One piece of the entrance: unseen until it starts, then flying in from (dx, dy, dz) model pixels away, spinning. */
+    private static void piece(ModelPart part, float t, int land, float dx, float dy, float dz) {
+        int flight = com.lealex.alchyforbidden.familiar.VoidGolem.PIECE_FLIGHT;
+        float k = Mth.clamp((t - (land - flight)) / flight, 0F, 1F);
+        if (k <= 0F) {
+            part.xScale = part.yScale = part.zScale = 0F;
+            return;
+        }
+        float e = 1F - (1F - k) * (1F - k) * (1F - k), left = 1F - e;
+        part.x += dx * left;
+        part.y += dy * left - Mth.sin(k * Mth.PI) * 10F; // a little arc up on the way
+        part.z += dz * left;
+        part.xRot += left * 3.2F;
+        part.zRot += left * (dx >= 0 ? -2.4F : 2.4F);
+        float s = 0.35F + 0.65F * e;
+        float bounce = t > land && t < land + 5 ? 1F + 0.08F * Mth.sin((t - land) / 5F * Mth.PI) : 1F;
+        part.xScale *= s * bounce;
+        part.yScale *= s / bounce;
+        part.zScale *= s * bounce;
     }
 }

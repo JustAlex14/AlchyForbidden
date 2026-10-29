@@ -59,7 +59,9 @@ public final class BossIntro {
         Minecraft minecraft = Minecraft.getInstance();
         Entity boss = minecraft.level == null ? null : minecraft.level.getEntity(entity);
         if (boss == null) return usual;
-        float near = Math.max(5F, boss.getBbHeight() * 1.6F + boss.getBbWidth() * 1.2F), far = near * 2.6F;
+        float near = Math.max(5F, boss.getBbHeight() * 1.6F + boss.getBbWidth() * 1.2F);
+        if (boss instanceof com.lealex.alchyforbidden.familiar.RiftBeast beast) near = beast.introDistance(near);
+        float far = near * 2.6F;
         float k = Mth.clamp(ticks / (length * 0.6F), 0, 1);
         k = k * k * (3 - 2 * k);
         return Mth.lerp(k, far, near);

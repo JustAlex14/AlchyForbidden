@@ -174,31 +174,57 @@ public class VoidGolem extends RiftBeast {
         return 0.16F; // resting, the whole of it drawn small
     }
 
-    // ---- Its entrance: the floor cracks and it rises out of it, dark; its core lights; it roars ----
+    // ---- Its entrance: four rifts open round an empty spot and spit out its pieces, which build it; its core lights; it roars ----
+
+    /** When each piece lands (ticks into the entrance); the model flies each in over PIECE_FLIGHT ticks before. */
+    public static final int LEGS_LAND = 22, BODY_LAND = 36, RIGHT_ARM_LAND = 46, LEFT_ARM_LAND = 52, HEAD_LAND = 60, PIECE_FLIGHT = 16;
+
+    private static boolean lands(int t) {
+        return t == LEGS_LAND || t == BODY_LAND || t == RIGHT_ARM_LAND || t == LEFT_ARM_LAND || t == HEAD_LAND;
+    }
 
     @Override
     protected Vec3 introPath(Vec3 home, float p) {
-        float up = ease(p / 0.6F), shake = up < 1 ? 0.06F : 0; // from 3.4 down: its eyes (3.6 up) stay over the floor for the camera
-        return home.add(Math.sin(p * 90) * shake, -3.4 * (1 - up), Math.cos(p * 77) * shake);
+        return lands(Math.round(p * INTRO_TICKS)) ? home.add(0, -0.06, 0) : home; // a jolt as each piece slams home
+    }
+
+    private static Vec3 rift(Vec3 home, int i) {
+        double a = Math.PI / 4 + i * Math.PI / 2;
+        return home.add(Math.cos(a) * 6, 5, Math.sin(a) * 6);
     }
 
     @Override
     protected void introEffects(ServerLevel level, int t, Vec3 home) {
-        net.minecraft.world.level.block.state.BlockState floor = level.getBlockState(net.minecraft.core.BlockPos.containing(home).below());
-        if (floor.isAir()) floor = net.minecraft.world.level.block.Blocks.OBSIDIAN.defaultBlockState();
+        net.minecraft.core.BlockPos at = net.minecraft.core.BlockPos.containing(home);
         if (t == 0) {
-            for (int i = 0; i < 6; i++) { // the floor splitting round where it will rise
+            for (int i = 0; i < 4; i++) {
+                com.lealex.alchyforbidden.network.SpellFxPayload.send(level, com.lealex.alchyforbidden.network.SpellFxPayload.RIFT, rift(home, i), -1, HEAD_LAND + 6, 2.4F);
+            }
+            for (int i = 0; i < 6; i++) { // the floor splitting round the spot it will stand on
                 double a = i * Math.PI / 3;
-                fxLine(home, new Vec3(Math.cos(a), 0, Math.sin(a)), 6F, 0.5F, 70, com.lealex.alchyforbidden.network.AttackFxPayload.L_OBSIDIAN);
+                fxLine(home, new Vec3(Math.cos(a), 0, Math.sin(a)), 5F, 0.5F, 70, com.lealex.alchyforbidden.network.AttackFxPayload.L_OBSIDIAN);
             }
-            level.playSound(null, net.minecraft.core.BlockPos.containing(home), net.minecraft.sounds.SoundEvents.WARDEN_EMERGE, net.minecraft.sounds.SoundSource.HOSTILE, 1.6F, 0.4F);
+            level.playSound(null, at, net.minecraft.sounds.SoundEvents.END_PORTAL_SPAWN, net.minecraft.sounds.SoundSource.HOSTILE, 1.4F, 0.5F);
         }
-        if (t < 62) {
-            for (int i = 0; i < 6; i++) {
-                double a = level.getRandom().nextDouble() * Math.PI * 2, r = 1.2 + level.getRandom().nextDouble() * 1.2;
-                level.sendParticles(new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK, floor), home.x + Math.cos(a) * r, home.y + 0.2, home.z + Math.sin(a) * r, 1, 0, 0.1, 0, 0.15);
+        if (t >= LEGS_LAND - PIECE_FLIGHT && t < HEAD_LAND) { // obsidian torn out of the rifts toward where it takes shape
+            net.minecraft.world.level.block.state.BlockState stone = (t & 1) == 0
+                    ? net.minecraft.world.level.block.Blocks.OBSIDIAN.defaultBlockState() : net.minecraft.world.level.block.Blocks.CRYING_OBSIDIAN.defaultBlockState();
+            net.minecraft.core.particles.BlockParticleOption shard = new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK, stone);
+            for (int i = 0; i < 4; i++) {
+                Vec3 from = rift(home, i), to = home.add(0, 1 + (t - LEGS_LAND + PIECE_FLIGHT) / 12.0, 0), d = to.subtract(from);
+                for (int k = 0; k < 2; k++) level.sendParticles(shard, from.x, from.y, from.z, 0, d.x, d.y + 0.6, d.z, 0.09);
+                level.sendParticles(ParticleTypes.REVERSE_PORTAL, from.x, from.y, from.z, 2, 0.4, 0.4, 0.4, 0.05);
             }
-            if (t % 4 == 0) level.playSound(null, net.minecraft.core.BlockPos.containing(home), net.minecraft.sounds.SoundEvents.STONE_BREAK, net.minecraft.sounds.SoundSource.HOSTILE, 1.4F, 0.4F);
+            if (t % 5 == 0) level.playSound(null, at, net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_RESONATE, net.minecraft.sounds.SoundSource.HOSTILE, 1.0F, 0.4F);
+        }
+        if (lands(t)) { // a piece slams home
+            double y = t == LEGS_LAND ? 0.8 : t == BODY_LAND ? 2.4 : t == HEAD_LAND ? 3.8 : 2.8;
+            level.sendParticles(new net.minecraft.core.particles.BlockParticleOption(net.minecraft.core.particles.ParticleTypes.BLOCK,
+                    net.minecraft.world.level.block.Blocks.OBSIDIAN.defaultBlockState()), home.x, home.y + y, home.z, 30, 0.8, 0.5, 0.8, 0.2);
+            level.sendParticles(ParticleTypes.SMOKE, home.x, home.y + y, home.z, 10, 0.6, 0.4, 0.6, 0.03);
+            level.playSound(null, at, net.minecraft.sounds.SoundEvents.ANVIL_LAND, net.minecraft.sounds.SoundSource.HOSTILE, 1.0F, 0.4F);
+            level.playSound(null, at, net.minecraft.sounds.SoundEvents.DEEPSLATE_PLACE, net.minecraft.sounds.SoundSource.HOSTILE, 1.6F, 0.6F);
+            if (t == LEGS_LAND || t == BODY_LAND) fxNova(home, 4F, 10, CORE);
         }
         if (t == 66) { // its core lights
             fxNova(position().add(0, 2.5, 0), 3F, 12, CORE);

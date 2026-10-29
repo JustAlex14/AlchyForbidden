@@ -45,6 +45,7 @@ public class AlchyForbidden {
         com.lealex.alchyx.config.CommonConfigSync.share(modContainer); // players on a server see its costs, tiers and cooldowns
         // Before AlchyX's own handler (which opens the machine, or lets a block be placed): a click on a stand lays
         // the held item on it or takes it back, whatever the item is
+        NeoForge.EVENT_BUS.addListener(com.lealex.alchyforbidden.familiar.ShowcaseBossCommand::register); // trailer entrances
         NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, AlchyForbidden::useStand);
         NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, AlchyForbidden::kindle);
         // Where Wrath, Sorrow and Sculk Corruption come from

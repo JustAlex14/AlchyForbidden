@@ -371,12 +371,29 @@ public abstract class RiftBeast extends PathfinderMob {
     public static final int INTRO_TICKS = 100, INTRO_TITLE = 58;
     public static final byte INTRO_EVENT = 73;
     private long introUntil;
+    /** Raised for a trailer (/alchyforbidden showcase boss): after its entrance it stands still, then goes back into the rift. */
+    private long showcaseEnd;
+
+    /** Its entrance for a trailer: shown to the viewer, then it holds still `hold` ticks and leaves through a rift. */
+    public void showcase(net.minecraft.server.level.ServerPlayer viewer, int hold) {
+        introduce(viewer);
+        showcaseEnd = level().getGameTime() + INTRO_TICKS + Math.max(0, hold);
+    }
+
+    public boolean showcased() {
+        return showcaseEnd > 0;
+    }
     private Vec3 introHome = Vec3.ZERO;
     private java.util.@Nullable UUID introViewer;
     /** Everyone shown its entrance (the viewer and, in a void trial, the challenger's companions). */
     private final java.util.Set<java.util.UUID> introWatchers = new java.util.HashSet<>();
     /** Client: ticks since its entrance began (-1: none). */
     public int clientIntroTicks = -1;
+
+    /** How close its entrance's camera comes (default from its hitbox): a model drawn far bigger than it says further. */
+    public float introDistance(float fromHitbox) {
+        return fromHitbox;
+    }
 
     /** Where it is during its entrance, p = 0..1 through it (default: where it came through, still). */
     protected Vec3 introPath(Vec3 home, float p) {
@@ -436,9 +453,13 @@ public abstract class RiftBeast extends PathfinderMob {
     /** Its name comes up once it has arrived: short, so it fits any gui scale. */
     private void introTitle(net.minecraft.server.level.ServerPlayer viewer) {
         viewer.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket(12, 30, 12));
-        viewer.connection.send(new net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket(corruption() > 0
-                ? net.minecraft.network.chat.Component.literal(RiftCreature.grade(corruption()).trim()).withStyle(s -> s.withColor(RiftCreature.gradeColor(corruption())))
-                : net.minecraft.network.chat.Component.translatable("void_trial.alchyforbidden.great_one").withStyle(net.minecraft.ChatFormatting.GRAY)));
+        // its own epithet under its name (a creature without one: "A great one of the rift"), then its grade if altered
+        net.minecraft.network.chat.MutableComponent sub = net.minecraft.network.chat.Component.translatableWithFallback(
+                "epithet.alchyforbidden." + creature().id(), net.minecraft.network.chat.Component.translatable("void_trial.alchyforbidden.great_one").getString())
+                .withStyle(net.minecraft.ChatFormatting.GRAY);
+        if (corruption() > 0) sub.append(net.minecraft.network.chat.Component.literal(", ").withStyle(net.minecraft.ChatFormatting.GRAY))
+                .append(net.minecraft.network.chat.Component.literal(RiftCreature.grade(corruption()).trim()).withStyle(s -> s.withColor(RiftCreature.gradeColor(corruption()))));
+        viewer.connection.send(new net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket(sub));
         viewer.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket(
                 creature().displayName().copy().withStyle(s -> s.withColor(creature().color()))));
     }
@@ -460,6 +481,17 @@ public abstract class RiftBeast extends PathfinderMob {
             setNoAi(false);
             setInvulnerable(false);
             specialReady = Math.max(specialReady, level.getGameTime() + 60); // a breath before its first special
+        }
+        if (showcaseEnd > 0 && introUntil <= 0) {
+            setNoAi(true);
+            setInvulnerable(true);
+            if (level.getGameTime() >= showcaseEnd) {
+                Vec3 middle = position().add(0, getBbHeight() / 2, 0);
+                level.sendParticles(net.minecraft.core.particles.ParticleTypes.REVERSE_PORTAL, middle.x, middle.y, middle.z, 80, getBbWidth() / 2, getBbHeight() / 2, getBbWidth() / 2, 0.15);
+                level.sendParticles(com.lealex.alchyforbidden.registry.ModRegistries.RIFT_MOTE.get(), middle.x, middle.y, middle.z, 40, getBbWidth() / 2, getBbHeight() / 2, getBbWidth() / 2, 0.05);
+                level.playSound(null, blockPosition(), net.minecraft.sounds.SoundEvents.ILLUSIONER_MIRROR_MOVE, net.minecraft.sounds.SoundSource.HOSTILE, 1.5F, 0.6F);
+                discard();
+            }
         }
     }
 
@@ -1518,7 +1550,7 @@ public abstract class RiftBeast extends PathfinderMob {
     /** Familiars and arena foes live only as long as their ring or ritual: never written to the world. */
     @Override
     public boolean shouldBeSaved() {
-        return !familiar() && arena == null && !echo() && super.shouldBeSaved();
+        return !familiar() && arena == null && !echo() && showcaseEnd <= 0 && super.shouldBeSaved();
     }
 
     @Override

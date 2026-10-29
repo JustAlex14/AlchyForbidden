@@ -198,36 +198,53 @@ public class BoneDragon extends RiftBeast {
         goalSelector.addGoal(2, new Hunt());
     }
 
-    // ---- Its entrance: it bursts out of a rift high above, swoops down round the arena and roars ----
+    // ---- Its entrance: a speck far off over the void that grows into the wyrm, sweeping in on a wide curve; it roars ----
 
-    private Vec3 introFrom = Vec3.ZERO, introSide = Vec3.ZERO;
+    private static final float ARRIVE = 0.8F; // share of the entrance spent flying in
+
+    /** Drawn 2.6x its hitbox, wings spread and the neck thrown up as it roars: the whole wyrm in frame. */
+    @Override
+    public float introDistance(float fromHitbox) {
+        return 15F;
+    }
+    private Vec3 introFrom = Vec3.ZERO, introBend = Vec3.ZERO;
 
     @Override
     protected Vec3 introPath(Vec3 home, float p) {
-        if (introFrom == Vec3.ZERO) return home.add(0, 4.5, 0);
-        float q = ease(p / 0.7F);
         Vec3 end = home.add(0, 4.5, 0);
-        return introFrom.lerp(end, q).add(introSide.scale(Math.sin(q * Math.PI) * 6));
+        if (introFrom == Vec3.ZERO) return end;
+        if (p >= ARRIVE) return end.add(0, Math.sin((p - ARRIVE) * 20) * 0.25, 0); // hanging there, wings beating
+        float q = p / ARRIVE;
+        q = 1 - (1 - q) * (1 - q) * (1 - q) * 0.6F - (1 - q) * 0.4F; // fast at first, settling at the end
+        double u = 1 - q;
+        // a curve through a bend off to one side: it banks round the arena rather than flying straight in
+        return introFrom.scale(u * u).add(introBend.scale(2 * u * q)).add(end.scale(q * q));
     }
 
     @Override
     protected void introEffects(ServerLevel level, int t, Vec3 home) {
         if (t == 0) {
-            Vec3 away = Vec3.directionFromRotation(0, getYRot()).scale(-1);
-            introFrom = home.add(away.scale(14)).add(0, 16, 0);
-            introSide = new Vec3(-away.z, 0, away.x);
-            com.lealex.alchyforbidden.network.SpellFxPayload.send(level, com.lealex.alchyforbidden.network.SpellFxPayload.RIFT, introFrom, -1, 45, 6.0F);
-            level.playSound(null, BlockPos.containing(introFrom), SoundEvents.END_PORTAL_SPAWN, net.minecraft.sounds.SoundSource.HOSTILE, 1.5F, 0.6F);
+            Vec3 away = Vec3.directionFromRotation(0, getYRot()).scale(-1); // behind it, seen from the viewer
+            Vec3 side = new Vec3(-away.z, 0, away.x);
+            introFrom = home.add(away.scale(64)).add(side.scale(18)).add(0, 26, 0);
+            introBend = home.add(away.scale(14)).add(side.scale(-30)).add(0, 14, 0);
+            level.playSound(null, BlockPos.containing(introFrom), SoundEvents.ENDER_DRAGON_GROWL, net.minecraft.sounds.SoundSource.HOSTILE, 6.0F, 0.5F);
         }
-        if (t < 70) {
-            if (t % 7 == 0) playSound(SoundEvents.ENDER_DRAGON_FLAP, 2.0F, 0.6F);
-            level.sendParticles(ParticleTypes.REVERSE_PORTAL, getX(), getY() + 1, getZ(), 3, 0.8, 0.4, 0.8, 0.02);
-            if (t % 2 == 0) level.sendParticles(ParticleTypes.SCULK_SOUL, getX(), getY() + 1, getZ(), 1, 1.0, 0.4, 1.0, 0.01);
+        int arrive = (int) (INTRO_TICKS * ARRIVE);
+        if (t < arrive + 4) {
+            if (t % 6 == 0) playSound(SoundEvents.ENDER_DRAGON_FLAP, 3.0F, 0.55F);
+            level.sendParticles(ParticleTypes.REVERSE_PORTAL, getX(), getY() + 1, getZ(), 4, 1.2, 0.5, 1.2, 0.02);
+            level.sendParticles(ParticleTypes.SCULK_SOUL, getX(), getY() + 1, getZ(), 2, 1.6, 0.4, 1.6, 0.01);
+            if (t % 3 == 0) level.sendParticles(ParticleTypes.SOUL, getX(), getY() + 0.5, getZ(), 2, 2.0, 0.3, 2.0, 0.02);
         }
-        if (t == 74) { // the roar
-            fxNova(home, 8F, 18, BONE);
+        if (t == arrive) { // it pulls up over the stone, wind thrown down
+            fxNova(home, 6F, 12, BONE);
+            level.playSound(null, blockPosition(), SoundEvents.ENDER_DRAGON_FLAP, net.minecraft.sounds.SoundSource.HOSTILE, 3.0F, 0.4F);
+        }
+        if (t == arrive + 6) { // the roar
+            fxNova(home, 9F, 18, BONE);
             fxBeam(position().add(0, 3, 0), new Vec3(0, 1, 0), 10F, 2.2F, 16, BREATH, AttackFxPayload.SONIC, 0, 0);
-            level.playSound(null, blockPosition(), SoundEvents.ENDER_DRAGON_GROWL, net.minecraft.sounds.SoundSource.HOSTILE, 2.5F, 0.6F);
+            level.playSound(null, blockPosition(), SoundEvents.ENDER_DRAGON_GROWL, net.minecraft.sounds.SoundSource.HOSTILE, 3.0F, 0.6F);
         }
     }
 
