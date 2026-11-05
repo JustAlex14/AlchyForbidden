@@ -12,6 +12,7 @@ AlchyForbidden is a dark magic mod for NeoForge (Minecraft 26.1.2), built on [Al
 - [Spells](Spells): the Binding Circle, rings, gems and all 31 spells
 - [Familiars and the Rift Maw](Familiars-and-the-Rift-Maw): creatures, affixes and the void trials
 - [Controls and Configuration](Controls-and-Configuration)
+- [Modpack Guide](Modpack-Guide): recipes, tags, costs and shapes for pack makers
 
 ## Requirements
 
